@@ -1,8 +1,14 @@
 import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import {Text} from 'react-native';
+import RootStack from './screens/RootStack';
 
 function App() {
-  return <Text>테스트</Text>;
+  return (
+    <NavigationContainer>
+      <RootStack />
+    </NavigationContainer>
+  );
 }
 
 export default App;
