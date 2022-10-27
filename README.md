@@ -18,4 +18,29 @@
   > npm install react-native@0.70.3
 
 - axios
+
   > npm install axios@^1.1.3
+
+- react-native-safe-area-context
+
+  > npm install react-native-safe-area-context@^4.4.1
+
+- react-native-screens
+
+  > npn install react-native-screens@^3.18.2
+
+- react-native-vector-icons
+
+  > npm install react-native-vector-icons@^9.2.0
+
+- react-navigation/bottom-tabs
+
+  > npm install react-navigation/bottom-tabs@^6.4.0
+
+- react-navigation/native
+
+  > npm install react-navigation/native@^6.0.13
+
+- react-navigation/native-stack
+
+  > npm insatll react-navigation/native-stack@^6.9.1
