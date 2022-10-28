@@ -19,7 +19,7 @@
 
 - axios
 
-  > npm install axios@^1.1.3
+  > npm install axios@0.27.2
 
 - react-native-safe-area-context
 
