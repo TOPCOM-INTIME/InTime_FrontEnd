@@ -12,9 +12,12 @@ import {
 import SignButtons from '../components/SignButtons';
 import SignUpForm from '../components/SignUpForm';
 import axios from 'axios';
+import authStorage from '../stroages/authStorage';
+import {useUserContext} from '../contexts/UserContext';
 
 function SignInScreen({navigate, route}) {
   const {isSignUp} = route.params || {};
+  const {user, setUser} = useUserContext();
   const [userData, setUserData] = useState({
     email: '',
     username: '',
@@ -29,7 +32,7 @@ function SignInScreen({navigate, route}) {
 
   const onSubmit = async () => {
     Keyboard.dismiss();
-    if (userData.password !== userData.confirmPassword) {
+    if (isSignUp && userData.password !== userData.confirmPassword) {
       Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
       return;
     }
@@ -48,6 +51,28 @@ function SignInScreen({navigate, route}) {
           {params: {...data}},
         );
         console.log('결과', res.data);
+      } catch (err) {
+        console.log('에러');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      const data = {
+        username: userData.username,
+        password: userData.password,
+      };
+      setLoading(true);
+      try {
+        setUser(data.username);
+        authStorage.set(data.username);
+        // const res = await axios.post(
+        //   'http://175.45.204.122:8000/http/post',
+        //   null,
+        //   {params: {...data}},
+        // );
+        // console.log('결과', res.data);
+        setUser;
       } catch (err) {
         console.log('에러');
         console.error(err);
