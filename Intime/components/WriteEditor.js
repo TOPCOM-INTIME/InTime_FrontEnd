@@ -1,8 +1,16 @@
 import React, {useRef} from 'react';
 import {View, StyleSheet, TextInput, Text} from 'react-native';
 
-function WriteEditor({title, time, onChangeTitle, onChangeTime}) {
-  const timeRef = useRef();
+function WriteEditor({
+  title,
+  minute,
+  second,
+  onChangeTitle,
+  onChangeMinute,
+  onChangeSecond,
+}) {
+  const minuteRef = useRef();
+  const secondRef = useRef();
   return (
     <View style={styles.block}>
       <TextInput
@@ -12,7 +20,7 @@ function WriteEditor({title, time, onChangeTitle, onChangeTime}) {
         onChangeText={onChangeTitle}
         value={title}
         onSubmitEditing={() => {
-          timeRef.current.focus();
+          minuteRef.current.focus();
         }}
       />
       <TextInput
@@ -22,11 +30,25 @@ function WriteEditor({title, time, onChangeTitle, onChangeTime}) {
         returnKeyType="done"
         keyboardType="number-pad"
         textAlignVertical="top"
-        onChangeText={onChangeTime}
-        value={time}
-        ref={timeRef}
+        onChangeText={onChangeMinute}
+        value={minute}
+        ref={minuteRef}
+        onSubmitEditing={() => {
+          secondRef.current.focus();
+        }}
       />
-      <Text>분</Text>
+      <TextInput
+        placeholder="시간"
+        style={styles.bodyInput}
+        maxLength={2}
+        returnKeyType="done"
+        keyboardType="number-pad"
+        textAlignVertical="top"
+        onChangeText={onChangeSecond}
+        value={second}
+        ref={secondRef}
+      />
+      <Text>초</Text>
     </View>
   );
 }

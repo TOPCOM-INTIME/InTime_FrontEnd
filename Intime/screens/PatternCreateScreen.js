@@ -8,12 +8,14 @@ import {useNavigation} from '@react-navigation/native';
 function WriteScreen({route}) {
   const log = route.params?.log;
   const [title, setTitle] = useState('');
-  const [time, setTime] = useState(0);
+  const [minute, setMinute] = useState(0);
+  const [second, setSecond] = useState(0);
 
   useEffect(() => {
     if (log) {
       setTitle(log.title);
-      setTime(log.time.toString());
+      setMinute(log.minute.toString());
+      setSecond(log.second.toString());
     }
   }, [log]);
 
@@ -25,9 +27,11 @@ function WriteScreen({route}) {
         <WriteHeader isEditing={!!log} />
         <WriteEditor
           title={title}
-          time={time}
+          minute={minute}
+          second={second}
           onChangeTitle={setTitle}
-          onChangeTime={setTime}
+          onChangeMinute={setMinute}
+          onChangeSecond={setSecond}
         />
       </KeyboardAvoidingView>
     </SafeAreaView>

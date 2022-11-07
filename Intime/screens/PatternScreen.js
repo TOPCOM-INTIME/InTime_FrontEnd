@@ -19,8 +19,18 @@ import PatternList from '../components/PatternList';
 
 function PatternScreen({navigate, route}) {
   const [logs, setLogs] = useState([
-    {id: 1, title: '샤워', time: 10},
-    {id: 2, title: '양치', time: 3},
+    {id: 1, title: '샤워', minute: 10, second: 30},
+    {id: 2, title: '양치', minute: 3, second: 20},
+    {id: 3, title: '면도', minute: 10, second: 45},
+    {id: 4, title: '머리 말리기', minute: 10, second: 45},
+    {id: 5, title: '옷 고르기', minute: 10, second: 45},
+    {id: 6, title: '옷 입기', minute: 10, second: 45},
+    {id: 7, title: '불 끄기', minute: 10, second: 45},
+    {id: 8, title: '컴퓨터 끄기', minute: 10, second: 45},
+    {id: 9, title: '손 씻기', minute: 10, second: 45},
+    {id: 10, title: '세수', minute: 10, second: 45},
+    {id: 11, title: '티비 끄기', minute: 10, second: 45},
+    {id: 12, title: '가스 끄기', minute: 10, second: 45},
   ]);
   const [hidden, setHidden] = useState(false);
 

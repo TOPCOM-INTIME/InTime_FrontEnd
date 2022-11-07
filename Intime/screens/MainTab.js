@@ -5,6 +5,7 @@ import HomeStack from './HomeStack';
 import CalendarStack from './CalendarStack';
 import PatternStack from './PatternStack';
 import PatternScreen from './PatternScreen';
+import ListScreen from './ListScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,6 +39,15 @@ function MainTab() {
         options={{
           tabBarIcon: ({color}) => (
             <Icon name="event" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="리스트"
+        component={ListScreen}
+        options={{
+          tabBarIcon: ({color}) => (
+            <Icon name="table-rows" size={24} color={color} />
           ),
         }}
       />

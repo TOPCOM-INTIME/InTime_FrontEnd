@@ -1,8 +1,10 @@
 import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import PatternListItem from './PatternListItem';
 
 function PatternList({logs, onScrolledToBottom, ListHeaderComponent}) {
+  const navigation = useNavigation();
   const onScroll = e => {
     if (!onScrolledToBottom) return;
     const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
@@ -19,11 +21,19 @@ function PatternList({logs, onScrolledToBottom, ListHeaderComponent}) {
     }
   };
 
+  const onPressFun = item => () => {
+    navigation.navigate('write', {
+      log: item,
+    });
+  };
+
   return (
     <FlatList
       data={logs}
       style={styles.block}
-      renderItem={({item}) => <PatternListItem log={item} />}
+      renderItem={({item}) => (
+        <PatternListItem log={item} onPress={onPressFun(item)} />
+      )}
       keyExtractor={log => log.id}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       onScroll={onScroll}
