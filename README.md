@@ -44,3 +44,7 @@
 - react-navigation/native-stack
 
   > npm insatll react-navigation/native-stack@^6.9.1
+  
+- react-native-maps
+
+  > npm install react-native-maps@1.3.2
