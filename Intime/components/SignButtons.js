@@ -5,7 +5,6 @@ import {useNavigation} from '@react-navigation/native';
 
 function SignButtons({isSignUp, onSubmit, loading}) {
   const navigation = useNavigation();
-
   const primaryTitle = isSignUp ? '회원가입' : '로그인';
   const secondaryTitle = isSignUp ? '로그인' : '회원가입';
 
@@ -16,7 +15,7 @@ function SignButtons({isSignUp, onSubmit, loading}) {
       navigation.push('SignIn', {isSignUp: true});
     }
   };
-
+  
   if (loading) {
     return (
       <View style={styles.spinnerWrapper}>

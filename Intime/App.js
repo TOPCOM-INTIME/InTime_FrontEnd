@@ -6,7 +6,7 @@ function App() {
   return (
     <UserContextProvider>
       <NavigationContainer>
-        <RootStack />
+        <RootStack/>
       </NavigationContainer>
     </UserContextProvider>
   );
