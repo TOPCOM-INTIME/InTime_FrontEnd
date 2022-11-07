@@ -15,7 +15,7 @@ import axios from 'axios';
 import authStorage from '../stroages/authStorage';
 import {useUserContext} from '../contexts/UserContext';
 
-function SignInScreen({navigate, route}) {
+function SignInScreen({navigation, route}) {
   const {isSignUp} = route.params || {};
   const {user, setUser} = useUserContext();
   const [userData, setUserData] = useState({
@@ -38,41 +38,50 @@ function SignInScreen({navigate, route}) {
     }
     if (isSignUp) {
       const data = {
-        username: userData.username,
+        // username: userData.username,
         password: userData.password,
         email: userData.email,
       };
       console.log(data);
       setLoading(true);
       try {
-        const res = await axios.post(
-          'http://175.45.204.122:8000/http/post',
-          null,
-          {params: {...data}},
-        );
+        const res = await axios.post('http://175.45.204.122:8000/join', data);
+        // const res = await axios.post('http://175.45.204.122:8000/join', null, {
+        //   params: {...data},
+        //   headers: {'Content-Type': 'application/json'},
+        // });
         console.log('결과', res.data);
+        navigation.pop();
       } catch (err) {
         console.log('에러');
-        console.error(err);
+        console.log(err.response.status);
+        if (err.response.status === 500) {
+          Alert.alert(
+            // 말그대로 Alert를 띄운다
+            '이메일 중복', // 첫번째 text: 타이틀 제목
+            '다른 이메일을 입력해주세요', // 두번째 text: 그 밑에 작은 제목
+            [
+              // 버튼 배열
+              {text: '확인'}, //버튼 제목
+              // 이벤트 발생시 로그를 찍는다
+            ],
+            {cancelable: false},
+          );
+        }
       } finally {
         setLoading(false);
       }
     } else {
       const data = {
-        username: userData.username,
+        email: userData.email,
         password: userData.password,
       };
       setLoading(true);
       try {
-        setUser(data.username);
-        authStorage.set(data.username);
-        // const res = await axios.post(
-        //   'http://175.45.204.122:8000/http/post',
-        //   null,
-        //   {params: {...data}},
-        // );
-        // console.log('결과', res.data);
-        setUser;
+        const res = await axios.post('http://175.45.204.122:8000/login', data);
+        console.log('결과', res.headers.authorization);
+        setUser(res.headers.authorization);
+        authStorage.set(res.headers.authorization);
       } catch (err) {
         console.log('에러');
         console.error(err);
