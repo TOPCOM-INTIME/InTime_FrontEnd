@@ -29,7 +29,7 @@ function MainTab() {
         component={CalendarStack}
         options={{
           tabBarIcon: ({color}) => (
-            <Icon name="event" size={24} color={color} />
+            <Icon name="calendar-today" size={24} color={color} />
           ),
         }}
       />
