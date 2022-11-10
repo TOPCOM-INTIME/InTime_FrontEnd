@@ -2,7 +2,7 @@ import React from 'react';
 import {Platform, Pressable, StyleSheet, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-function PatternListItem({log, onPress}) {
+function GroupListItem({group, onPress}) {
   return (
     <Pressable
       style={({pressed}) => [
@@ -11,10 +11,7 @@ function PatternListItem({log, onPress}) {
       ]}
       onPress={onPress}
       android_ripple={{color: '#ededed'}}>
-      <Text style={styles.title}>{log.title}</Text>
-      <Text style={styles.body}>
-        {log.minute}분 {log.second}초
-      </Text>
+      <Text style={styles.title}>{group.title}</Text>
     </Pressable>
   );
 }
@@ -22,20 +19,23 @@ function PatternListItem({log, onPress}) {
 const styles = StyleSheet.create({
   block: {
     backGroundColor: 'white',
-    paddingHorizontal: 40,
+    paddingHorizontal: 16,
     paddingVertical: 24,
     borderColor: '#ee2f48',
-    borderWidth: 2,
+    borderWidth: 3,
     marginHorizontal: 20,
     marginVertical: 5,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderRadius: 20,
+
+    borderRadius: 30,
+  },
+  date: {
+    fontSize: 12,
+    color: '546e7a',
+    marginBottom: 8,
   },
   title: {
     color: '#263238',
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
   },
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PatternListItem;
+export default GroupListItem;

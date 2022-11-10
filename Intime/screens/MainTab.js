@@ -5,7 +5,7 @@ import HomeStack from './HomeStack';
 import CalendarStack from './CalendarStack';
 import PatternStack from './PatternStack';
 import PatternScreen from './PatternScreen';
-import Map_Marker from './Map_Marker';
+import ListScreen from './ListScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,11 +43,11 @@ function MainTab() {
         }}
       />
       <Tab.Screen
-        name="지도"
-        component={Map_Marker}
+        name="리스트"
+        component={ListScreen}
         options={{
           tabBarIcon: ({color}) => (
-            <Icon name="map" size={24} color={color} />
+            <Icon name="table-rows" size={24} color={color} />
           ),
         }}
       />
