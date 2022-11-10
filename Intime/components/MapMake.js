@@ -34,6 +34,7 @@ function MapMake() {
                     coordinate={{ latitude: 37.278591844806, longitude: 127.04479923875957 }}
                     title="아주대"
                 />
+                <Text>{rand1}</Text>
             </MapView>
             <Text>{rand1}</Text>
         </View>

@@ -5,7 +5,6 @@ import HomeStack from './HomeStack';
 import CalendarStack from './CalendarStack';
 import PatternStack from './PatternStack';
 import PatternScreen from './PatternScreen';
-import Map_Marker from './Map_Marker';
 
 const Tab = createBottomTabNavigator();
 

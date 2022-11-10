@@ -14,24 +14,14 @@ function Map_Marker() {
     wait(1000).then(() => setRefresh(false));
   }, []
   );
-    //setRefresh(true);
-  //   wait(1000).then(() => setRefresh(false));
-  // }, []
-  // );
 
   return (
     <>
       <View style={{ flex: 1 }}>
         <Button style={{ flex: 1 }}
           onPress={() => pushMe()}
-          color="#007AFF"
+          color="#EE2F48"
           title="파트너 위치 갱신"
-        // RefreshControl={
-        //   <RefreshControl
-        //     refresh={refresh}
-        //     pushMe={pushMe}
-        //   />
-        // }
         />
         <MapMake />
       </View>
