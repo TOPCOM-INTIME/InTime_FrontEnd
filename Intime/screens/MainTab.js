@@ -6,7 +6,8 @@ import CalendarStack from './CalendarStack';
 import PatternStack from './PatternStack';
 import PatternScreen from './PatternScreen';
 import Map_Marker from './Map_Marker';
-
+import ScheduleScreen from './ScheduleStack';
+import ScheduleList from './ScheduleListScreen';
 const Tab = createBottomTabNavigator();
 
 function MainTab() {
@@ -26,7 +27,7 @@ function MainTab() {
       />
       <Tab.Screen
         name="약속"
-        component={CalendarStack}
+        component={ScheduleList}
         options={{
           tabBarIcon: ({color}) => (
             <Icon name="calendar-today" size={24} color={color} />

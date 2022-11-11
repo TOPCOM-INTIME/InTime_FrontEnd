@@ -10,7 +10,6 @@ import {
   Keyboard,
 } from 'react-native';
 import ButtonCarTime from '../components/ButtonCarTime';
-import Placeinput from './Placeinput';
 
 function CarShowTime({route}) {
   const {start} = route.params;

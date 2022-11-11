@@ -5,6 +5,7 @@ import SignInScreen from './SignInScreen';
 import PatternCreateScreen from './PatternCreateScreen';
 import authStorage from '../stroages/authStorage';
 import {useUserContext} from '../contexts/UserContext';
+import ScheduleScreen from './ScheduleStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,13 @@ function RootStack() {
             component={PatternCreateScreen}
             options={{headerShown: false}}
           />
+          
+          <Stack.Screen
+            name="ScheduleScreen"
+            component={ScheduleScreen}
+            options={{headerShown: false}}
+          />
+
         </>
       ) : (
         <Stack.Screen

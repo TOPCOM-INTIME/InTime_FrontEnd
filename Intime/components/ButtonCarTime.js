@@ -2,7 +2,6 @@ import React from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
-import CarShowTime from '../screens/CarShowTime';
 
 function ButtonCarTime(isFind){
     const navigation = useNavigation();
