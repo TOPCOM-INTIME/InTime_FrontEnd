@@ -1,19 +1,19 @@
 import React from 'react';
-import {StyleSheet, View, Pressable, Text, Platform} from 'react-native';
+import { StyleSheet, View, Pressable, Text, Platform } from 'react-native';
 
-function CustomButton({onPress, title, hasMarginBottom, theme}) {
+function CustomButton({ onPress, title, hasMarginBottom, theme }) {
   const isPrimary = theme === 'primary';
 
   return (
     <View style={[styles.block, hasMarginBottom && styles.margin]}>
       <Pressable
         onPress={onPress}
-        style={({pressed}) => [
+        style={({ pressed }) => [
           styles.wrapper,
           isPrimary && styles.primaryWrapper,
-          Platform.OS === 'ios' && pressed && {opacity: 0.5},
+          Platform.OS === 'ios' && pressed && { opacity: 0.5 },
         ]}
-        android_ripple={{color: isPrimary ? '#ffffff' : '#ee2f48'}}>
+        android_ripple={{ color: isPrimary ? '#ffffff' : '#ee2f48' }}>
         <Text
           style={[
             styles.text,
@@ -57,6 +57,9 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   secondaryText: {
+    color: '#ee2f48',
+  },
+  thirdText: {
     color: '#ee2f48',
   },
 });

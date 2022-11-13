@@ -10,8 +10,6 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 //받아온 데이터를 변수에 저장 후 마커에 파싱
 
 
-
-
 function MapMake() {
     const rand1 = Math.random();
     return (

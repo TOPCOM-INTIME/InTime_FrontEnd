@@ -1,21 +1,29 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import CustomButton from './CustomButton';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-function SignButtons({isSignUp, onSubmit, loading}) {
+function SignButtons({ isSignUp, onSubmit, loading, isFindPw }) {
   const navigation = useNavigation();
 
   const primaryTitle = isSignUp ? '회원가입' : '로그인';
   const secondaryTitle = isSignUp ? '로그인' : '회원가입';
+  const thirdTitle = isFindPw ? '로그인' : '비밀번호 찾기';
+
 
   const onSecondaryButtonPress = () => {
     if (isSignUp) {
+      console.log(isSignUp);
       navigation.goBack();
     } else {
-      navigation.push('SignIn', {isSignUp: true});
+      console.log(isSignUp);
+      navigation.push('SignIn', { isSignUp: true });
     }
   };
+
+  const onThirdButtonPress = () => {
+    navigation.navigate('FindPw');
+  }
 
   if (loading) {
     return (
@@ -32,6 +40,11 @@ function SignButtons({isSignUp, onSubmit, loading}) {
         title={secondaryTitle}
         theme="secondary"
         onPress={onSecondaryButtonPress}
+      />
+      <CustomButton
+        title={thirdTitle}
+        theme="third"
+        onPress={onThirdButtonPress}
       />
     </View>
   );
