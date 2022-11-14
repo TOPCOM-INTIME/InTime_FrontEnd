@@ -20,7 +20,6 @@ import BorderedInput from '../components/BorderedInput';
 
 function FindPwScreen({ navigation, route }) {
     const emailRef = useRef();
-    const { isSignUp } = route.params || {};
     const { user, setUser } = useUserContext();
     const [userData, setUserData] = useState({
         email: '',
@@ -78,11 +77,16 @@ function FindPwScreen({ navigation, route }) {
         };
         setLoading(true);
         try {
-            const res = await axios.post('http://175.45.204.122:8000/email?email=', data);
-            console.log('결과', res.headers.authorization);
-            setUser(res.headers.authorization);
-            authStorage.set(res.headers.authorization);
+            const res = await axios.post('http://175.45.204.122:8000/email?email=', data.email);
+            console.log('결과', res.data);
+            Alert.alert(
+                '이메일 전송 성공'
+            );
         } catch (err) {
+            Alert.alert(
+                '실패'
+            );
+            console.log(data.email);
             console.log('에러');
             console.error(err);
         } finally {
@@ -97,6 +101,7 @@ function FindPwScreen({ navigation, route }) {
                 behavior={Platform.select({ ios: 'padding' })}>
                 <SafeAreaView style={styles.fullscreen}>
                     <Text style={styles.text}>InTime</Text>
+                    <Text>이메일을 입력해 주세요.</Text>
                     <View style={styles.form}>
                         <BorderedInput
                             placeholder="이메일"
@@ -104,7 +109,7 @@ function FindPwScreen({ navigation, route }) {
                             keyboardType="email-address"
                             returnKeyType="next"
                             onChangeText={createChangeTextHandler('email')}
-                            onSubmitEditing={() => passwordRef.current.focus()}
+                            // onSubmitEditing={() => passwordRef.current.focus()}
                             hasMarginBottom
                         />
                         <Button
@@ -136,9 +141,10 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 32,
         fontWeight: 'bold',
+        marginBottom: 20,
     },
     form: {
-        marginTop: 64,
+        marginTop: 24,
         width: '100%',
         paddingHorizontal: 16,
     },
