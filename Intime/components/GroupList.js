@@ -3,14 +3,21 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import GroupListItem from './GroupListItem';
 
-function GroupList({groups, onScrolledToBottom, ListHeaderComponent, onPress}) {
+function GroupList({
+  groups,
+  onScrolledToBottom,
+  ListHeaderComponent,
+  group,
+  onPress,
+}) {
   return (
     <FlatList
       data={groups}
       style={styles.block}
       renderItem={({item}) => (
-        <GroupListItem group={item} onPress={onPress(item.id)} />
+        <GroupListItem item={item} group={group} onPress={onPress} />
       )}
+      // horizontal={true}
       keyExtractor={log => log.id}
       ListHeaderComponent={ListHeaderComponent}
     />
@@ -18,7 +25,7 @@ function GroupList({groups, onScrolledToBottom, ListHeaderComponent, onPress}) {
 }
 
 const styles = StyleSheet.create({
-  block: {flex: 1},
+  block: {width: '100%'},
   separator: {
     backgroundColor: '#e0e0e0',
     height: 1,

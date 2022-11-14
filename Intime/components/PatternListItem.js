@@ -1,19 +1,63 @@
 import React from 'react';
-import {Platform, Pressable, StyleSheet, Text} from 'react-native';
+import {Platform, Pressable, StyleSheet, Text, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-function PatternListItem({log, onPress}) {
+function PatternListItem({log, isCreatingGroup, setGroup}) {
+  const navigation = useNavigation();
+  const onLongPress = () => {
+    navigation.navigate('write', {log});
+  };
+
+  const onPress = () => {
+    setGroup(group => {
+      if (group.find(el => el.id === log.id)) {
+        return group.filter(el => el.id !== log.id);
+      }
+      return group.concat(log);
+    });
+  };
+
+  if (isCreatingGroup === 1) {
+    return (
+      <Pressable
+        style={({pressed}) => [
+          styles.block,
+          Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
+        ]}
+        android_ripple={{color: '#ededed'}}>
+        <Text style={styles.title}>{log.name}</Text>
+        <Text style={styles.body}>
+          {parseInt(log.time / 60)}분 {log.time % 60}초
+        </Text>
+      </Pressable>
+    );
+  } else if (isCreatingGroup === 2) {
+    return (
+      <Pressable
+        style={({pressed}) => [
+          styles.block,
+          Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
+        ]}
+        onPress={onPress}
+        android_ripple={{color: '#ededed'}}>
+        <Text style={styles.title}>{log.name}</Text>
+        <Text style={styles.body}>
+          {parseInt(log.time / 60)}분 {log.time % 60}초
+        </Text>
+      </Pressable>
+    );
+  }
   return (
     <Pressable
       style={({pressed}) => [
         styles.block,
         Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
       ]}
-      onPress={onPress}
+      onLongPress={onLongPress}
       android_ripple={{color: '#ededed'}}>
-      <Text style={styles.title}>{log.title}</Text>
+      <Text style={styles.title}>{log.name}</Text>
       <Text style={styles.body}>
-        {log.minute}분 {log.second}초
+        {parseInt(log.time / 60)}분 {log.time % 60}초
       </Text>
     </Pressable>
   );
@@ -22,27 +66,29 @@ function PatternListItem({log, onPress}) {
 const styles = StyleSheet.create({
   block: {
     backGroundColor: 'white',
-    paddingHorizontal: 40,
-    paddingVertical: 24,
+    paddingHorizontal: 10,
+    // paddingVertical: 24,
     borderColor: '#ee2f48',
     borderWidth: 2,
-    marginHorizontal: 20,
+    marginHorizontal: '10%',
     marginVertical: 5,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    borderRadius: 20,
+    borderRadius: 10,
+    height: 40,
+    width: '80%',
   },
   title: {
     color: '#263238',
-    fontSize: 25,
+    fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 8,
   },
   body: {
     color: '#37474f',
-    fontSize: 16,
-    lineHeight: 21,
+    fontSize: 10,
+    // lineHeight: 21,
   },
 });
 

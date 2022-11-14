@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTab from './MainTab';
 import SignInScreen from './SignInScreen';
+import GroupCreateScreen from './GroupCreateScreen';
 import PatternCreateScreen from './PatternCreateScreen';
 import authStorage from '../stroages/authStorage';
 import {useUserContext} from '../contexts/UserContext';
@@ -35,6 +36,11 @@ function RootStack() {
           <Stack.Screen
             name="write"
             component={PatternCreateScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="CreateGroup"
+            component={GroupCreateScreen}
             options={{headerShown: false}}
           />
         </>

@@ -1,24 +1,54 @@
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 import React, {useReducer} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useUserContext} from '../contexts/UserContext';
 import TransparentCircleButton from './TransparentCircleButton';
 
 function WriteHeader({
   // onSave,
   onAskRemove,
   isEditing,
-  date,
-  onChangeDate,
-  onSubmit,
+  title,
+  minute,
+  second,
+  id,
 }) {
   const navigation = useNavigation();
+  const {user, setUser, edited, setEdited} = useUserContext();
 
   const onGoBack = () => {
     navigation.pop();
   };
 
-  const onSave = () => {
+  const onSave = async () => {
+    if (minute === '') minute = 0;
+    if (second === '') second = 0;
+    if (!isEditing) {
+      const res = await axios.post(
+        'http://175.45.204.122:8000/api/readypattern/',
+        {
+          name: title,
+          time: +minute * 60 + +second,
+        },
+        {
+          headers: {Authorization: user},
+        },
+      );
+    } else {
+      const res = await axios.put(
+        `http://175.45.204.122:8000/api/readypattern/update-name-or-time/patternId=${id}`,
+        {
+          name: title,
+          time: +minute * 60 + +second,
+        },
+        {
+          headers: {Authorization: user},
+        },
+      );
+    }
+    setEdited(true);
     navigation.pop();
   };
 

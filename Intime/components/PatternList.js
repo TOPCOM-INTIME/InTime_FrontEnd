@@ -31,9 +31,7 @@ function PatternList({logs, onScrolledToBottom, ListHeaderComponent}) {
     <FlatList
       data={logs}
       style={styles.block}
-      renderItem={({item}) => (
-        <PatternListItem log={item} onPress={onPressFun(item)} />
-      )}
+      renderItem={({item}) => <PatternListItem log={item} />}
       keyExtractor={log => log.id}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       onScroll={onScroll}

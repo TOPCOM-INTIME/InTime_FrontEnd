@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -18,20 +18,8 @@ import FloatingWriteButton from '../components/FloatingWriteButton';
 import PatternList from '../components/PatternList';
 
 function PatternScreen({navigate, route}) {
-  const [logs, setLogs] = useState([
-    {id: 1, title: '샤워', minute: 10, second: 30},
-    {id: 2, title: '양치', minute: 3, second: 20},
-    {id: 3, title: '면도', minute: 10, second: 45},
-    {id: 4, title: '머리 말리기', minute: 10, second: 45},
-    {id: 5, title: '옷 고르기', minute: 10, second: 45},
-    {id: 6, title: '옷 입기', minute: 10, second: 45},
-    {id: 7, title: '불 끄기', minute: 10, second: 45},
-    {id: 8, title: '컴퓨터 끄기', minute: 10, second: 45},
-    {id: 9, title: '손 씻기', minute: 10, second: 45},
-    {id: 10, title: '세수', minute: 10, second: 45},
-    {id: 11, title: '티비 끄기', minute: 10, second: 45},
-    {id: 12, title: '가스 끄기', minute: 10, second: 45},
-  ]);
+  const {user, setUser, edited, setEdited} = useUserContext();
+  const [logs, setLogs] = useState([]);
   const [hidden, setHidden] = useState(false);
 
   const onScrolledToBottom = isBottom => {
@@ -40,7 +28,28 @@ function PatternScreen({navigate, route}) {
     }
   };
 
-  console.log('패턴스크린', logs);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          'http://175.45.204.122:8000/api/readypatterns/all',
+          {
+            headers: {Authorization: user},
+          },
+        );
+        console.log(res.data);
+        if (JSON.stringify(logs) !== JSON.stringify(res.data)) {
+          setLogs(res.data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      setEdited(false);
+    };
+    if (edited) {
+      fetchData();
+    }
+  }, [edited, logs, setEdited, user]);
   // if (logs.length === 0) {
   //   return (
   //     <View style={styles.block}>
@@ -49,9 +58,16 @@ function PatternScreen({navigate, route}) {
   //   );
   // }
 
+  let content = <Text>저장된 패턴이 없습니다.</Text>;
+  if (logs.length > 0) {
+    content = (
+      <PatternList logs={logs} onScrolledToBottom={onScrolledToBottom} />
+    );
+  }
+
   return (
     <View style={styles.block}>
-      <PatternList logs={logs} onScrolledToBottom={onScrolledToBottom} />
+      {content}
       <FloatingWriteButton setLogs={setLogs} hidden={hidden} />
     </View>
   );
