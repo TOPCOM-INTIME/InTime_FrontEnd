@@ -4,7 +4,7 @@ import {Pressable, StyleSheet, Text, View, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TransparentCircleButton from './TransparentCircleButton';
 
-function ListHeader({isEditing, onPress}) {
+function ListHeader({onPress, group}) {
   const navigation = useNavigation();
 
   const onAskRemove = () => {
@@ -25,31 +25,43 @@ function ListHeader({isEditing, onPress}) {
     );
   };
 
+  console.log('리스트 헤더', group);
+
+  const onEdit = () => {
+    navigation.navigate('CreateGroup', {group});
+  };
+
   return (
     <View style={styles.block}>
       <View style={styles.iconButtonWrapper}>
-        <TransparentCircleButton
+        {/* <TransparentCircleButton
           onPress={onPress}
           name="arrow-back"
           color="#424242"
-        />
+        /> */}
       </View>
       <View style={styles.buttons}>
         <View style={[styles.iconButtonWrapper, styles.marginRight]}>
-          {isEditing && (
-            <TransparentCircleButton
-              name="delete-forever"
-              color="#ef5350"
-              hasMarginRight
-              onPress={onAskRemove}
-            />
-          )}
+          <TransparentCircleButton
+            name="edit"
+            color="blue"
+            hasMarginRight
+            onPress={onEdit}
+          />
+        </View>
+        <View style={[styles.iconButtonWrapper, styles.marginRight]}>
+          <TransparentCircleButton
+            name="delete-forever"
+            color="#ef5350"
+            hasMarginRight
+            onPress={onAskRemove}
+          />
         </View>
         <View style={styles.iconButtonWrapper}>
           <TransparentCircleButton
-            name="check"
+            name="add-circle-outline"
             color="#009688"
-            onPress={onPress}
+            onPress={() => navigation.navigate('CreateGroup')}
           />
         </View>
       </View>

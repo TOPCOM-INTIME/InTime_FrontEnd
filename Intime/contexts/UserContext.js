@@ -4,7 +4,13 @@ const UserContext = createContext(null);
 
 export function UserContextProvider({children}) {
   const [user, setUser] = useState(null);
-  return <UserContext.Provider children={children} value={{user, setUser}} />;
+  const [edited, setEdited] = useState(false);
+  return (
+    <UserContext.Provider
+      children={children}
+      value={{user, setUser, edited, setEdited}}
+    />
+  );
 }
 
 export function useUserContext() {
