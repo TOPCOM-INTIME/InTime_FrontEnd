@@ -98,7 +98,7 @@ function HomeStack() {
       date: new Date(Date.now() + 10 * 1000), // in 60 secs
       allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
       playSound: true, // (optional) default: true
-      soundName: 'android.resource://com.intime/raw/alarm',
+      soundName: 'alarm',
       /* Android Only Properties */
       repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
     });
