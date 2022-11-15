@@ -89,10 +89,18 @@ function HomeStack() {
   };
 
   const pushHandler = () => {
-    PushNotification.localNotification({
+    console.log('pushed');
+    PushNotification.localNotificationSchedule({
+      //... You can use all the options from localNotifications
       channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      title: 'hello',
-      message: 'test message',
+      title: '준비할 시간입니다.',
+      message: '준비를 시작해 주세요', // (required)
+      date: new Date(Date.now() + 10 * 1000), // in 60 secs
+      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+      playSound: true, // (optional) default: true
+      soundName: 'alarm.mp3',
+      /* Android Only Properties */
+      repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
     });
   };
 
@@ -107,6 +115,9 @@ function HomeStack() {
       </Pressable>
       <Pressable onPress={puttonPressHandler} style={styles.button}>
         <Text style={styles.text}>10초 뒤 알람</Text>
+      </Pressable>
+      <Pressable onPress={pushHandler} style={styles.button}>
+        <Text style={styles.text}>알람 예약</Text>
       </Pressable>
       {/* <Pressable onPress={alarmHandler} style={styles.button}>
         <Text style={styles.text}>알람</Text>
