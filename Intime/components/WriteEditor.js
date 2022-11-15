@@ -16,7 +16,7 @@ function WriteEditor({
     <View style={styles.block}>
       <View style={styles.container}>
         <View style={[styles.inputline, styles.margin]}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>패턴 이름: </Text>
+          <Text style={styles.text}>패턴 이름: </Text>
           <TextInput
             placeholder="패턴 이름"
             style={[styles.Input, styles.title]}
@@ -45,7 +45,7 @@ function WriteEditor({
               secondRef.current.focus();
             }}
           />
-          <Text>분</Text>
+          <Text style={styles.text}>분</Text>
           {/* </View>
         <View style={styles.inputline}> */}
           <TextInput
@@ -60,7 +60,7 @@ function WriteEditor({
             value={second}
             ref={secondRef}
           />
-          <Text>초</Text>
+          <Text style={styles.text}>초</Text>
         </View>
       </View>
     </View>
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
   body: {
     width: '40%',
   },
+  text: {fontSize: 20, fontWeight: 'bold', color: 'black'},
 });
 
 export default WriteEditor;
