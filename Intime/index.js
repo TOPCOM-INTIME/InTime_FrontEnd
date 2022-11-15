@@ -15,7 +15,7 @@ PushNotification.createChannel(
     channelName: 'My channel', // (required)
     channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
     playSound: true, // (optional) default: true
-    soundName: 'alarm.mp3', // (optional) See `soundName` parameter of `localNotification` function
+    soundName: 'android.resource://com.intime/raw/alarm', // (optional) See `soundName` parameter of `localNotification` function
     importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
     vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
   },

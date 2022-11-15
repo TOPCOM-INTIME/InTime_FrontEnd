@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     height: 48,
     backgroundColor: 'white',
+    fontSize: 10,
   },
   margin: {
     marginBottom: 16,
