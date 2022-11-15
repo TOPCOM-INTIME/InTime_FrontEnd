@@ -1,7 +1,7 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import BorderedInput from './BorderedInput';
 
-function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
+function SignUpForm({ onSubmit, createChangeTextHandler, isSignUp }) {
   const emailRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
