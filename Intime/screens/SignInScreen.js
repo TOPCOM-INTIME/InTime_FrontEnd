@@ -17,7 +17,7 @@ import {useUserContext} from '../contexts/UserContext';
 
 function SignInScreen({navigation, route}) {
   const {isSignUp} = route.params || {};
-  const {user, setUser} = useUserContext();
+  const {user, setUser, edited, setEdited} = useUserContext();
   const [userData, setUserData] = useState({
     email: '',
     username: '',
@@ -90,6 +90,7 @@ function SignInScreen({navigation, route}) {
         setLoading(false);
       }
     }
+    setEdited(true);
   };
   return (
     <>
