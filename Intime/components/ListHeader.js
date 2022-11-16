@@ -1,82 +1,67 @@
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
 import React, {useReducer} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useUserContext} from '../contexts/UserContext';
 import TransparentCircleButton from './TransparentCircleButton';
 
-function WriteHeader({
-  // onSave,
-  onAskRemove,
-  isEditing,
-  title,
-  minute,
-  second,
-  id,
-}) {
+function ListHeader({onPress, group}) {
   const navigation = useNavigation();
-  const {user, setUser, edited, setEdited} = useUserContext();
 
-  const onGoBack = () => {
-    navigation.pop();
+  const onAskRemove = () => {
+    Alert.alert(
+      '삭제',
+      '정말로 삭제하시겠어요?',
+      [
+        {text: '취소', style: 'cancel'},
+        {
+          text: '삭제',
+          onPress,
+          style: 'destructive',
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
   };
 
-  const onSave = async () => {
-    if (minute === '') minute = 0;
-    if (second === '') second = 0;
-    if (!isEditing) {
-      const res = await axios.post(
-        'http://175.45.204.122:8000/api/readypattern/',
-        {
-          name: title,
-          time: +minute * 60 + +second,
-        },
-        {
-          headers: {Authorization: user},
-        },
-      );
-    } else {
-      const res = await axios.put(
-        `http://175.45.204.122:8000/api/readypattern/update-name-or-time/patternId=${id}`,
-        {
-          name: title,
-          time: +minute * 60 + +second,
-        },
-        {
-          headers: {Authorization: user},
-        },
-      );
-    }
-    setEdited(true);
-    navigation.pop();
+  console.log('리스트 헤더', group);
+
+  const onEdit = () => {
+    navigation.navigate('CreateGroup', {group});
   };
 
   return (
     <View style={styles.block}>
       <View style={styles.iconButtonWrapper}>
-        <TransparentCircleButton
-          onPress={onGoBack}
+        {/* <TransparentCircleButton
+          onPress={onPress}
           name="arrow-back"
           color="#424242"
-        />
+        /> */}
       </View>
       <View style={styles.buttons}>
         <View style={[styles.iconButtonWrapper, styles.marginRight]}>
-          {isEditing && (
-            <TransparentCircleButton
-              name="delete-forever"
-              color="#ef5350"
-              hasMarginRight
-              onPress={onAskRemove}
-            />
-          )}
+          <TransparentCircleButton
+            name="edit"
+            color="blue"
+            hasMarginRight
+            onPress={onEdit}
+          />
+        </View>
+        <View style={[styles.iconButtonWrapper, styles.marginRight]}>
+          <TransparentCircleButton
+            name="delete-forever"
+            color="#ef5350"
+            hasMarginRight
+            onPress={onAskRemove}
+          />
         </View>
         <View style={styles.iconButtonWrapper}>
           <TransparentCircleButton
-            name="check"
+            name="add-circle-outline"
             color="#009688"
-            onPress={onSave}
+            onPress={() => navigation.navigate('CreateGroup')}
           />
         </View>
       </View>
@@ -128,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WriteHeader;
+export default ListHeader;

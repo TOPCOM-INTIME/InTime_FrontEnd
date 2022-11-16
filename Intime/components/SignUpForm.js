@@ -32,7 +32,9 @@ function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
         ref={passwordRef}
         secureTextEntry
         onChangeText={createChangeTextHandler('password')}
-        onSubmitEditing={() => confirmPasswordRef.current.focus()}
+        onSubmitEditing={
+          isSignUp ? () => confirmPasswordRef.current.focus() : onSubmit
+        }
         hasMarginBottom={isSignUp}
       />
       {isSignUp && (

@@ -80,6 +80,7 @@ function SignInScreen({navigation, route}) {
       try {
         const res = await axios.post('http://175.45.204.122:8000/login', data);
         console.log('결과', res.headers.authorization);
+        console.log('응답:', res.data);
         setUser(res.headers.authorization);
         authStorage.set(res.headers.authorization);
       } catch (err) {
