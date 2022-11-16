@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 32,
     fontWeight: 'bold',
+    color: '#ee2f48',
   },
   form: {
     marginTop: 64,
