@@ -1,4 +1,5 @@
 import React, {useRef} from 'react';
+import {TextInput, StyleSheet} from 'react-native';
 import BorderedInput from './BorderedInput';
 
 function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
@@ -9,14 +10,14 @@ function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
 
   return (
     <>
-      <BorderedInput
+      <TextInput
         placeholder="이메일"
         ref={emailRef}
         keyboardType="email-address"
         returnKeyType="next"
         onChangeText={createChangeTextHandler('email')}
         onSubmitEditing={() => passwordRef.current.focus()}
-        hasMarginBottom
+        style={[styles.input, styles.margin]}
       />
 
       {/* <BorderedInput
@@ -27,7 +28,7 @@ function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
         onSubmitEditing={() => passwordRef.current.focus()}
         hasMarginBottom
       /> */}
-      <BorderedInput
+      <TextInput
         placeholder="비밀번호"
         ref={passwordRef}
         secureTextEntry
@@ -35,19 +36,35 @@ function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
         onSubmitEditing={
           isSignUp ? () => confirmPasswordRef.current.focus() : onSubmit
         }
-        hasMarginBottom={isSignUp}
+        style={[styles.input, isSignUp && styles.margin]}
       />
       {isSignUp && (
-        <BorderedInput
+        <TextInput
           placeholder="비밀번호 확인"
           ref={confirmPasswordRef}
           secureTextEntry
           onChangeText={createChangeTextHandler('confirmPassword')}
           onSubmitEditing={onSubmit}
+          style={styles.input}
         />
       )}
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  input: {
+    borderColor: '#ee2f48',
+    borderWidth: 1,
+    color: 'black',
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    height: 48,
+    backgroundColor: 'white',
+  },
+  margin: {
+    marginBottom: 16,
+  },
+});
 
 export default SignUpForm;
