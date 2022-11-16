@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from 'axios';
-import { View, Text } from "react-native";
+import { View, Text, } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { useUserContext } from '../contexts/UserContext';
 
 //api 호출 /api/google/{useridx}/location
 // const res = await axios.get(
-//     `http://175.45.204.122:8000/api/google/${headers}/location`,
+//     "http://175.45.204.122:8000/api/google/7/location",
 //     {
 //         headers: { Authorization: user },
 //     },
@@ -18,10 +19,28 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 //받아온 데이터를 변수에 저장 후 마커에 파싱
 
 
-
-
 function MapMake() {
+    const { user, setUser, edited, setEdited } = useUserContext();
+    const res = axios.get('http://175.45.204.122:8000/api/google/7/?address=아주대',
+        {
+            headers: { Authorization: user },
+        },
+    ).then((response) => {
+        console.log(response.data);
+        console.log(err);
+    });
+
+    // const { user } = useUserContext();
+    // const res = axios.get(`http://175.45.204.122:8000/api/google/7/location`,
+    //     {
+    //         headers: { Authorization: user },
+    //     }
+    // ).then((response) => {
+    //     console.log(response.data);
+    // });
+
     const rand1 = Math.random();
+
     return (
         <View style={{ flex: 1 }}>
             <MapView
