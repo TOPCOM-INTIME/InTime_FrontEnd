@@ -38,13 +38,11 @@ function RootStack() {
             component={PatternCreateScreen}
             options={{headerShown: false}}
           />
-          
           <Stack.Screen
             name="ScheduleScreen"
             component={ScheduleScreen}
             options={{headerShown: false}}
           />
-
         </>
       ) : (
         <Stack.Screen

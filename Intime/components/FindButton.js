@@ -1,49 +1,53 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
+import ScheduleCustomButton from './ScheduleCustomButton';
 
-
-function FindButton({placeData,isFind,loading}){
+function FindButton({placeData, Date}) {
   const navigation = useNavigation();
-  const primaryTitle ='찾기';
-  const secondaryTitle = '취소';  
+  const primaryTitle = '찾기';
+  const secondaryTitle = '취소';
 
   const onPrimaryButtonPress = () => {
-    console.log("button",placeData.start, placeData.end)
-    navigation.push('CarScreen',{
-    start: placeData.start, end:placeData.end})
+    console.log('button', placeData.start, placeData.end);
+    navigation.push('CarScreen', {
+      start: placeData.start,
+      end: placeData.end,
+      date: Date,
+    });
   };
 
   const onSecondaryButtonPress = () => {
-      navigation.goBack();
+    // navigation.navigate('Placeinput');
   };
 
-  
- return (
-  <View style={styles.buttons}>
-    <CustomButton style={styles.buttons} title={primaryTitle} hasMarginBottom onPress={onPrimaryButtonPress}/>
-    <CustomButton
-      title={secondaryTitle}
-      theme="secondary"
-      onPress={onSecondaryButtonPress}
-    />
-  </View>
-);
-
+  return (
+    <View style={styles.buttons}>
+      <ScheduleCustomButton
+        style={styles.buttons}
+        title={primaryTitle}
+        hasMarginBottom
+        onPress={onPrimaryButtonPress}
+      />
+      <ScheduleCustomButton
+        title={secondaryTitle}
+        theme="secondary"
+        onPress={onSecondaryButtonPress}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    buttons: {
-      flexDirection : 'column',
-      marginTop: 64,
-    },
-    spinnerWrapper: {
-      marginTop: 64,
-      height: 104,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-  });
+  buttons: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  spinnerWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
-export default FindButton
+export default FindButton;

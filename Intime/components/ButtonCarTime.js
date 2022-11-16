@@ -3,29 +3,37 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
 
-function ButtonCarTime(isFind){
-    const navigation = useNavigation();
-    const primaryTitle = isFind ? '확인' : '취소';
-    const secondaryTitle = isFind ? '취소' : '확인';
+function ButtonCarTime({start, end, time}) {
+  const navigation = useNavigation();
+  const primaryTitle = '확인';
+  const secondaryTitle = '취소';
 
-    const onSecondaryButtonPress = () => {
-        if (isFind) {
-          navigation.goBack();
-        } 
-      };
+  const onPrimaryButtonPress = () => {
+    console.log('받은 값', time, start, end);
+    navigation.push('Placinputform', {
+      time: time,
+      sourceName: start,
+      destName: end,
+    });
+  };
+  const onSecondaryButtonPress = () => {
+    navigation.goBack();
+  };
 
-    return(
-        <View style={styles.buttons}>
-        <CustomButton 
-          title={primaryTitle} hasMarginBottom/>
-        <CustomButton
-          title={secondaryTitle}
-          theme="secondary"
-          onPress={onSecondaryButtonPress}
-        />
-      </View>
-    )
-
+  return (
+    <View style={styles.buttons}>
+      <CustomButton
+        title={primaryTitle}
+        onPress={onPrimaryButtonPress}
+        hasMarginBottom
+      />
+      <CustomButton
+        title={secondaryTitle}
+        theme="secondary"
+        onPress={onSecondaryButtonPress}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -40,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ButtonCarTime
+export default ButtonCarTime;

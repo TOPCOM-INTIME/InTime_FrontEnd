@@ -1,155 +1,227 @@
 import React, {useRef, useState} from 'react';
-import {Platform, Pressable, StyleSheet, View, Text, Button, TouchableOpacity} from 'react-native';
+import axios from 'axios';
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 // import { SearchBar } from 'react-native-elements';
 import CustomSearchInput from './CustomSearchInput';
-import DatePicker from "@react-native-community/datetimepicker"
+import DatePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SwitchSelector from 'react-native-switch-selector';
 import FindButton from '../components/FindButton';
+import ScheduleSubmitButton from './ScheduleSubmitButton';
+import {useNavigation} from '@react-navigation/native';
+import {useUserContext} from '../contexts/UserContext';
 
-function PlaceinputForm(){
+function PlaceinputForm({route}) {
+  console.log('route값:', route);
+  const navigation = useNavigation();
+  const schedleName = useRef();
   const start = useRef();
   const end = useRef();
-  const [date, setDate]=useState(new Date());
-  const [mode, setMode]=useState('date');
-  const [show, setShow]=useState(false);
-  const [isGroup, setGroup]=useState(false)
-
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [isGroup, setGroup] = useState(false);
   const [placeData, setPlaceData] = useState({
+    name: '',
     start: '',
     end: '',
+    time: '',
   });
+  const primaryTitle = '저장';
+  const secondaryTitle = '취소';
+  const {user, setUser} = useUserContext();
+  const createChangeTextHandler = name => value => {
+    setPlaceData({...placeData, [name]: value});
+  };
 
-  const options=[
-    {label: "개인", value: false},
-    {label: "단체", value: true}
-  ]
-
-  const onChange =(event, selectedDate)=>{
+  // 개인이나 단체를 정하는 토글
+  const options = [
+    {label: '개인', value: false},
+    {label: '단체', value: true},
+  ];
+  //토글 값 변경
+  const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS==='ios');
+    setShow(Platform.OS === 'ios');
     setDate(currentDate);
-  }
-  
-  const showMode=(currentMode)=>{
-    setShow(true)
-    setMode(currentMode)
-  }
+  };
 
+  //DatePicker 출력
+  const showMode = currentMode => {
+    setShow(true);
+    setMode(currentMode);
+  };
+  const onSecondaryButtonPress = () => {
+    navigation.push('MainTab');
+  };
 
-  return(
+  const onSaveButtonPress = async () => {
+    if (route != undefined) {
+      const data = {
+        name: route.params.name,
+        destName: route.params.destName,
+        sourceName: route.params.sourceName,
+        time: route.params.time,
+      };
+      console.log('Pressed!', data);
+      try {
+        const res = await axios.post(
+          'http://175.45.204.122:8000/api/schedule',
+          data,
+          {
+            headers: {Authorization: user},
+          },
+        );
+        console.log('SUCCESS!', data);
+      } catch (e) {
+        console.log(`[ERROR]${e} SENT${data}}`);
+      }
+    }
+  };
+
+  return (
     <>
       <SwitchSelector
-      options={options}
-      initial={0}
-      selectedColor={'white'}
-      buttonColor={'#ED3648'}
-      borderColor={'#ED3648'}
-      borderWidth={1}
-      hasPadding
-      onPress={value=>setGroup(!value)}
+        options={options}
+        initial={0}
+        selectedColor={'white'}
+        buttonColor={'#ED3648'}
+        borderColor={'#ED3648'}
+        borderWidth={1}
+        hasPadding
+        onPress={value => setGroup(value)}
       />
-
-    <View style={styles.tasksWrapper}>
-
-    <Text style={styles.sectionTitle}>날짜</Text>
-    <View style={styles.item}>
-      <View style={styles.itemLeft}>
-          <Text style={styles.sectionTitle}>{date.getFullYear()}-{date.getMonth()}-{date.getDate()}</Text>
-
-          <TouchableOpacity style={{marginLeft:10}}  onPress={()=>showMode('date')}>
-            <Icon name={"calendar-today"} size={24} color={'black'}/>
-          </TouchableOpacity>
-          
-      </View>
-
-      <View style={styles.itemRight}>
-          <Text style={styles.sectionTitle}>{date.getHours()}:{date.getMinutes()}</Text>
-            <TouchableOpacity style={{marginLeft:10}} onPress={()=>showMode('time')}>
-                  <Icon name={"access-time"} size={24} color={'black'}/>
+      <ScrollView style={{marginTop: 20, backgroundColor: 'white'}}>
+        <View style={styles.tasksWrapper}>
+          <Text style={styles.sectionTitle}>이름 입력</Text>
+          <CustomSearchInput
+            placeholder="이름"
+            ref={schedleName}
+            keyboardType="text"
+            returnKeyType="next"
+            onChangeText={createChangeTextHandler('name')}
+            hasMarginBottom
+          />
+          <Text style={styles.sectionTitle}>날짜</Text>
+          <View style={styles.item}>
+            <View style={styles.itemLeft}>
+              <Text style={styles.sectionTitle}>
+                {date.getFullYear()}-{date.getMonth()}-{date.getDate()}
+              </Text>
+              <TouchableOpacity
+                style={{marginLeft: 20}}
+                onPress={() => showMode('date')}>
+                <Icon name={'calendar-today'} size={24} color={'black'} />
               </TouchableOpacity>
+            </View>
+
+            <View style={styles.itemRight}>
+              <Text style={styles.sectionTitle}>
+                {date.getHours()}:{date.getMinutes()}
+              </Text>
+              <TouchableOpacity onPress={() => showMode('time')}>
+                <Icon name={'access-time'} size={24} color={'black'} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {show && (
+            <DatePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              is24Hour={true}
+              display="default"
+              onChange={onChange}
+            />
+          )}
+
+          <Text style={styles.sectionTitle}>출발지 입력</Text>
+          <CustomSearchInput
+            placeholder="출발지"
+            ref={start}
+            keyboardType="text"
+            returnKeyType="next"
+            onChangeText={createChangeTextHandler('start')}
+            hasMarginBottom
+          />
+          <Text style={styles.sectionTitle}>도착지 입력</Text>
+          <CustomSearchInput
+            placeholder="도착지"
+            ref={end}
+            returnKeyType="next"
+            onChangeText={createChangeTextHandler('end')}
+          />
+          <FindButton placeData={placeData} Date={date} />
+          {isGroup && (
+            <View style={{marginTop: 10}}>
+              <Text style={styles.sectionTitle}>친구 추가</Text>
+              <TouchableOpacity style={styles.friendBox}></TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+      <View style={styles.buttons}>
+        <ScheduleSubmitButton
+          title={secondaryTitle}
+          onPress={onSecondaryButtonPress}
+        />
+        <ScheduleSubmitButton
+          title={primaryTitle}
+          onPress={onSaveButtonPress}
+        />
       </View>
-    </View>
-
-
-    {show && (
-      <DatePicker
-      testID='dateTimePicker'
-      value={date}
-      mode={mode}
-      is24Hour={true}
-      display='default'
-      onChange={onChange}
-      />
-    )}
-    
-    <Text style={styles.sectionTitle}>출발지 입력</Text>
-    <CustomSearchInput
-      placeholder="출발지"
-      ref={start}
-      keyboardType="text"
-      returnKeyType="next"
-      onChangeText={value=>setPlaceData.start(value)}
-      hasMarginBottom
-    />
-      <Text style={styles.sectionTitle}>도착지 입력</Text>
-    <CustomSearchInput
-      placeholder="도착지"
-      ref={end}
-      returnKeyType="next"
-      onChangeText={value=>setPlaceData.end(value)}
-      hasMarginBottom
-    />
-    {!isGroup && (
-    <>
-      <Text style={styles.sectionTitle}>친구 추가</Text>
-      <TouchableOpacity style={styles.friendBox}></TouchableOpacity>
-    </>)}
-    </View>
-
-    <FindButton
-        placeData={placeData}
-      />
-  </>
+    </>
   );
 }
 
-const styles =StyleSheet.create({
-  item:{
+const styles = StyleSheet.create({
+  item: {
     marginTop: 10,
-    backgroundColor:"white",
+    backgroundColor: 'white',
     padding: 15,
-    paddingVertical:10,
-    borderRadius:15,
+    paddingVertical: 10,
+    borderRadius: 15,
     flexDirection: 'row',
-    justifyContent:'space-between',
-    marginBottom: 15,
+    marginBottom: 30,
     borderColor: '#ED3648',
     borderWidth: 2,
   },
-  tasksWrapper:{
-    paddingTop:10,
-    paddingHorizontal:20,
+  tasksWrapper: {
+    paddingTop: 10,
+    paddingHorizontal: 20,
   },
-  sectionTitle:{
-      fontSize: 20,
-      color: 'black',
-      fontWeight: 'bold'
+  sectionTitle: {
+    fontSize: 20,
+    color: 'black',
+    fontWeight: 'bold',
   },
-  itemLeft:{
+  itemLeft: {
     flex: 1,
-    flexDirection:'row',
-    flewWrap: 'wrap'
+    flexDirection: 'row',
+    flewWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
-  itemRight:{
+  itemRight: {
     flex: 1,
-    marginLeft:70,
-    flexDirection:'row',
-    flewWrap: 'wrap'
+    flexDirection: 'row',
+    flewWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
-  button:{
-   flexDirection:'row',
-   flex:1
+  button: {
+    flexDirection: 'row',
+    flex: 1,
   },
   friendBox: {
     borderColor: '#bdbdbd',
@@ -160,7 +232,17 @@ const styles =StyleSheet.create({
     borderColor: '#ED3648',
     borderWidth: 2,
   },
-})
-
+  footer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttons: {
+    height: 30,
+    alignItems: 'baseline',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    backgroundColor: 'white',
+  },
+});
 
 export default PlaceinputForm;

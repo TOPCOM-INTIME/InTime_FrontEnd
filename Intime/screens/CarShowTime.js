@@ -14,12 +14,13 @@ import ButtonCarTime from '../components/ButtonCarTime';
 function CarShowTime({route}) {
   const {start} = route.params;
   const {end} = route.params;
+  const {date} = route.params;
   const [totalTime, setTime] = useState(0);
-  const showTime ={
-    hour:0,
-    leftmin:0,
-    minute:0
-  }
+  const showTime = {
+    hour: 0,
+    leftmin: 0,
+    minute: 0,
+  };
   useEffect(() => {
     async function amo() {
       const startKey = [encodeURI(start)];
@@ -66,7 +67,6 @@ function CarShowTime({route}) {
       endData.endX = data2.searchPoiInfo.pois.poi[0]['frontLon'];
       endData.endY = data2.searchPoiInfo.pois.poi[0]['frontLat'];
 
-
       const optionsTime = {
         method: 'POST',
         headers: {
@@ -107,19 +107,35 @@ function CarShowTime({route}) {
         )
         .catch(err => console.error(err));
     }
-    amo();
+    try {
+      amo();
+    } catch (e) {
+      console.log('[ERROR] 차량시간 구하기');
+    }
   }, [end, start]);
 
-  function Time(){
-    showTime.hour=parseInt(totalTime/3600)
-    showTime.leftmin=(totalTime%3600)
-    showTime.min=parseInt(showTime.leftmin/60)
-    if( showTime.hour>0){
-      return  <Text style={styles.text}> {showTime.hour}시간 {showTime.min}분 걸림</Text>;
+  function Time() {
+    showTime.hour = parseInt(totalTime / 3600);
+    showTime.leftmin = totalTime % 3600;
+    showTime.min = parseInt(showTime.leftmin / 60);
+    if (showTime.hour > 0) {
+      return (
+        <Text style={styles.text}>
+          {showTime.hour}시간 {showTime.min}분 걸림
+        </Text>
+      );
+    } else {
+      return <Text style={styles.text}>{showTime.min}분 걸림</Text>;
     }
-    else{
-      return <Text style={styles.text}>{showTime.min}분 걸림</Text>
-    }
+  }
+
+  function calTime() {
+    let tmpTime = date;
+    // console.log(date.getHours(), date.getMinutes());
+    tmpTime.setSeconds(date.getSeconds() - totalTime);
+    // console.log(parseInt(totalTime / 60));
+    // console.log(tmpTime.getHours(), tmpTime.getMinutes());
+    return tmpTime;
   }
   return (
     <>
@@ -129,9 +145,9 @@ function CarShowTime({route}) {
         <SafeAreaView style={styles.fullscreen}>
           <Text style={styles.text}>출발지: {start}</Text>
           <Text style={styles.text}>도착지: {end}</Text>
-          {Time()} 
+          {Time()}
           <View style={styles.form}>
-            <ButtonCarTime />
+            <ButtonCarTime start={start} end={end} time={calTime()} />
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>

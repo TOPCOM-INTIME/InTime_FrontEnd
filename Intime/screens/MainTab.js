@@ -2,11 +2,8 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
-import CalendarStack from './CalendarStack';
-import PatternStack from './PatternStack';
 import PatternScreen from './PatternScreen';
 import Map_Marker from './Map_Marker';
-import ScheduleScreen from './ScheduleStack';
 import ScheduleList from './ScheduleListScreen';
 const Tab = createBottomTabNavigator();
 
@@ -47,9 +44,7 @@ function MainTab() {
         name="지도"
         component={Map_Marker}
         options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="map" size={24} color={color} />
-          ),
+          tabBarIcon: ({color}) => <Icon name="map" size={24} color={color} />,
         }}
       />
     </Tab.Navigator>
