@@ -7,7 +7,6 @@ import PatternScreen from './PatternScreen';
 const Stack = createNativeStackNavigator();
 
 function PatternStack() {
-
   return (
     <Stack.Navigator>
       <Stack.Screen

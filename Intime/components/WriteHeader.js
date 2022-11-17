@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, {useReducer} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useLogContext} from '../contexts/LogContext';
 import {useUserContext} from '../contexts/UserContext';
 import TransparentCircleButton from './TransparentCircleButton';
 
@@ -17,6 +18,7 @@ function WriteHeader({
 }) {
   const navigation = useNavigation();
   const {user, setUser, edited, setEdited} = useUserContext();
+  const {patterns, setPatterns} = useLogContext();
 
   const onGoBack = () => {
     navigation.pop();
@@ -48,7 +50,13 @@ function WriteHeader({
         },
       );
     }
-    setEdited(true);
+    const res = await axios.get(
+      'http://175.45.204.122:8000/api/readypatterns/origin',
+      {
+        headers: {Authorization: user},
+      },
+    );
+    setPatterns(res.data);
     navigation.pop();
   };
 

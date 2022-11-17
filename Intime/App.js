@@ -2,14 +2,19 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './screens/RootStack';
 import {UserContextProvider} from './contexts/UserContext';
+import {LogContextProvider} from './contexts/LogContext';
 
 function App() {
   return (
-    <UserContextProvider>
-      <NavigationContainer>
-        <RootStack />
-      </NavigationContainer>
-    </UserContextProvider>
+    <>
+      <UserContextProvider>
+        <LogContextProvider>
+          <NavigationContainer>
+            <RootStack />
+          </NavigationContainer>
+        </LogContextProvider>
+      </UserContextProvider>
+    </>
   );
 }
 

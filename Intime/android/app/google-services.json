@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "563191484585",
+    "project_id": "intime-fcm",
+    "storage_bucket": "intime-fcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563191484585:android:36b1cee3f31983011b59b8",
+        "android_client_info": {
+          "package_name": "com.intime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563191484585-ig2ddrfpl5c9tupu3cui2r3uigst9o8m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intime",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "563191484585-j71s0bpiqrmipcme8g41f66r939mnd92.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1sKB2D9TuQJ89lk90iG8Z4knquIW2MSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "563191484585-j71s0bpiqrmipcme8g41f66r939mnd92.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
