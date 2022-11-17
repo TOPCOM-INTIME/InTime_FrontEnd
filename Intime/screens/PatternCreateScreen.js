@@ -6,10 +6,12 @@ import WriteEditor from '../components/WriteEditor';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {useUserContext} from '../contexts/UserContext';
+import {useLogContext} from '../contexts/LogContext';
 
 function WriteScreen({navigation, route}) {
   const log = route.params?.log;
   const {user, setUser, edited, setEdited} = useUserContext();
+  const {patterns, setPatterns} = useLogContext();
   const [title, setTitle] = useState('');
   const [minute, setMinute] = useState(0);
   const [second, setSecond] = useState(0);
@@ -32,13 +34,23 @@ function WriteScreen({navigation, route}) {
         {
           text: '삭제',
           onPress: async () => {
-            await axios.delete(
-              `http://175.45.204.122:8000/api/readypattern/patternId=${log?.id}`,
-              {
-                headers: {Authorization: user},
-              },
-            );
-            setEdited(true);
+            try {
+              await axios.delete(
+                `http://175.45.204.122:8000/api/readypattern/patternId=${log?.id}`,
+                {
+                  headers: {Authorization: user},
+                },
+              );
+              const res = await axios.get(
+                'http://175.45.204.122:8000/api/readypatterns/origin',
+                {
+                  headers: {Authorization: user},
+                },
+              );
+              setPatterns(res.data);
+            } catch (err) {
+              console.error(err);
+            }
             navigation.pop();
           },
           style: 'destructive',

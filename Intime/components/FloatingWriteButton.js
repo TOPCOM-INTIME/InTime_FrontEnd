@@ -3,7 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Platform, Pressable, StyleSheet, View, Animated} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function FloatingWriteButton({setLogs, hidden}) {
+function FloatingWriteButton({hidden}) {
   const navigation = useNavigation();
 
   const onPress = () => {

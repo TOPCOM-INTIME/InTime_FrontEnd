@@ -15,7 +15,7 @@ function GroupListItem({item, group, onPress}) {
       // android_ripple={{color: '#ededed'}}>
       onPress={() => onPress(item)}>
       <Text style={group?.id === item.id ? styles.activeTitle : styles.title}>
-        {item.title}
+        {item.name}
       </Text>
     </Pressable>
   );
