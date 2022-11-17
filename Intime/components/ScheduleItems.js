@@ -13,80 +13,63 @@ import {useUserContext} from '../contexts/UserContext';
 
 const ScheduleItem = props => {
   const {user, setUser} = useUserContext();
-  const [forRender, setRender] = useState(0);
   const [isEnabled, setisEnabled] = useState(true);
+
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
   };
-  console.log(props.data);
+  // console.log('what data came as item', props.data);
+  const NAME = props.data.name;
   const date = new Date(props.data.time);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
-  const ID = props.data.id;
+  const status = props.data.status;
 
-  const deleteSchedule = async () => {
-    try {
-      const res = await axios.delete(
-        `http://175.45.204.122:8000/api/schedule/scheduleId=${ID}`,
-        {
-          headers: {Authorization: user},
-        },
-      );
-      setRender(1);
-      console.log(forRender);
-    } catch (e) {
-      console.log(`[ERROR]${e}`);
-    }
-  };
-  const onLongClick = () => {
-    Alert.alert('정말로 삭제하시겠습니까?', '', [
-      {
-        text: '예',
-        onPress: () => {
-          deleteSchedule();
-          console.log(`${ID}deleted`);
-        },
-      },
-      {
-        text: '아니오',
-        onPress: () => {
-          console.log(ID);
-        },
-      },
-    ]);
-  };
   return (
     <>
-      <TouchableOpacity onLongPress={onLongClick}>
-        <View style={styles.item}>
-          <View style={styles.itemDate}>
-            <Text style={styles.itemMonthDay}>
-              {date.getMonth()}/{date.getDate()}
-            </Text>
-            <Text style={styles.itemTime}>
-              {date.getHours()}:{date.getMinutes()}
-            </Text>
-          </View>
+      <View style={styles.item}>
+        <View style={styles.itemDate}>
+          <Text style={styles.itemMonthDay}>
+            {date.getMonth()}/{date.getDate()}
+          </Text>
+          <Text style={styles.itemTime}>
+            {date.getHours()}:{date.getMinutes()}
+          </Text>
+        </View>
 
-          <View style={styles.itemPlace}>
-            <Text style={styles.itemName}>
-              {startplace}
-              <Icon name={'arrow-forward'} size={10} color={'black'} />
-              {endplace}
-            </Text>
-            <TouchableOpacity style={styles.friendBox}></TouchableOpacity>
-          </View>
-          <View style={styles.itemDate}>
-            <Switch
-              style={styles.toggleSwitch}
-              trackColor={{false: 'grey', true: '#ED3648'}}
-              thumbColor={isEnabled ? '#f4fef4' : '#f4f3f4'}
-              onValueChange={toggleSwitch}
-              value={isEnabled}
-            />
+        <View style={styles.itemPlace}>
+          {NAME && (
+            <Text style={{fontWeight: 'bold', color: 'black'}}>{NAME}</Text>
+          )}
+
+          <Text style={styles.itemName}>
+            {startplace}
+            <Icon name={'arrow-forward'} size={10} color={'black'} />
+            {endplace}
+          </Text>
+          <TouchableOpacity style={styles.friendBox}></TouchableOpacity>
+        </View>
+        <View style={styles.itemDate}>
+          {/* <Switch
+            style={styles.toggleSwitch}
+            trackColor={{false: 'grey', true: '#ED3648'}}
+            thumbColor={isEnabled ? '#f4fef4' : '#f4f3f4'}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          /> */}
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              marginLeft: 30,
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}>
+            <Text>진행중</Text>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     </>
   );
 };
@@ -123,6 +106,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flewWrap: 'wrap',
     alignItems: 'center',
+    fontWeight: 'bold',
   },
   itemName: {
     fontWeight: 'bold',
@@ -131,6 +115,7 @@ const styles = StyleSheet.create({
   },
   friendBox: {
     alignItems: 'center',
+    justifyContent: 'space-around',
     width: 132,
     height: 30,
     background: 'white',

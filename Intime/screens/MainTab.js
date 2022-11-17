@@ -19,14 +19,15 @@ function MainTab() {
       }}>
       <Tab.Screen
         name="알람"
-        component={HomeStack}
+        component={ScheduleList}
         options={{
           tabBarIcon: ({color}) => <Icon name="home" size={24} color={color} />,
         }}
       />
       <Tab.Screen
         name="약속"
-        component={ScheduleList}
+        HomeStack
+        component={HomeStack}
         options={{
           tabBarIcon: ({color}) => (
             <Icon name="calendar-today" size={24} color={color} />

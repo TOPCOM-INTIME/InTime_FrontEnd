@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import axios from 'axios';
 import {
   Platform,
@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-// import { SearchBar } from 'react-native-elements';
 import CustomSearchInput from './CustomSearchInput';
 import DatePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -23,7 +22,7 @@ import {useUserContext} from '../contexts/UserContext';
 function PlaceinputForm({route}) {
   console.log('route값:', route);
   const navigation = useNavigation();
-  const schedleName = useRef();
+  const scheduleName = useRef();
   const start = useRef();
   const end = useRef();
   const [date, setDate] = useState(new Date());
@@ -31,7 +30,7 @@ function PlaceinputForm({route}) {
   const [show, setShow] = useState(false);
   const [isGroup, setGroup] = useState(false);
   const [placeData, setPlaceData] = useState({
-    name: '',
+    scheduleName: '',
     start: '',
     end: '',
     time: '',
@@ -39,6 +38,7 @@ function PlaceinputForm({route}) {
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
   const {user, setUser} = useUserContext();
+
   const createChangeTextHandler = name => value => {
     setPlaceData({...placeData, [name]: value});
   };
@@ -64,15 +64,28 @@ function PlaceinputForm({route}) {
     navigation.push('MainTab');
   };
 
-  const onSaveButtonPress = async () => {
+  const selectPress = (async = () => {
     if (route != undefined) {
       const data = {
-        name: route.params.name,
+        name: placeData.scheduleName,
         destName: route.params.destName,
         sourceName: route.params.sourceName,
         time: route.params.time,
       };
-      console.log('Pressed!', data);
+      navigation.push('SelectPattern', data);
+    } else {
+      alert('출발과 도착을 입력해라');
+    }
+  });
+
+  const onSaveButtonPress = async () => {
+    if (route != undefined) {
+      const data = {
+        name: placeData.name,
+        destName: route.params.destName,
+        sourceName: route.params.sourceName,
+        time: route.params.time,
+      };
       try {
         const res = await axios.post(
           'http://175.45.204.122:8000/api/schedule',
@@ -82,6 +95,7 @@ function PlaceinputForm({route}) {
           },
         );
         console.log('SUCCESS!', data);
+        navigation.push('MainTab');
       } catch (e) {
         console.log(`[ERROR]${e} SENT${data}}`);
       }
@@ -102,13 +116,13 @@ function PlaceinputForm({route}) {
       />
       <ScrollView style={{marginTop: 20, backgroundColor: 'white'}}>
         <View style={styles.tasksWrapper}>
-          <Text style={styles.sectionTitle}>이름 입력</Text>
+          <Text style={styles.sectionTitle}>일정 이름 입력</Text>
           <CustomSearchInput
             placeholder="이름"
-            ref={schedleName}
+            ref={scheduleName}
             keyboardType="text"
             returnKeyType="next"
-            onChangeText={createChangeTextHandler('name')}
+            onChangeText={createChangeTextHandler('scheduleName')}
             hasMarginBottom
           />
           <Text style={styles.sectionTitle}>날짜</Text>
@@ -168,6 +182,16 @@ function PlaceinputForm({route}) {
               <TouchableOpacity style={styles.friendBox}></TouchableOpacity>
             </View>
           )}
+          {route && (
+            <>
+              <Text>현재 입력된 정보</Text>
+              <Text style={styles.sectionTitle}>
+                {route.params.sourceName}{' '}
+                <Icon name={'arrow-forward'} size={10} color={'black'} />
+                {route.params.destName}
+              </Text>
+            </>
+          )}
         </View>
       </ScrollView>
       <View style={styles.buttons}>
@@ -175,10 +199,7 @@ function PlaceinputForm({route}) {
           title={secondaryTitle}
           onPress={onSecondaryButtonPress}
         />
-        <ScheduleSubmitButton
-          title={primaryTitle}
-          onPress={onSaveButtonPress}
-        />
+        <ScheduleSubmitButton title={primaryTitle} onPress={selectPress} />
       </View>
     </>
   );

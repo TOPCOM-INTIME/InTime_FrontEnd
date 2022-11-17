@@ -10,12 +10,27 @@ import {
   Keyboard,
 } from 'react-native';
 import ButtonCarTime from '../components/ButtonCarTime';
+import SwitchSelector from 'react-native-switch-selector';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function CarShowTime({route}) {
   const {start} = route.params;
   const {end} = route.params;
   const {date} = route.params;
   const [totalTime, setTime] = useState(0);
+  const [isBus, setBus] = useState(true);
+  console.log(isBus);
+  const Switchoptions = [
+    {
+      value: false,
+      customIcon: <Icon name={'directions-bus'} size={30} color={'black'} />,
+    },
+    {
+      value: true,
+      customIcon: <Icon name={'directions-car'} size={30} color={'black'} />,
+    },
+  ];
+
   const showTime = {
     hour: 0,
     leftmin: 0,
@@ -50,6 +65,7 @@ function CarShowTime({route}) {
           Accept: 'application/json',
         },
       };
+
       const response = await fetch(
         `https://apis.openapi.sk.com/tmap/pois?version=1&searchKeyword=${startKey}&searchType=all&searchtypCd=A&reqCoordType=WGS84GEO&resCoordType=WGS84GEO&page=1&count=20&multiPoint=N&poiGroupYn=N`,
         optionsStart,
@@ -95,8 +111,7 @@ function CarShowTime({route}) {
           sort: 'index',
         }),
       };
-      console.log(startData);
-      console.log(endData);
+
       fetch(
         'https://apis.openapi.sk.com/tmap/routes?version=1&callback=function',
         optionsTime,
@@ -107,6 +122,7 @@ function CarShowTime({route}) {
         )
         .catch(err => console.error(err));
     }
+
     try {
       amo();
     } catch (e) {
@@ -114,7 +130,8 @@ function CarShowTime({route}) {
     }
   }, [end, start]);
 
-  function Time() {
+  function Time(totalTime) {
+    console.log('Time');
     showTime.hour = parseInt(totalTime / 3600);
     showTime.leftmin = totalTime % 3600;
     showTime.min = parseInt(showTime.leftmin / 60);
@@ -130,22 +147,34 @@ function CarShowTime({route}) {
   }
 
   function calTime() {
-    let tmpTime = date;
-    // console.log(date.getHours(), date.getMinutes());
+    console.log(date);
+    let tmpTime = new Date(date);
     tmpTime.setSeconds(date.getSeconds() - totalTime);
-    // console.log(parseInt(totalTime / 60));
-    // console.log(tmpTime.getHours(), tmpTime.getMinutes());
+    console.log(tmpTime);
     return tmpTime;
   }
+
   return (
     <>
+      <SwitchSelector
+        options={Switchoptions}
+        initial={0}
+        selectedColor={'white'}
+        selectedIconColor={'white'}
+        buttonColor={'#ED3648'}
+        borderColor={'#ED3648'}
+        borderWidth={1}
+        hasPadding
+        onPress={value => setBus(value)}
+      />
+
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.select({ios: 'padding'})}>
         <SafeAreaView style={styles.fullscreen}>
           <Text style={styles.text}>출발지: {start}</Text>
           <Text style={styles.text}>도착지: {end}</Text>
-          {Time()}
+          {Time(totalTime)}
           <View style={styles.form}>
             <ButtonCarTime start={start} end={end} time={calTime()} />
           </View>

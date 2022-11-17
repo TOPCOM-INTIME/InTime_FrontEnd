@@ -29,11 +29,6 @@ function FindButton({placeData, Date}) {
         hasMarginBottom
         onPress={onPrimaryButtonPress}
       />
-      <ScheduleCustomButton
-        title={secondaryTitle}
-        theme="secondary"
-        onPress={onSecondaryButtonPress}
-      />
     </View>
   );
 }

@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 function ScheduleAddButton() {
   const navigation = useNavigation();
   const onSubmit = () => {
-    navigation.navigate('ScheduleScreen');
+    navigation.push('ScheduleScreen');
   };
   return (
     <View styles={styles.button}>

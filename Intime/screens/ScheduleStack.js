@@ -5,6 +5,7 @@ import ScheduleList from './ScheduleListScreen';
 import CarShowTime from './CarShowTime';
 import Placeinput from './Placeinput';
 import PlaceinputForm from '../components/PlaceinputForm';
+import SelectPattern from './SelectPattern';
 const Stack = createNativeStackNavigator();
 function ScheduleScreen() {
   return (
@@ -13,6 +14,11 @@ function ScheduleScreen() {
         <Stack.Screen
           name="Placeinput"
           component={Placeinput}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SelectPattern"
+          component={SelectPattern}
           options={{headerShown: false}}
         />
         <Stack.Screen
