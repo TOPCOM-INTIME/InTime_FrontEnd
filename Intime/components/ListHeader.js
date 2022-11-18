@@ -1,11 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 import React, {useReducer} from 'react';
 import {Pressable, StyleSheet, Text, View, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TransparentCircleButton from './TransparentCircleButton';
+import {useUserContext} from '../contexts/UserContext';
+import {useLogContext} from '../contexts/LogContext';
 
-function ListHeader({onPress, group}) {
+function ListHeader({group, setGroup, isEmpty}) {
   const navigation = useNavigation();
+  const {user, setUser} = useUserContext();
+  const {setPatternGroups} = useLogContext();
 
   const onAskRemove = () => {
     Alert.alert(
@@ -15,7 +20,23 @@ function ListHeader({onPress, group}) {
         {text: '취소', style: 'cancel'},
         {
           text: '삭제',
-          onPress,
+          onPress: async () => {
+            await axios.delete(
+              `http://175.45.204.122:8000/api/patterngroup/groupId=${group.id}`,
+              {
+                headers: {Authorization: user},
+              },
+            );
+            const fetchedGroup = await axios.get(
+              'http://175.45.204.122:8000/api/groups-with-patterns/all',
+              {
+                headers: {Authorization: user},
+              },
+            );
+            // console.log(fetchedGroup.data);
+            setPatternGroups(fetchedGroup.data);
+            setGroup(fetchedGroup.data.length > 0 ? fetchedGroup.data[0] : []);
+          },
           style: 'destructive',
         },
       ],
@@ -41,22 +62,27 @@ function ListHeader({onPress, group}) {
         /> */}
       </View>
       <View style={styles.buttons}>
-        <View style={[styles.iconButtonWrapper, styles.marginRight]}>
-          <TransparentCircleButton
-            name="edit"
-            color="blue"
-            hasMarginRight
-            onPress={onEdit}
-          />
-        </View>
-        <View style={[styles.iconButtonWrapper, styles.marginRight]}>
-          <TransparentCircleButton
-            name="delete-forever"
-            color="#ef5350"
-            hasMarginRight
-            onPress={onAskRemove}
-          />
-        </View>
+        {!isEmpty && (
+          <>
+            <View style={[styles.iconButtonWrapper, styles.marginRight]}>
+              <TransparentCircleButton
+                name="edit"
+                color="blue"
+                hasMarginRight
+                onPress={onEdit}
+              />
+            </View>
+
+            <View style={[styles.iconButtonWrapper, styles.marginRight]}>
+              <TransparentCircleButton
+                name="delete-forever"
+                color="#ef5350"
+                hasMarginRight
+                onPress={onAskRemove}
+              />
+            </View>
+          </>
+        )}
         <View style={styles.iconButtonWrapper}>
           <TransparentCircleButton
             name="add-circle-outline"

@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     color: '#263238',
     fontSize: 15,
     fontWeight: 'bold',
-    marginBottom: 8,
   },
   body: {
     color: '#37474f',
