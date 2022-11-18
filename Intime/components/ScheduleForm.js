@@ -185,7 +185,9 @@ function ScheduleForm() {
             </View>
             <View style={styles.items}>
               {scheduleData.map(item => (
-                <TouchableOpacity onLongPress={() => onLongClick(item)}>
+                <TouchableOpacity
+                  key={item.id}
+                  onLongPress={() => onLongClick(item)}>
                   <ScheduleItem data={item} />
                 </TouchableOpacity>
               ))}

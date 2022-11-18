@@ -3,21 +3,17 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
 
-function ButtonCarTime({start, end, time}) {
+function ButtonCarTime({setData}) {
   const navigation = useNavigation();
   const primaryTitle = '확인';
   const secondaryTitle = '취소';
 
   const onPrimaryButtonPress = () => {
-    console.log('받은 값', time, start, end);
-    navigation.push('Placinputform', {
-      time: time,
-      sourceName: start,
-      destName: end,
-    });
+    navigation.pop();
   };
   const onSecondaryButtonPress = () => {
-    navigation.goBack();
+    navigation.pop();
+    setData('time')(0);
   };
 
   return (

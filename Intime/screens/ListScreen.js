@@ -18,9 +18,6 @@ function ListScreen({navigation}) {
   const [group, setGroup] = useState(
     patternGroups.length > 0 ? patternGroups[0] : [],
   );
-  const onPressGroupCreate = () => {
-    navigation.navigate('CreateGroup');
-  };
 
   if (patternGroups.length === 0) {
     return (
@@ -32,8 +29,6 @@ function ListScreen({navigation}) {
       </>
     );
   }
-  console.log(patternGroups);
-  console.log('리스트스크린 그룹', group);
   return (
     <>
       <ListHeader group={group} setGroup={setGroup} />
