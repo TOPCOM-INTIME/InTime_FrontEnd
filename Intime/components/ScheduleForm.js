@@ -47,7 +47,7 @@ function ScheduleForm() {
       );
       setData(res.data);
     } catch (e) {
-      console.log(`[ERROR]${e}`);
+      console.log(`[GETERROR]${e}`);
     }
   };
 
@@ -61,7 +61,7 @@ function ScheduleForm() {
           getSchedule();
         });
     } catch (e) {
-      console.log(`[ERROR]${e}`);
+      console.log(`[DELETE_ERROR]${e}`);
     }
   };
 
@@ -83,29 +83,37 @@ function ScheduleForm() {
     ]);
   };
 
-  useEffect(() => {
-    getSchedule();
-  }, []);
-
   const updateScehdule = item => {
     let tmpDate = new Date(item.time);
-    if (tmpDate <= currentDate) {
+    if (tmpDate <= currentDate && item.status != 'ING') {
       try {
+        const data = {
+          destName: item.destName,
+          endTime: item.endTime,
+          name: item.name,
+          readyPatterns_Ids: item.readyPatterns_Ids,
+          readyTime: item.readyTime,
+          schedulePoolId: item.schedulePoolId,
+          sourceName: item.sourceName,
+          startTime: item.startTime,
+          status: 'ING',
+          time: item.time,
+        };
         axios
           .put(
-            `http://175.45.204.122:8000/api/schedule/scheduleId=${ID}`,
+            `http://175.45.204.122:8000/api/schedule=${item.id}/update`,
+            data,
             {
               headers: {Authorization: user},
             },
-            {status: 'ING'},
           )
           .then(res => {
             getSchedule();
           });
+        console.log('업데이트 필요', item.status);
       } catch (e) {
-        console.log(`[ERROR]${e}`);
+        console.log(`[ERROR]${e}`, item.id);
       }
-      console.log('업데이트 필요', item.id, currentDate, tmpDate);
     } else {
       console.log('업데이트 불필요', item.id, currentDate, tmpDate);
     }
@@ -118,7 +126,7 @@ function ScheduleForm() {
       for (let i = 0; BackgroundService.isRunning(); i++) {
         currentDate.setSeconds(currentDate.getSeconds() + delay / 1000);
         scheduleData.map(item => updateScehdule(item));
-
+        console.log(scheduleData);
         await sleep(delay);
       }
     });
@@ -132,6 +140,10 @@ function ScheduleForm() {
   const stopHandler = async () => {
     await BackgroundService.stop();
   };
+
+  useEffect(() => {
+    getSchedule();
+  }, []);
 
   if (scheduleData.length == 0) {
     return (

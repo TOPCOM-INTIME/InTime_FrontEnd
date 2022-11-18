@@ -14,16 +14,16 @@ import {useUserContext} from '../contexts/UserContext';
 const ScheduleItem = props => {
   const {user, setUser} = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
-
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
   };
-  // console.log('what data came as item', props.data);
+  console.log('what data came as item', props.data);
   const NAME = props.data.name;
   const date = new Date(props.data.time);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const status = props.data.status;
+  console.log(status);
 
   return (
     <>

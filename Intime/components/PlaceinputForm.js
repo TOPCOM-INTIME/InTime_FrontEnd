@@ -78,30 +78,6 @@ function PlaceinputForm({route}) {
     }
   });
 
-  const onSaveButtonPress = async () => {
-    if (route != undefined) {
-      const data = {
-        name: placeData.name,
-        destName: route.params.destName,
-        sourceName: route.params.sourceName,
-        time: route.params.time,
-      };
-      try {
-        const res = await axios.post(
-          'http://175.45.204.122:8000/api/schedule',
-          data,
-          {
-            headers: {Authorization: user},
-          },
-        );
-        console.log('SUCCESS!', data);
-        navigation.push('MainTab');
-      } catch (e) {
-        console.log(`[ERROR]${e} SENT${data}}`);
-      }
-    }
-  };
-
   return (
     <>
       <SwitchSelector

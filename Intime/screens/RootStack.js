@@ -44,6 +44,11 @@ function RootStack() {
             component={ScheduleScreen}
             options={{headerShown: false}}
           />
+          <Stack.Screen
+            name="CreateGroup"
+            component={GroupCreateScreen}
+            options={{headerShown: false}}
+          />
         </>
       ) : (
         <Stack.Screen

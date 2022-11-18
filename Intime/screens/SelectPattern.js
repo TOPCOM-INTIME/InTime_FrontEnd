@@ -13,25 +13,14 @@ import {
 import CarShowTime from './CarShowTime';
 import ScheduleSubmitButton from '../components/ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
+import {useLogContext} from '../contexts/LogContext';
 import {useUserContext} from '../contexts/UserContext';
-
-const patterns = [
-  {id: 1, title: '샤워', minute: 10, second: 30},
-  {id: 2, title: '양치', minute: 3, second: 20},
-  {id: 3, title: '면도', minute: 10, second: 45},
-  {id: 4, title: '머리 말리기', minute: 10, second: 45},
-  {id: 5, title: '옷 고르기', minute: 10, second: 45},
-  {id: 6, title: '옷 입기', minute: 10, second: 45},
-  {id: 7, title: '불 끄기', minute: 10, second: 45},
-  {id: 8, title: '컴퓨터 끄기', minute: 10, second: 45},
-  {id: 9, title: '손 씻기', minute: 10, second: 45},
-  {id: 10, title: '세수', minute: 10, second: 45},
-  {id: 11, title: '티비 끄기', minute: 10, second: 45},
-  {id: 12, title: '가스 끄기', minute: 10, second: 45},
-];
+import Patterns from '../components/Patterns';
 
 function SelectPattern({route}) {
-  console.log(route);
+  const {patterns, setPatterns, patternGroups, setPatternGroups} =
+    useLogContext();
+  const [group, setGroup] = useState(route.params?.group || []);
   const {user, setUser} = useUserContext();
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
@@ -40,13 +29,27 @@ function SelectPattern({route}) {
     navigation.pop();
   };
 
+  const calTime = () => {
+    let readyTime = new Date(route.params.time);
+    let tmpTime = 0;
+    group.map(item => (tmpTime += item.time));
+    readyTime.setSeconds(readyTime.getSeconds() - tmpTime);
+    return readyTime;
+  };
+
   const onSaveButtonPress = async () => {
+    let groupIDs = [];
+    group.map(item => groupIDs.push(item.id));
     if (route != undefined) {
       const data = {
-        name: route.params.name,
-        destName: route.params.destName,
-        sourceName: route.params.sourceName,
+        name: '아무거나',
         time: route.params.time,
+        sourceName: route.params.sourceName,
+        destName: route.params.destName,
+        readyPatterns_Ids: groupIDs,
+        startTime: route.params.time,
+        readyTime: calTime(),
+        endTime: route.params.time,
       };
       try {
         const res = await axios.post(
@@ -59,21 +62,45 @@ function SelectPattern({route}) {
         console.log('SUCCESS!', data);
         navigation.push('MainTab');
       } catch (e) {
-        console.log(`[ERROR]${e} SENT${data}}`);
+        console.log(data);
+        console.log(`[ERROR]${e} SENT${data.name}}`);
       }
     }
   };
 
-  const selectPress = (async = () => {
-    navigation.push('MainTab');
-  });
-
   return (
     <>
-      <View style={styles.header}>
+      <View>
         <Text style={styles.sectionTitle}>패턴설정</Text>
       </View>
-      <View style={{flex: 1}}></View>
+
+      <View style={styles.block}>
+        <View style={styles.container}>
+          <View style={styles.text}>
+            <Text style={styles.header}>패턴 그룹 목록</Text>
+          </View>
+          <Patterns
+            patterns={patternGroups}
+            setGroup={setGroup}
+            isCreatingGroup={2}
+          />
+          <View style={styles.text}>
+            <Text style={styles.header}>패턴 목록</Text>
+          </View>
+          <Patterns
+            patterns={patterns}
+            setGroup={setGroup}
+            isCreatingGroup={2}
+          />
+        </View>
+        <View style={styles.container}>
+          <View style={styles.text}>
+            <Text style={styles.header}>선택된 패턴</Text>
+          </View>
+          <Patterns patterns={group} setGroup={setGroup} isCreatingGroup={2} />
+        </View>
+      </View>
+
       <View style={styles.button}>
         <ScheduleSubmitButton
           title={secondaryTitle}
@@ -88,6 +115,11 @@ function SelectPattern({route}) {
   );
 }
 const styles = StyleSheet.create({
+  block: {
+    flex: 1,
+    marginTop: 20,
+    flexDirection: 'row',
+  },
   header: {
     paddingTop: 20,
     paddingHorizontal: 20,
@@ -104,6 +136,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginBottom: 10,
     // alignItems:'center'
+  },
+  container: {
+    width: '50%',
+    justifyContent: 'center',
+    paddingHorizontal: 5,
+  },
+  text: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    fontSize: 20,
+    color: 'black',
   },
 });
 export default SelectPattern;
