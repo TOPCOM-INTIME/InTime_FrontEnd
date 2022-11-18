@@ -118,10 +118,10 @@ function GroupCreateScreen({navigation, route}) {
       ) : (
         <View style={styles.buttonView}>
           <Pressable style={styles.button} onPress={() => navigation.pop()}>
-            <Text>뒤로</Text>
+            <Text style={styles.caution}>뒤로</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={groupCreateHandler}>
-            <Text>저장</Text>
+            <Text style={styles.caution}>저장</Text>
           </Pressable>
         </View>
       )}
@@ -201,6 +201,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     height: 48,
     backgroundColor: 'white',
+    placeholderTextColor: 'black',
+  },
+  caution: {
+    color: 'gray',
   },
 });
 

@@ -64,7 +64,6 @@ const ScheduleItem = props => {
               marginLeft: 30,
               justifyContent: 'space-around',
               alignItems: 'center',
-              flexDirection: 'row',
             }}>
             <Text>진행중</Text>
           </View>

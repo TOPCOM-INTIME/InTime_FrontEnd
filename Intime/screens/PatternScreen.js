@@ -28,7 +28,7 @@ function PatternScreen({navigate, route}) {
     }
   };
 
-  let content = <Text>저장된 패턴이 없습니다.</Text>;
+  let content = <Text style={styles.emptyText}>저장된 패턴이 없습니다.</Text>;
   if (patterns.length > 0) {
     content = (
       <PatternList logs={patterns} onScrolledToBottom={onScrolledToBottom} />
@@ -60,6 +60,9 @@ const styles = StyleSheet.create({
     marginTop: 64,
     width: '100%',
     paddingHorizontal: 16,
+  },
+  emptyText: {
+    color: 'black',
   },
 });
 
