@@ -52,8 +52,8 @@ const Map_Marker = () => {
             setPosition({
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
+              // latitudeDelta: 0.01,
+              // longitudeDelta: 0.01,
             });
           },
           error => {
@@ -66,7 +66,6 @@ const Map_Marker = () => {
     });
     console.log(location);
   };
-
 
 
   const rand1 = Math.random().toString(16);
@@ -85,18 +84,57 @@ const Map_Marker = () => {
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}>
-        <Marker title={new Date().toString()}
+        <Marker
+          id="0"
+          title={"김석주"}
+          pinColor="red"
           coordinate={{
             latitude: position.latitude,
             longitude: position.longitude,
-          }}>
-        </Marker>
+          }}
+        />
+        <Marker
+          id="1"
+          title={"장성수"}
+          pinColor="blue"
+          coordinate={{
+            latitude: (position.latitude + 0.001),
+            longitude: (position.longitude + 0.001),
+          }}
+        />
+        <Marker
+          id="2"
+          title={"강환희"}
+          pinColor="green"
+          coordinate={{
+            latitude: (position.latitude + 0.001),
+            longitude: (position.longitude - 0.001),
+          }}
+        />
+        <Marker
+          id="3"
+          title={"조재성"}
+          pinColor="yellow"
+          coordinate={{
+            latitude: (position.latitude - 0.001),
+            longitude: (position.longitude - 0.001),
+          }}
+        />
+        <Marker
+          id="4"
+          title={"신재혁"}
+          pinColor="purple"
+
+          coordinate={{
+            latitude: (position.latitude - 0.001),
+            longitude: (position.longitude + 0.001),
+          }}
+        />
       </MapView>
 
       <Text style={{ color: 'green' }}>{new Date().toString()}</Text>
-      <View
-        style={{ marginTop: 10, padding: 10, borderRadius: 10, width: '40%' }}>
-        <Button title="Get Location" onPress={getLocation} />
+      <View>
+        <Button title="Refresh Location" onPress={getLocation} />
       </View>
       <Text style={styles.Text}>Latitude: {location ? location.coords.latitude : null}</Text>
       <Text style={styles.Text}>Longitude: {location ? location.coords.longitude : null}</Text>
