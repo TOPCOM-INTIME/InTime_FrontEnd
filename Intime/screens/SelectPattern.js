@@ -20,7 +20,7 @@ import Patterns from '../components/Patterns';
 function SelectPattern({route}) {
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
-  const [group, setGroup] = useState(route.params?.group || []);
+  const [group, setGroup] = useState([]);
   const {user, setUser} = useUserContext();
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
@@ -30,7 +30,7 @@ function SelectPattern({route}) {
   };
 
   const calTime = () => {
-    let readyTime = new Date(route.params.time);
+    let readyTime = new Date(route.params.startTime);
     let tmpTime = 0;
     group.map(item => (tmpTime += item.time));
     readyTime.setSeconds(readyTime.getSeconds() - tmpTime);
@@ -43,13 +43,13 @@ function SelectPattern({route}) {
     if (route != undefined) {
       const data = {
         name: '아무거나',
-        time: route.params.time,
+        time: route.params.startTime,
         sourceName: route.params.sourceName,
         destName: route.params.destName,
         readyPatterns_Ids: groupIDs,
-        startTime: route.params.time,
+        startTime: route.params.startTime,
         readyTime: calTime(),
-        endTime: route.params.time,
+        endTime: route.params.endTime,
       };
       try {
         const res = await axios.post(

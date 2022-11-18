@@ -64,19 +64,20 @@ function PlaceinputForm({route}) {
     navigation.push('MainTab');
   };
 
-  const selectPress = (async = () => {
+  const selectPress = () => {
     if (route != undefined) {
       const data = {
         name: placeData.scheduleName,
         destName: route.params.destName,
         sourceName: route.params.sourceName,
-        time: route.params.time,
+        startTime: route.params.startTime,
+        endTime: route.params.endTime,
       };
       navigation.push('SelectPattern', data);
     } else {
       alert('출발과 도착을 입력해라');
     }
-  });
+  };
 
   return (
     <>
@@ -151,7 +152,7 @@ function PlaceinputForm({route}) {
             returnKeyType="next"
             onChangeText={createChangeTextHandler('end')}
           />
-          <FindButton placeData={placeData} Date={date} />
+          <FindButton placeData={placeData} enddate={date} />
           {isGroup && (
             <View style={{marginTop: 10}}>
               <Text style={styles.sectionTitle}>친구 추가</Text>
@@ -221,7 +222,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   friendBox: {
-    borderColor: '#bdbdbd',
     paddingHorizontal: 16,
     borderRadius: 15,
     height: 48,

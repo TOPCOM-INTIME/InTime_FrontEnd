@@ -17,13 +17,17 @@ const ScheduleItem = props => {
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
   };
-  console.log('what data came as item', props.data);
+  // console.log('what data came as item', props.data);
   const NAME = props.data.name;
   const date = new Date(props.data.time);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const status = props.data.status;
-  console.log(status);
+  // console.log(status);
+
+  if (status === 'ING') {
+    console.log(status);
+  }
 
   return (
     <>

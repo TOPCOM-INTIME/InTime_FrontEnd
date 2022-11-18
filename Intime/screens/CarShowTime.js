@@ -176,7 +176,12 @@ function CarShowTime({route}) {
           <Text style={styles.text}>도착지: {end}</Text>
           {Time(totalTime)}
           <View style={styles.form}>
-            <ButtonCarTime start={start} end={end} time={calTime()} />
+            <ButtonCarTime
+              start={start}
+              end={end}
+              startTime={calTime()}
+              endTime={date}
+            />
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>
