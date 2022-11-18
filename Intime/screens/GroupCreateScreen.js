@@ -35,7 +35,6 @@ function GroupCreateScreen({navigation, route}) {
     });
     try {
       if (route.params?.group) {
-        console.log(2);
         await axios.put(
           `http://175.45.204.122:8000/api/patterngroup/api/update-group-name/groupId=${route.param.group.id}`,
           {name},
@@ -75,7 +74,6 @@ function GroupCreateScreen({navigation, route}) {
           headers: {Authorization: user},
         },
       );
-      console.log('하이~', fetchedGroup.data);
       setPatternGroups(fetchedGroup.data);
     } catch (err) {
       console.error(err);
