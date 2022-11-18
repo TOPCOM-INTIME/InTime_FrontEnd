@@ -36,42 +36,22 @@ function ListScreen({navigation}) {
   console.log('리스트스크린 그룹', group);
   return (
     <>
-      {/* <ListHeader isEditing={isEditing} onPress={onPress} /> */}
       <ListHeader group={group} setGroup={setGroup} />
       <View style={styles.block}>
         <View style={styles.leftContainer}>
-          {/* <View style={styles.groupBlock}> */}
-
           <GroupList
             groups={patternGroups}
             group={group}
             style={styles.index}
             onPress={setGroup}
           />
-
-          {/* <Pressable style={styles.press} onPress={onPressGroupCreate}>
-              <Text>+</Text>
-            </Pressable> */}
-          {/* </View> */}
-          {/* <View style={styles.patterns}>
-            <Patterns patterns={group.patterns} onPress={setGroup} />
-          </View> */}
         </View>
         <View style={styles.rightContainer}>
-          {/* <View style={styles.groupBlock}>
-            <Pressable
-              style={styles.press}
-              onPress={() => navigation.navigate('write')}>
-              <Text>+</Text>
-            </Pressable>
-          </View> */}
-          {/* <View style={styles.patterns}> */}
           <Patterns
             patterns={group?.patterns}
             onPress={setGroup}
             isCreatingGroup={1}
           />
-          {/* </View> */}
         </View>
       </View>
     </>
