@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React, {useCallback, useEffect} from 'react';
-import {Pressable, Text, StyleSheet, View, Linking, Alert} from 'react-native';
-import {useUserContext} from '../contexts/UserContext';
+import React, { useCallback, useEffect } from 'react';
+import { Pressable, Text, StyleSheet, View, Linking, Alert } from 'react-native';
+import { useUserContext } from '../contexts/UserContext';
 import authStorage from '../stroages/authStorage';
 import BackgroundService from 'react-native-background-actions';
 import PushNotification from 'react-native-push-notification';
@@ -29,7 +29,7 @@ function handleOpenURL(evt) {
 Linking.addEventListener('url', handleOpenURL);
 
 function HomeStack() {
-  const {user, setUser} = useUserContext();
+  const { user, setUser } = useUserContext();
   const logoutHandler = () => {
     authStorage.remove();
     setUser(null);
@@ -49,7 +49,7 @@ function HomeStack() {
 
   const testHandler = async () => {
     const res = await axios.get('http://175.45.204.122:8000/api/user', {
-      headers: {Authorization: user},
+      headers: { Authorization: user },
     });
     console.log(res.data);
   };
@@ -63,7 +63,7 @@ function HomeStack() {
   // or there is a foreground app).
   const veryIntensiveTask = async taskDataArguments => {
     // Example of an infinite loop task
-    const {delay} = taskDataArguments;
+    const { delay } = taskDataArguments;
     await new Promise(async resolve => {
       for (let i = 0; BackgroundService.isRunning(); i++) {
         console.log(i);
@@ -122,6 +122,26 @@ function HomeStack() {
     console.log(fcmToken);
   };
 
+  const locationpostHandler = async () => {
+    const res = await axios.post(
+      `http://175.45.204.122:8000/api/google/6/?address=아주대`,
+      {
+        headers: { Authorization: user },
+      },
+    );
+    console.log(res.data);
+  }
+
+  const locationgetHandler = async () => {
+    const res = await axios.get(
+      `http://175.45.204.122:8000/api/google/6/location`,
+      {
+        headers: { Authorization: user },
+      },
+    );
+    console.log(res.data);
+  }
+
   return (
     <View style={styles.fullscreen}>
       <Text>홈</Text>
@@ -140,12 +160,12 @@ function HomeStack() {
       <Pressable onPress={tokenHandler} style={styles.button}>
         <Text style={styles.text}>Get Token</Text>
       </Pressable>
-      {/* <Pressable onPress={alarmHandler} style={styles.button}>
-        <Text style={styles.text}>알람</Text>
+      <Pressable onPress={locationpostHandler} style={styles.button}>
+        <Text style={styles.text}>위치</Text>
       </Pressable>
-      <Pressable onPress={stopHandler} style={styles.button}>
-        <Text style={styles.text}>멈춰!</Text>
-      </Pressable> */}
+      <Pressable onPress={locationgetHandler} style={styles.button}>
+        <Text style={styles.text}>위치확인</Text>
+      </Pressable>
     </View>
   );
 }

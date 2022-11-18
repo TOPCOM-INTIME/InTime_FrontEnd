@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 12,
+    color: 'black',
   },
   activeTitle: {
     color: 'white',

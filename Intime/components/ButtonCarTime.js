@@ -3,30 +3,30 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
 
-function SignButtons({isSignUp, onSubmit, loading}) {
+function ButtonCarTime({start, end, time}) {
   const navigation = useNavigation();
-  const primaryTitle = isSignUp ? '회원가입' : '로그인';
-  const secondaryTitle = isSignUp ? '로그인' : '회원가입';
+  const primaryTitle = '확인';
+  const secondaryTitle = '취소';
 
-  const onSecondaryButtonPress = () => {
-    if (isSignUp) {
-      navigation.goBack();
-    } else {
-      navigation.push('SignIn', {isSignUp: true});
-    }
+  const onPrimaryButtonPress = () => {
+    console.log('받은 값', time, start, end);
+    navigation.push('Placinputform', {
+      time: time,
+      sourceName: start,
+      destName: end,
+    });
   };
-  
-  if (loading) {
-    return (
-      <View style={styles.spinnerWrapper}>
-        <ActivityIndicator size={32} color="#6200ee" />
-      </View>
-    );
-  }
+  const onSecondaryButtonPress = () => {
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.buttons}>
-      <CustomButton title={primaryTitle} hasMarginBottom onPress={onSubmit} />
+      <CustomButton
+        title={primaryTitle}
+        onPress={onPrimaryButtonPress}
+        hasMarginBottom
+      />
       <CustomButton
         title={secondaryTitle}
         theme="secondary"
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignButtons;
+export default ButtonCarTime;
