@@ -22,12 +22,12 @@ function GroupCreateScreen({navigation, route}) {
   const {user, setUser} = useUserContext();
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
-  const [group, setGroup] = useState(route.params?.group || []);
-  const [name, setName] = useState(route.param?.group.name || '');
+  const [group, setGroup] = useState(route.params?.group.patterns || []);
+  const [name, setName] = useState(route.params?.group.name || '');
   const [loading, setLoading] = useState(false);
 
-  console.log('스크린', route.params);
-
+  console.log('스크린', group);
+  console.log('name', name);
   const groupCreateHandler = async () => {
     setLoading(true);
     const groupPattern = group.map((item, index) => {
@@ -89,6 +89,7 @@ function GroupCreateScreen({navigation, route}) {
         style={styles.input}
         onChangeText={setName}
         placeholder="그룹 이름"
+        value={name}
       />
       <View style={styles.block}>
         <View style={styles.container}>

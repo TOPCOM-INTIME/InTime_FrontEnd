@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
 import PatternScreen from './PatternScreen';
@@ -21,7 +21,7 @@ function MainTab() {
         name="알람"
         component={ScheduleList}
         options={{
-          tabBarIcon: ({ color }) => <Icon name="home" size={24} color={color} />,
+          tabBarIcon: ({color}) => <Icon name="home" size={24} color={color} />,
         }}
       />
       <Tab.Screen
@@ -29,7 +29,7 @@ function MainTab() {
         HomeStack
         component={HomeStack}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({color}) => (
             <Icon name="people" size={24} color={color} />
           ),
         }}
@@ -38,7 +38,7 @@ function MainTab() {
         name="패턴"
         component={PatternScreen}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({color}) => (
             <Icon name="event" size={24} color={color} />
           ),
         }}
@@ -47,7 +47,7 @@ function MainTab() {
         name="리스트"
         component={ListScreen}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({color}) => (
             <Icon name="table-rows" size={24} color={color} />
           ),
         }}
