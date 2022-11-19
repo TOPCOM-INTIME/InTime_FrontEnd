@@ -2,7 +2,7 @@ import React from 'react';
 import {Platform, Pressable, StyleSheet, Text, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-function PatternGroupListItem({log, isCreatingGroup, setGroup}) {
+function PatternGroupListItem({log, isCreatingGroup, setGroup, data, setData}) {
   const navigation = useNavigation();
 
   const onPress = () => {

@@ -7,6 +7,7 @@ import {
   View,
   Text,
   Button,
+  Alert,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
@@ -19,29 +20,18 @@ import ScheduleSubmitButton from './ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
-function PlaceinputForm({route}) {
-  console.log('route값:', route);
+function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
+  console.log('데이터', data);
   const navigation = useNavigation();
-  const scheduleName = useRef();
+  const name = useRef();
   const start = useRef();
   const end = useRef();
-  const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [isGroup, setGroup] = useState(false);
-  const [placeData, setPlaceData] = useState({
-    scheduleName: '',
-    start: '',
-    end: '',
-    time: '',
-  });
+
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
-  const {user, setUser} = useUserContext();
-
-  const createChangeTextHandler = name => value => {
-    setPlaceData({...placeData, [name]: value});
-  };
 
   // 개인이나 단체를 정하는 토글
   const options = [
@@ -52,7 +42,7 @@ function PlaceinputForm({route}) {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
-    setDate(currentDate);
+    setData('endTime')(currentDate);
   };
 
   //DatePicker 출력
@@ -61,22 +51,17 @@ function PlaceinputForm({route}) {
     setMode(currentMode);
   };
   const onSecondaryButtonPress = () => {
-    navigation.push('MainTab');
+    // setData('time')(0);
+    navigation.pop();
   };
 
-  const selectPress = (async = () => {
-    if (route != undefined) {
-      const data = {
-        name: placeData.scheduleName,
-        destName: route.params.destName,
-        sourceName: route.params.sourceName,
-        time: route.params.time,
-      };
-      navigation.push('SelectPattern', data);
+  const selectPress = () => {
+    if (data.time === 0) {
+      Alert.alert('출발과 도착을 입력해라');
     } else {
-      alert('출발과 도착을 입력해라');
+      navigation.push('SelectPattern');
     }
-  });
+  };
 
   return (
     <>
@@ -95,17 +80,19 @@ function PlaceinputForm({route}) {
           <Text style={styles.sectionTitle}>일정 이름 입력</Text>
           <CustomSearchInput
             placeholder="이름"
-            ref={scheduleName}
+            ref={name}
             keyboardType="text"
             returnKeyType="next"
-            onChangeText={createChangeTextHandler('scheduleName')}
+            onChangeText={setData('name')}
+            value={data.name}
             hasMarginBottom
           />
           <Text style={styles.sectionTitle}>날짜</Text>
           <View style={styles.item}>
             <View style={styles.itemLeft}>
               <Text style={styles.sectionTitle}>
-                {date.getFullYear()}-{date.getMonth()}-{date.getDate()}
+                {data.endTime.getFullYear()}-{data.endTime.getMonth()}-
+                {data.endTime.getDate()}
               </Text>
               <TouchableOpacity
                 style={{marginLeft: 20}}
@@ -116,7 +103,7 @@ function PlaceinputForm({route}) {
 
             <View style={styles.itemRight}>
               <Text style={styles.sectionTitle}>
-                {date.getHours()}:{date.getMinutes()}
+                {data.endTime.getHours()}:{data.endTime.getMinutes()}
               </Text>
               <TouchableOpacity onPress={() => showMode('time')}>
                 <Icon name={'access-time'} size={24} color={'black'} />
@@ -127,7 +114,7 @@ function PlaceinputForm({route}) {
           {show && (
             <DatePicker
               testID="dateTimePicker"
-              value={date}
+              value={data.endTime}
               mode={mode}
               is24Hour={true}
               display="default"
@@ -141,30 +128,37 @@ function PlaceinputForm({route}) {
             ref={start}
             keyboardType="text"
             returnKeyType="next"
-            onChangeText={createChangeTextHandler('start')}
+            onChangeText={setData('sourceName')}
+            value={data.sourceName}
             hasMarginBottom
           />
           <Text style={styles.sectionTitle}>도착지 입력</Text>
           <CustomSearchInput
             placeholder="도착지"
             ref={end}
+            value={data.destName}
             returnKeyType="next"
-            onChangeText={createChangeTextHandler('end')}
+            onChangeText={setData('destName')}
           />
-          <FindButton placeData={placeData} Date={date} />
+          <FindButton
+            data={data}
+            setData={setData}
+            busTime={busTime}
+            setBus={setBus}
+          />
           {isGroup && (
             <View style={{marginTop: 10}}>
               <Text style={styles.sectionTitle}>친구 추가</Text>
               <TouchableOpacity style={styles.friendBox}></TouchableOpacity>
             </View>
           )}
-          {route && (
+          {data.time !== 0 && (
             <>
-              <Text>현재 입력된 정보</Text>
+              {/* <Text>현재 입력된 정보</Text> */}
               <Text style={styles.sectionTitle}>
-                {route.params.sourceName}{' '}
-                <Icon name={'arrow-forward'} size={10} color={'black'} />
-                {route.params.destName}
+                {data.sourceName}{' '}
+                <Icon name={'arrow-forward'} size={10} color={'black'} />{' '}
+                {data.destName}
               </Text>
             </>
           )}
@@ -221,7 +215,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   friendBox: {
-    borderColor: '#bdbdbd',
     paddingHorizontal: 16,
     borderRadius: 15,
     height: 48,
