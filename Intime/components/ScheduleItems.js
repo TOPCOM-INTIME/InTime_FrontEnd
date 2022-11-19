@@ -19,7 +19,7 @@ const ScheduleItem = props => {
   };
   // console.log('what data came as item', props.data);
   const NAME = props.data.name;
-  const date = new Date(props.data.time);
+  const date = new Date(props.data.startTime);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const status = props.data.status;
