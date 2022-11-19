@@ -6,6 +6,7 @@ import PatternScreen from './PatternScreen';
 import Map_Marker from './Map_Marker';
 import ScheduleList from './ScheduleListScreen';
 import ListScreen from './ListScreen';
+import ScheduleandMap from './ScheduleandMap';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,11 +54,11 @@ function MainTab() {
         }}
       />
       <Tab.Screen
-        name="123"
-        component={Map_Marker}
+        name="일정 with 지도"
+        component={ScheduleandMap}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="table-rows" size={24} color={color} />
+            <Icon name="map" size={24} color={color} />
           ),
         }}
       />

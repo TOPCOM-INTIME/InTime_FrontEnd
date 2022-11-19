@@ -91,19 +91,19 @@ const Map_Marker = () => {
           gps_x: 0.0,
           gps_y: 0.0,
         };
-        console.log(i);
+        // console.log(i);
         console.log(' ', i % 10);
         if (i % 10 === 0) {
           const result = requestLocationPermission();
 
           result.then(res => {
-            console.log('res is:', res);
+            // console.log('res is:', res);
             if (res) {
               Geolocation.getCurrentPosition(
                 async position => {
                   data.gps_x = position.coords.latitude;
                   data.gps_y = position.coords.longitude;
-                  console.log('1', data);
+                  // console.log('1', data);
 
                   const res = await axios.post(
                     `http://175.45.204.122:8000/api/7/location`, data,
@@ -111,8 +111,8 @@ const Map_Marker = () => {
                       headers: { Authorization: user },
                     },
                   );
-                  console.log("location post");
-                  console.log(res.data);
+                  // console.log("location post");
+                  // console.log(res.data);
                 },
                 error => {
                   console.log(error.code, error.message);
@@ -133,7 +133,7 @@ const Map_Marker = () => {
           // console.log(res.data);
 
         }
-        if (i === 100) {
+        if (i === 1000) {
           await BackgroundService.stop();
         }
         await sleep(delay);
@@ -147,10 +147,17 @@ const Map_Marker = () => {
     await BackgroundService.start(locationpostHandler, options);
   };
 
-  let getdata = {
-    latitude: 0.0,
-    longitude: 0.0,
-  };
+  // let getdata = {
+  //   latitude: 0.0,
+  //   longitude: 0.0,
+  // };
+
+  const [getdata, setgetdata] = useState({
+    latitude: 37.27995,
+    longitude: 127.04365,
+  });
+
+
 
   const locationgetHandler = async () => {
     const res = await axios.get(
@@ -159,23 +166,37 @@ const Map_Marker = () => {
         headers: { Authorization: user },
       },
     );
-    getdata.latitude = res.data.gps_x;
-    getdata.longitude = res.data.gps_y;
+    if (res.data.gps_x == null) {
+      getdata.latitude = 37.27995;
+      getdata.longitude = 127.04365;
+    } else {
+      getdata.latitude = parseFloat(res.data.gps_x);
+      getdata.longitude = parseFloat(res.data.gps_y);
+
+    }
+
+    console.log('res', res);
     console.log(getdata);
     console.log("location get");
     console.log(res.data);
   }
 
+  const stopHandler = async () => {
+    await BackgroundService.stop();
+  };
+
   const functionCombine = () => {
-    backgroundHandler();
     getLocation();
     locationgetHandler();
   };
 
+  console.log('123123', getdata);
+
   return (
     < View style={{ flex: 1, padding: 10 }
     }>
-      <Text style={{ color: 'green' }}>Welcome!</Text>
+      <Button title="post my location in background" color="orange" onPress={backgroundHandler} />
+      <Button title="stop post my location" color="green" onPress={stopHandler} />
 
       <MapView
         style={{ flex: 1 }}
@@ -236,7 +257,7 @@ const Map_Marker = () => {
 
       <Text style={{ color: 'green' }}>{new Date().toString()}</Text>
       <View>
-        <Button title="post Location" onPress={() => functionCombine()} />
+        <Button title="location refresh" onPress={() => functionCombine()} />
         {/* <Button title="Refresh Location" onPress={getLocation} />
         <Button title="get Location" onPress={locationgetHandler} /> */}
       </View>
