@@ -97,6 +97,7 @@ function CarShowTime({data, setData, busTime, setBus}) {
               data={data}
               setData={setData}
               busTime={busTime}
+              setBus={setBus}
               isCar={!isCar}
             />
           </View>
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 32,
     fontWeight: 'bold',
+    color: 'black',
   },
   form: {
     marginTop: 64,

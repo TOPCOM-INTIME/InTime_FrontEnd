@@ -33,7 +33,9 @@ function ScheduleForm() {
       delay: 1000,
     },
   };
-  let currentDate = new Date();
+  let timer;
+  let seconds = 0;
+  let minutes = 0;
   const sleep = time =>
     new Promise(resolve => setTimeout(() => resolve(), time));
 
@@ -84,10 +86,13 @@ function ScheduleForm() {
     ]);
   };
 
-  const updateScehdule = item => {
-    let tmpDate = new Date(item.time);
+  const updateScehdule = async item => {
+    let tmpDate = new Date(item.readyTime);
+    let currentDate = new Date();
+    console.log('아이템시간:', tmpDate, '현재시간', currentDate);
     if (tmpDate <= currentDate && item.status != 'ING') {
       try {
+        console.log('바꿔야돼');
         const data = {
           destName: item.destName,
           endTime: item.endTime,
@@ -115,9 +120,10 @@ function ScheduleForm() {
       } catch (e) {
         console.log(`[ERROR]${e}`, item.id);
       }
-    } else {
-      console.log('업데이트 불필요', item.id, currentDate, tmpDate);
     }
+    // else {
+    //   console.log('업데이트 불필요', item.id, currentDate);
+    // }
   };
 
   const veryIntensiveTask = async taskDataArguments => {
@@ -125,9 +131,9 @@ function ScheduleForm() {
     const {delay} = taskDataArguments;
     await new Promise(async resolve => {
       for (let i = 0; BackgroundService.isRunning(); i++) {
-        currentDate.setSeconds(currentDate.getSeconds() + delay / 1000);
+        // let currentDate = new Date();
+        // currentDate.setSeconds(currentDate.getSeconds() + delay / 1000);
         scheduleData.map(item => updateScehdule(item));
-        // console.log(scheduleData);
         await sleep(delay);
       }
     });
@@ -144,6 +150,10 @@ function ScheduleForm() {
 
   useEffect(() => {
     getSchedule();
+    // timer = setInterval(() => {
+    //   scheduleData.map(item => updateScehdule(item));
+    // }, 1000);
+    // return () => clearInterval(timer);
   }, []);
 
   if (scheduleData.length == 0) {
@@ -162,7 +172,7 @@ function ScheduleForm() {
                 alignItems: 'center',
                 marginTop: '80%',
               }}>
-              <Text>일정 없습니다</Text>
+              <Text style={{color: 'black'}}>일정 없습니다</Text>
             </View>
           </View>
         </ScrollView>
