@@ -40,7 +40,7 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
   ];
   //토글 값 변경
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || data.endTime;
     setShow(Platform.OS === 'ios');
     setData('endTime')(currentDate);
   };
