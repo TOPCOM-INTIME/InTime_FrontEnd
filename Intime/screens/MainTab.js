@@ -52,6 +52,15 @@ function MainTab() {
           ),
         }}
       />
+      <Tab.Screen
+        name="123"
+        component={Map_Marker}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="table-rows" size={24} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }

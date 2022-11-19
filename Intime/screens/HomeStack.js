@@ -18,7 +18,7 @@ const options = {
   color: '#ff00ff',
   linkingURI: 'Intime://', // See Deep Linking for more info
   parameters: {
-    delay: 1000,
+    delay: 2000,
   },
 };
 
@@ -123,22 +123,28 @@ function HomeStack() {
   };
 
   const locationpostHandler = async () => {
+    data = {
+      gps_x: 37.27995654097524,
+      gps_y: 127.04362949477017,
+    }
     const res = await axios.post(
-      `http://175.45.204.122:8000/api/google/6/?address=아주대`,
+      `http://175.45.204.122:8000/api/6/location`, data,
       {
         headers: { Authorization: user },
       },
     );
+    console.log("location post");
     console.log(res.data);
   }
 
   const locationgetHandler = async () => {
     const res = await axios.get(
-      `http://175.45.204.122:8000/api/google/6/location`,
+      `http://175.45.204.122:8000/api/6/location`,
       {
         headers: { Authorization: user },
       },
     );
+    console.log("location get");
     console.log(res.data);
   }
 
