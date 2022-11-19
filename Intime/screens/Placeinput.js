@@ -17,17 +17,17 @@ import ScheduleSubmitButton from '../components/ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
-function Placeinput({navigate, route}) {
+function Placeinput({data, setData, date, setDate}) {
   const {user, setUser} = useUserContext();
   const [loading, setLoading] = useState(false);
-  if (route.params !== undefined) {
-    const ScheduleData = {
-      destName: route.params.destName,
-      sourceName: route.params.sourceName,
-      time: route.params.time,
-    };
-    console.log('일정 데이터', ScheduleData);
-  }
+  // if (route.params !== undefined) {
+  //   const ScheduleData = {
+  //     destName: route.params.destName,
+  //     sourceName: route.params.sourceName,
+  //     time: route.params.time,
+  //   };
+  //   console.log('일정 데이터', ScheduleData);
+  // }
   // const navigation = useNavigation();
   // const primaryTitle = '저장';
   // const secondaryTitle = '취소';
@@ -52,9 +52,12 @@ function Placeinput({navigate, route}) {
   // };
 
   return (
-    <>
-      <PlaceinputForm />
-    </>
+    <PlaceinputForm
+      data={data}
+      setData={setData}
+      date={date}
+      setDate={setDate}
+    />
   );
 }
 

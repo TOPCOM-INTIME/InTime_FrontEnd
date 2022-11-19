@@ -25,12 +25,12 @@ function MainTab() {
         }}
       />
       <Tab.Screen
-        name="약속"
+        name="친구"
         HomeStack
         component={HomeStack}
         options={{
           tabBarIcon: ({color}) => (
-            <Icon name="calendar-today" size={24} color={color} />
+            <Icon name="people" size={24} color={color} />
           ),
         }}
       />
