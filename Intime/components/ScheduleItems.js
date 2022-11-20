@@ -19,14 +19,17 @@ const ScheduleItem = props => {
   };
   // console.log('what data came as item', props.data);
   const NAME = props.data.name;
-  const date = new Date(props.data.startTime);
+  const date = new Date(props.data.readyTime);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const status = props.data.status;
   // console.log(status);
-
-  if (status === 'ING') {
-    console.log(status);
+  function print() {
+    if (status === 'ING') {
+      return <Text style={{color: 'black'}}>진행중</Text>;
+    } else if (status === 'PRE') {
+      return <Text style={{color: 'black'}}>예정</Text>;
+    }
   }
 
   return (
@@ -69,7 +72,7 @@ const ScheduleItem = props => {
               justifyContent: 'space-around',
               alignItems: 'center',
             }}>
-            <Text>진행중</Text>
+            {print()}
           </View>
         </View>
       </View>
