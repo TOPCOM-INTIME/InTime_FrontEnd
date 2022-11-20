@@ -18,13 +18,13 @@ const ScheduleItem = props => {
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
   };
-  // console.log('what data came as item', props.data);
+  console.log('what data came as item', props.data);
   const NAME = props.data.name;
   const date = new Date(props.data.readyTime);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
+  const endTime = new Date(props.data.endTime);
 
-  // console.log('what set as item', date);
   function print() {
     if (status === 'ING') {
       return <Text style={{ color: 'black' }}>진행중</Text>;
