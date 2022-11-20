@@ -15,9 +15,15 @@ function ListScreen({navigation}) {
 
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
-  const [group, setGroup] = useState(
-    patternGroups.length > 0 ? patternGroups[0] : [],
-  );
+  const [group, setGroup] = useState([]);
+  //   patternGroups.length > 0 ? patternGroups[0] : [],
+  // );
+
+  useEffect(() => {
+    if (patternGroups.length > 0) {
+      setGroup(patternGroups[0]);
+    }
+  }, [patternGroups]);
 
   if (patternGroups.length === 0) {
     return (

@@ -36,14 +36,14 @@ function GroupCreateScreen({navigation, route}) {
     try {
       if (route.params?.group) {
         await axios.put(
-          `http://175.45.204.122:8000/api/patterngroup/api/update-group-name/groupId=${route.param.group.id}`,
+          `http://175.45.204.122:8000/api/update-group-name/groupId=${route.params.group.id}`,
           {name},
           {
             headers: {Authorization: user},
           },
         );
-        await axios.post(
-          `http://175.45.204.122:8000/api/PatternsWithGroup/groupId=${route.param.group.id}`,
+        await axios.put(
+          `http://175.45.204.122:8000//api/update-group/groupId=${route.params.group.id}`,
           groupPattern,
           {
             headers: {Authorization: user},
