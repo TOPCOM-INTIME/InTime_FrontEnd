@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
   View,
@@ -9,10 +9,10 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useUserContext} from '../contexts/UserContext';
+import { useUserContext } from '../contexts/UserContext';
 
 const ScheduleItem = props => {
-  const {user, setUser} = useUserContext();
+  const { user, setUser } = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
@@ -26,9 +26,9 @@ const ScheduleItem = props => {
   // console.log('what set as item', date);
   function print() {
     if (status === 'ING') {
-      return <Text style={{color: 'black'}}>진행중</Text>;
+      return <Text style={{ color: 'black' }}>진행중</Text>;
     } else if (status === 'PRE') {
-      return <Text style={{color: 'black'}}>예정</Text>;
+      return <Text style={{ color: 'black' }}>예정</Text>;
     }
   }
 
@@ -46,7 +46,7 @@ const ScheduleItem = props => {
 
         <View style={styles.itemPlace}>
           {NAME && (
-            <Text style={{fontWeight: 'bold', color: 'black'}}>{NAME}</Text>
+            <Text style={{ fontWeight: 'bold', color: 'black' }}>{NAME}</Text>
           )}
 
           <Text style={styles.itemName}>
@@ -72,7 +72,7 @@ const ScheduleItem = props => {
               justifyContent: 'space-around',
               alignItems: 'center',
             }}>
-            {print}
+            {print()}
           </View>
         </View>
       </View>
