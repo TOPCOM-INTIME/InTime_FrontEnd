@@ -9,10 +9,10 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useUserContext } from '../contexts/UserContext';
+import {useUserContext} from '../contexts/UserContext';
 
 const ScheduleItem = props => {
-  const { user, setUser } = useUserContext();
+  const {user, setUser} = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
   const [status, setStaus] = useState('PRE');
   const toggleSwitch = () => {
@@ -27,21 +27,32 @@ const ScheduleItem = props => {
   // console.log('what set as item', date);
   function print() {
     if (status === 'ING') {
-      return <Text style={{ color: 'black' }}>진행중</Text>;
+      return <Text style={{color: 'black'}}>진행중</Text>;
     } else if (status === 'PRE') {
-      return <Text style={{ color: 'black' }}>예정</Text>;
+      return <Text style={{color: 'black'}}>예정</Text>;
+    } else if (status === 'END') {
+      return <Text style={{color: 'black'}}>종료</Text>;
     }
   }
 
   useEffect(() => {
     const NOW = new Date();
     const timer = date - NOW;
-    if (date <= NOW) {
+    const ENDTIMER = data.endTime - NOW;
+    if (data.endTime <= NOW) {
+      setStaus('END');
+    } else if (date <= NOW) {
       setStaus('ING');
-    } else {
-      let timeout = setTimeout(() => setStaus('ING'), timer);
+      let timeout = setTimeout(() => setStaus('END'), ENDTIMER);
       return () => {
         clearTimeout(timeout);
+      };
+    } else {
+      let timeout = setTimeout(() => setStaus('ING'), timer);
+      let timeout2 = setTimeout(() => setStaus('END'), ENDTIMER);
+      return () => {
+        clearTimeout(timeout);
+        clearTimeout(timeout2);
       };
     }
   }, []);
@@ -60,7 +71,7 @@ const ScheduleItem = props => {
 
         <View style={styles.itemPlace}>
           {NAME && (
-            <Text style={{ fontWeight: 'bold', color: 'black' }}>{NAME}</Text>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>{NAME}</Text>
           )}
 
           <Text style={styles.itemName}>
