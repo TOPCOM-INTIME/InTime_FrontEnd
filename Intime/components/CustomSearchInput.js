@@ -13,7 +13,6 @@ function BorderedInput({hasMarginBottom, ...rest}, ref) {
 
 const styles = StyleSheet.create({
   input: {
-    borderColor: '#bdbdbd',
     paddingHorizontal: 16,
     borderRadius: 15,
     height: 48,

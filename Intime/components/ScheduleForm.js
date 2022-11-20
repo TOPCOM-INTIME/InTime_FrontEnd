@@ -47,7 +47,6 @@ function ScheduleForm() {
           headers: {Authorization: user},
         },
       );
-      // console.log('GETDATA:', res.data);
       setData(res.data);
     } catch (e) {
       console.log(`[GETERROR]${e}`);
@@ -89,8 +88,9 @@ function ScheduleForm() {
   const updateScehdule = async item => {
     let tmpDate = new Date(item.readyTime);
     let currentDate = new Date();
-    console.log('아이템시간:', tmpDate, '현재시간', currentDate);
-    if (tmpDate <= currentDate && item.status != 'ING') {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    console.log('아이템시간:', tmpDate, '현재시간', currentDate, item.status);
+    if (tmpDate <= currentDate && item.status === 'PRE') {
       try {
         console.log('바꿔야돼');
         const data = {
@@ -150,10 +150,6 @@ function ScheduleForm() {
 
   useEffect(() => {
     getSchedule();
-    // timer = setInterval(() => {
-    //   scheduleData.map(item => updateScehdule(item));
-    // }, 1000);
-    // return () => clearInterval(timer);
   }, []);
 
   if (scheduleData.length == 0) {
