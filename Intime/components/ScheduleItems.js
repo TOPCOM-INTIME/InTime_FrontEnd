@@ -72,7 +72,7 @@ const ScheduleItem = props => {
               justifyContent: 'space-around',
               alignItems: 'center',
             }}>
-            <Text>진행중</Text>
+            {print}
           </View>
         </View>
       </View>

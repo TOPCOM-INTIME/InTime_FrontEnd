@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 function CarShowTime({data, setData, busTime, setBus}) {
   const {sourceName, destName} = data;
   const [isCar, setisCar] = useState();
-  // console.log('쇼타임', date);
+  console.log('쇼타임', data);
   // console.log('Find 버튼 누르고 받은 데이터', data);
 
   const Switchoptions = [
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 32,
     fontWeight: 'bold',
+    color: 'black',
   },
   form: {
     marginTop: 64,
