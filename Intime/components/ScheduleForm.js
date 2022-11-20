@@ -45,6 +45,7 @@ function ScheduleForm() {
           headers: {Authorization: user},
         },
       );
+      // console.log('GETDATA:', res.data);
       setData(res.data);
     } catch (e) {
       console.log(`[GETERROR]${e}`);
@@ -91,7 +92,7 @@ function ScheduleForm() {
           destName: item.destName,
           endTime: item.endTime,
           name: item.name,
-          readyPatterns_Ids: item.readyPatterns_Ids,
+          patterns: item.patterns,
           readyTime: item.readyTime,
           schedulePoolId: item.schedulePoolId,
           sourceName: item.sourceName,
@@ -126,7 +127,7 @@ function ScheduleForm() {
       for (let i = 0; BackgroundService.isRunning(); i++) {
         currentDate.setSeconds(currentDate.getSeconds() + delay / 1000);
         scheduleData.map(item => updateScehdule(item));
-        console.log(scheduleData);
+        // console.log(scheduleData);
         await sleep(delay);
       }
     });

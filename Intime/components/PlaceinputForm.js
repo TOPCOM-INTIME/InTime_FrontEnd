@@ -20,10 +20,10 @@ import ScheduleSubmitButton from './ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
-function PlaceinputForm({data, setData, date, setDate}) {
+function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
   console.log('데이터', data);
   const navigation = useNavigation();
-  const scheduleName = useRef();
+  const name = useRef();
   const start = useRef();
   const end = useRef();
   const [mode, setMode] = useState('date');
@@ -42,7 +42,7 @@ function PlaceinputForm({data, setData, date, setDate}) {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
-    setDate(currentDate);
+    setData('endTime')(currentDate);
   };
 
   //DatePicker 출력
@@ -51,7 +51,7 @@ function PlaceinputForm({data, setData, date, setDate}) {
     setMode(currentMode);
   };
   const onSecondaryButtonPress = () => {
-    setData('time')(0);
+    // setData('time')(0);
     navigation.pop();
   };
 
@@ -80,18 +80,19 @@ function PlaceinputForm({data, setData, date, setDate}) {
           <Text style={styles.sectionTitle}>일정 이름 입력</Text>
           <CustomSearchInput
             placeholder="이름"
-            ref={scheduleName}
+            ref={name}
             keyboardType="text"
             returnKeyType="next"
-            onChangeText={setData('scheduleName')}
-            value={data.scheduleName}
+            onChangeText={setData('name')}
+            value={data.name}
             hasMarginBottom
           />
           <Text style={styles.sectionTitle}>날짜</Text>
           <View style={styles.item}>
             <View style={styles.itemLeft}>
               <Text style={styles.sectionTitle}>
-                {date.getFullYear()}-{date.getMonth()}-{date.getDate()}
+                {data.endTime.getFullYear()}-{data.endTime.getMonth()}-
+                {data.endTime.getDate()}
               </Text>
               <TouchableOpacity
                 style={{marginLeft: 20}}
@@ -102,7 +103,7 @@ function PlaceinputForm({data, setData, date, setDate}) {
 
             <View style={styles.itemRight}>
               <Text style={styles.sectionTitle}>
-                {date.getHours()}:{date.getMinutes()}
+                {data.endTime.getHours()}:{data.endTime.getMinutes()}
               </Text>
               <TouchableOpacity onPress={() => showMode('time')}>
                 <Icon name={'access-time'} size={24} color={'black'} />
@@ -113,7 +114,7 @@ function PlaceinputForm({data, setData, date, setDate}) {
           {show && (
             <DatePicker
               testID="dateTimePicker"
-              value={date}
+              value={data.endTime}
               mode={mode}
               is24Hour={true}
               display="default"
@@ -139,7 +140,12 @@ function PlaceinputForm({data, setData, date, setDate}) {
             returnKeyType="next"
             onChangeText={setData('destName')}
           />
-          <FindButton data={data} setData={setData} date={date} />
+          <FindButton
+            data={data}
+            setData={setData}
+            busTime={busTime}
+            setBus={setBus}
+          />
           {isGroup && (
             <View style={{marginTop: 10}}>
               <Text style={styles.sectionTitle}>친구 추가</Text>

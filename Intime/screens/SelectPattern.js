@@ -18,10 +18,10 @@ import {useUserContext} from '../contexts/UserContext';
 import Patterns from '../components/Patterns';
 import PatternGroups from '../components/PatternGroups';
 
-function SelectPattern({data, setData, date, setDate, route}) {
+function SelectPattern({data, setData, date, setDate, setDatas}) {
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
-  const [group, setGroup] = useState(route?.params.group || []);
+  const [group, setGroup] = useState([]);
   const {user, setUser} = useUserContext();
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
@@ -35,14 +35,27 @@ function SelectPattern({data, setData, date, setDate, route}) {
     let tmpTime = 0;
     group.map(item => (tmpTime += item.time));
     readyTime.setSeconds(readyTime.getSeconds() - tmpTime);
+    console.log('패턴으로 걸린 시간:', readyTime);
     return readyTime;
   };
 
-  const onSaveButtonPress = async () => {
-    setData('readyPatterns_Ids')(group.map(item => item.id));
-    setData('readyTime')(calTime());
-    setData('endTime')(date);
+  useEffect(() => {
+    setDatas(data => {
+      return {
+        ...data,
+        readyPatterns_Ids: group.map(item => item.id),
+        readyTime: calTime(),
+      };
+    });
+  }, [group]);
 
+  // const setDatass = () => {
+  //   setData('readyPatterns_Ids')(group.map(item => item.id));
+  //   setData('readyTime')(calTime());
+  // };
+
+  const onSaveButtonPress = async () => {
+    console.log('조재성', data);
     try {
       const res = await axios.post(
         'http://175.45.204.122:8000/api/schedule',
@@ -55,7 +68,7 @@ function SelectPattern({data, setData, date, setDate, route}) {
       navigation.push('MainTab');
     } catch (e) {
       console.log(data);
-      console.log(`[ERROR]${e} SENT${data.name}}`);
+      console.log(`[ERROR]${e} SENT${data.name}`);
     }
   };
 
@@ -71,6 +84,8 @@ function SelectPattern({data, setData, date, setDate, route}) {
             <Text style={styles.header}>패턴 그룹 목록</Text>
           </View>
           <PatternGroups
+            data={data}
+            setData={setDatas}
             patterns={patternGroups}
             setGroup={setGroup}
             isCreatingGroup={2}
@@ -82,6 +97,7 @@ function SelectPattern({data, setData, date, setDate, route}) {
             patterns={patterns}
             setGroup={setGroup}
             isCreatingGroup={2}
+            setData={setDatas}
           />
         </View>
         <View style={styles.container}>

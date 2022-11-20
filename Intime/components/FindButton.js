@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import axios from 'axios';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import ScheduleCustomButton from './ScheduleCustomButton';
+import {useUserContext} from '../contexts/UserContext';
 
-function FindButton({data, date, setData}) {
+function FindButton({data, setData, busTime, setBus}) {
   const navigation = useNavigation();
   const primaryTitle = '찾기';
   const secondaryTitle = '취소';
-
+  const {user, setUser} = useUserContext();
   const onPrimaryButtonPress = async () => {
     const startKey = [encodeURI(data.sourceName)];
     const endKey = [encodeURI(data.destName)];
@@ -15,6 +17,7 @@ function FindButton({data, date, setData}) {
       startX: 0,
       startY: 0,
     };
+    console.log('찾기 전에 데이터', data);
 
     const endData = {
       endX: 0,
@@ -83,22 +86,42 @@ function FindButton({data, date, setData}) {
       }),
     };
 
-    fetch(
+    const response3 = await fetch(
       'https://apis.openapi.sk.com/tmap/routes?version=1&callback=function',
       optionsTime,
-    )
-      .then(response3 => response3.json())
-      .then(response3 => {
-        setData('time')(response3.features[0]['properties'].totalTime);
-        setData('startTime')(date.setSeconds(date.getSeconds() - data.time));
-        console.log('시작 시간', data.startTime, data.time);
-        navigation.push('CarScreen');
-      })
-      .catch(err => console.error(err));
-  };
+    );
+    const data3 = await response3.json();
+    let totalTime = data3.features[0]['properties'].totalTime;
+    // console.log('계산된 시간', totalTime, '설정된 시간', data.time);
+    let tmpTime = new Date(data.endTime);
+    tmpTime.setSeconds(tmpTime.getSeconds() - totalTime);
+    setData('startTime')(tmpTime);
+    navigation.push('CarScreen');
 
-  const onSecondaryButtonPress = () => {
-    // navigation.navigate('Placeinput');
+    const odsayData = {
+      ex: endData.endX,
+      ey: endData.endY,
+      sx: startData.startX,
+      sy: startData.startY,
+    };
+    try {
+      const res = await axios.post(
+        'http://175.45.204.122:8000/api/odsay',
+        odsayData,
+        {
+          headers: {Authorization: user},
+        },
+      );
+      let BUSTime = new Date(data.endTime);
+      BUSTime.setMinutes(
+        BUSTime.getMinutes() - res.data.result.path[0].info.totalTime,
+      );
+      setBus(BUSTime);
+      console.log('ODsay SUCCESS!', res.data.result.path[0].info.totalTime);
+    } catch (e) {
+      console.log(data);
+      console.log(`[ODsay ERROR]${e} SENT${data.name}`);
+    }
   };
 
   return (

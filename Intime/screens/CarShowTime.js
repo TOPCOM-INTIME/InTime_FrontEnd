@@ -13,19 +13,22 @@ import ButtonCarTime from '../components/ButtonCarTime';
 import SwitchSelector from 'react-native-switch-selector';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function CarShowTime({data, setData, date, setDate}) {
+function CarShowTime({data, setData, busTime, setBus}) {
   const {sourceName, destName} = data;
-  const [isBus, setBus] = useState(true);
-  console.log('쇼타임', date);
-  console.log(isBus);
+  const [isCar, setisCar] = useState();
+  // console.log('쇼타임', date);
+  // console.log('Find 버튼 누르고 받은 데이터', data);
+
   const Switchoptions = [
     {
       value: false,
-      customIcon: <Icon name={'directions-bus'} size={30} color={'black'} />,
+      label: '차',
+      // customIcon: <Icon name={'directions-bus'} size={30} color={'black'} />,
     },
     {
       value: true,
-      customIcon: <Icon name={'directions-car'} size={30} color={'black'} />,
+      label: '버스',
+      // customIcon: <Icon name={'directions-car'} size={30} color={'black'} />,
     },
   ];
 
@@ -35,19 +38,36 @@ function CarShowTime({data, setData, date, setDate}) {
     minute: 0,
   };
 
-  function Time(totalTime) {
-    console.log('Time');
+  function Time(date) {
+    let totalTime = date / 1000;
     showTime.hour = parseInt(totalTime / 3600);
     showTime.leftmin = totalTime % 3600;
     showTime.min = parseInt(showTime.leftmin / 60);
-    if (showTime.hour > 0) {
-      return (
-        <Text style={styles.text}>
-          {showTime.hour}시간 {showTime.min}분 걸림
-        </Text>
-      );
+  }
+
+  function PrintTime() {
+    if (isCar) {
+      Time(data.endTime - busTime);
+      if (showTime.hour > 0) {
+        return (
+          <Text style={styles.text}>
+            {showTime.hour}시간 {showTime.min}분 걸림
+          </Text>
+        );
+      } else {
+        return <Text style={styles.text}>{showTime.min}분 걸림</Text>;
+      }
     } else {
-      return <Text style={styles.text}>{showTime.min}분 걸림</Text>;
+      Time(data.endTime - data.startTime);
+      if (showTime.hour > 0) {
+        return (
+          <Text style={styles.text}>
+            {showTime.hour}시간 {showTime.min}분 걸림
+          </Text>
+        );
+      } else {
+        return <Text style={styles.text}>{showTime.min}분 걸림</Text>;
+      }
     }
   }
 
@@ -62,7 +82,7 @@ function CarShowTime({data, setData, date, setDate}) {
         borderColor={'#ED3648'}
         borderWidth={1}
         hasPadding
-        onPress={value => setBus(value)}
+        onPress={value => setisCar(value)}
       />
 
       <KeyboardAvoidingView
@@ -71,9 +91,14 @@ function CarShowTime({data, setData, date, setDate}) {
         <SafeAreaView style={styles.fullscreen}>
           <Text style={styles.text}>출발지: {sourceName}</Text>
           <Text style={styles.text}>도착지: {destName}</Text>
-          {Time(data.time)}
+          {PrintTime()}
           <View style={styles.form}>
-            <ButtonCarTime setData={setData} />
+            <ButtonCarTime
+              data={data}
+              setData={setData}
+              busTime={busTime}
+              isCar={!isCar}
+            />
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>

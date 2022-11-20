@@ -10,15 +10,16 @@ const Stack = createNativeStackNavigator();
 function ScheduleScreen() {
   const [data, setData] = useState({
     name: '',
-    time: 0,
+    time: '',
     sourceName: '',
     destName: '',
     readyPatterns_Ids: [],
     startTime: 0,
     readyTime: 0,
-    endTime: 0,
+    endTime: new Date(),
+    status: 'PRE',
   });
-  const [date, setDate] = useState(new Date());
+  const [busTime, setBus] = useState(0);
 
   const createChangeTextHandler = name => value => {
     setData({...data, [name]: value});
@@ -32,8 +33,8 @@ function ScheduleScreen() {
             <Placeinput
               data={data}
               setData={createChangeTextHandler}
-              date={date}
-              setDate={setDate}
+              busTime={busTime}
+              setBus={setBus}
             />
           )}
           options={{headerShown: false}}
@@ -44,8 +45,7 @@ function ScheduleScreen() {
             <SelectPattern
               data={data}
               setData={createChangeTextHandler}
-              date={date}
-              setDate={setDate}
+              setDatas={setData}
             />
           )}
           options={{headerShown: false}}
@@ -56,8 +56,7 @@ function ScheduleScreen() {
             <CarShowTime
               data={data}
               setData={createChangeTextHandler}
-              date={date}
-              setDate={setDate}
+              busTime={busTime}
             />
           )}
           options={{headerShown: false}}
