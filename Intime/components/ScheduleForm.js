@@ -163,7 +163,7 @@ function ScheduleForm() {
                 alignItems: 'center',
                 marginTop: '80%',
               }}>
-              <Text style={{color='black'}}>일정 없습니다</Text>
+              <Text style={{color:'black'}}>일정 없습니다</Text>
             </View>
           </View>
         </ScrollView>
