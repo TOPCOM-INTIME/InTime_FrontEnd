@@ -17,13 +17,13 @@ const ScheduleItem = props => {
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
   };
-  // console.log('what data came as item', props.data);
+  console.log('what data came as item', props.data);
   const NAME = props.data.name;
   const date = new Date(props.data.readyTime);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const status = props.data.status;
-  // console.log(status);
+  console.log('what set as item', date);
   function print() {
     if (status === 'ING') {
       return <Text style={{color: 'black'}}>진행중</Text>;
@@ -37,7 +37,7 @@ const ScheduleItem = props => {
       <View style={styles.item}>
         <View style={styles.itemDate}>
           <Text style={styles.itemMonthDay}>
-            {date.getMonth()}/{date.getDate()}
+            {date.getMonth() + 1}/{date.getDate()}
           </Text>
           <Text style={styles.itemTime}>
             {date.getHours()}:{date.getMinutes()}
