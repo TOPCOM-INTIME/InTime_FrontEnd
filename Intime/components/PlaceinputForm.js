@@ -10,6 +10,7 @@ import {
   Alert,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import CustomSearchInput from './CustomSearchInput';
 import DatePicker from '@react-native-community/datetimepicker';
@@ -21,7 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
 function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
-  console.log('데이터', data);
+  console.log('데이터', data.endTime);
   const navigation = useNavigation();
   const name = useRef();
   const start = useRef();
@@ -78,20 +79,21 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
       <ScrollView style={{marginTop: 20, backgroundColor: 'white'}}>
         <View style={styles.tasksWrapper}>
           <Text style={styles.sectionTitle}>일정 이름 입력</Text>
-          <CustomSearchInput
+          <TextInput
+            style={styles.input}
             placeholder="이름"
             ref={name}
             keyboardType="text"
             returnKeyType="next"
             onChangeText={setData('name')}
             value={data.name}
-            hasMarginBottom
           />
+
           <Text style={styles.sectionTitle}>날짜</Text>
           <View style={styles.item}>
             <View style={styles.itemLeft}>
               <Text style={styles.sectionTitle}>
-                {data.endTime.getFullYear()}-{data.endTime.getMonth()}-
+                {data.endTime.getFullYear()}-{data.endTime.getMonth() + 1}-
                 {data.endTime.getDate()}
               </Text>
               <TouchableOpacity
@@ -123,7 +125,8 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
           )}
 
           <Text style={styles.sectionTitle}>출발지 입력</Text>
-          <CustomSearchInput
+          <TextInput
+            style={styles.input}
             placeholder="출발지"
             ref={start}
             keyboardType="text"
@@ -133,7 +136,8 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
             hasMarginBottom
           />
           <Text style={styles.sectionTitle}>도착지 입력</Text>
-          <CustomSearchInput
+          <TextInput
+            style={styles.input}
             placeholder="도착지"
             ref={end}
             value={data.destName}
@@ -232,6 +236,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     backgroundColor: 'white',
+  },
+  input: {
+    paddingHorizontal: 16,
+    borderRadius: 15,
+    height: 48,
+    backgroundColor: 'white',
+    borderColor: '#ED3648',
+    borderWidth: 2,
+    color: 'black',
+    marginBottom: 20,
   },
 });
 

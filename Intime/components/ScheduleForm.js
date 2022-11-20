@@ -45,7 +45,6 @@ function ScheduleForm() {
           headers: {Authorization: user},
         },
       );
-      // console.log('GETDATA:', res.data);
       setData(res.data);
     } catch (e) {
       console.log(`[GETERROR]${e}`);
@@ -84,9 +83,11 @@ function ScheduleForm() {
     ]);
   };
 
+
   const updateScehdule = item => {
     let tmpDate = new Date(item.time);
     if (tmpDate <= currentDate && item.status != 'ING') {
+
       try {
         const data = {
           destName: item.destName,
