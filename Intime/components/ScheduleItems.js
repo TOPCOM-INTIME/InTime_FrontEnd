@@ -23,7 +23,7 @@ const ScheduleItem = props => {
   const date = new Date(props.data.readyTime);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
-  const endTime = props.data.endTime;
+
   // console.log('what set as item', date);
   function print() {
     if (status === 'ING') {
@@ -38,8 +38,8 @@ const ScheduleItem = props => {
   useEffect(() => {
     const NOW = new Date();
     const timer = date - NOW;
-    const ENDTIMER = endTime - NOW;
-    if (endTime <= NOW) {
+    const ENDTIMER = data.endTime - NOW;
+    if (data.endTime <= NOW) {
       setStaus('END');
     } else if (date <= NOW) {
       setStaus('ING');
