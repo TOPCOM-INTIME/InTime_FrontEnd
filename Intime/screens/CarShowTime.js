@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 function CarShowTime({data, setData, busTime, setBus}) {
   const {sourceName, destName} = data;
   const [isCar, setisCar] = useState();
-  console.log('쇼타임', data);
+  // console.log('쇼타임', data);
   // console.log('Find 버튼 누르고 받은 데이터', data);
 
   const Switchoptions = [
@@ -97,6 +97,7 @@ function CarShowTime({data, setData, busTime, setBus}) {
               data={data}
               setData={setData}
               busTime={busTime}
+              setBus={setBus}
               isCar={!isCar}
             />
           </View>

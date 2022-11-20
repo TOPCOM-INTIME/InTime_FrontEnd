@@ -18,7 +18,7 @@ import BackgroundService from 'react-native-background-actions';
 
 function ScheduleForm() {
   const {user, setUser} = useUserContext();
-  const [scheduleData, setData] = useState([]);
+  const [scheduleData, setSchedule] = useState([]);
   const optionBack = {
     taskName: '준비',
     taskTitle: '준비할 시간입니다.',
@@ -33,9 +33,6 @@ function ScheduleForm() {
       delay: 1000,
     },
   };
-  let currentDate = new Date();
-  const sleep = time =>
-    new Promise(resolve => setTimeout(() => resolve(), time));
 
   const getSchedule = async () => {
     try {
@@ -45,7 +42,8 @@ function ScheduleForm() {
           headers: {Authorization: user},
         },
       );
-      setData(res.data);
+      setSchedule(res.data);
+      // console.log('GET함');
     } catch (e) {
       console.log(`[GETERROR]${e}`);
     }
@@ -83,66 +81,7 @@ function ScheduleForm() {
     ]);
   };
 
-
-  const updateScehdule = item => {
-    let tmpDate = new Date(item.time);
-    if (tmpDate <= currentDate && item.status != 'ING') {
-
-      try {
-        const data = {
-          destName: item.destName,
-          endTime: item.endTime,
-          name: item.name,
-          patterns: item.patterns,
-          readyTime: item.readyTime,
-          schedulePoolId: item.schedulePoolId,
-          sourceName: item.sourceName,
-          startTime: item.startTime,
-          status: 'ING',
-          time: item.time,
-        };
-        axios
-          .put(
-            `http://175.45.204.122:8000/api/schedule=${item.id}/update`,
-            data,
-            {
-              headers: {Authorization: user},
-            },
-          )
-          .then(res => {
-            getSchedule();
-          });
-        console.log('업데이트 필요', item.status);
-      } catch (e) {
-        console.log(`[ERROR]${e}`, item.id);
-      }
-    } else {
-      console.log('업데이트 불필요', item.id, currentDate, tmpDate);
-    }
-  };
-
-  const veryIntensiveTask = async taskDataArguments => {
-    // Example of an infinite loop task
-    const {delay} = taskDataArguments;
-    await new Promise(async resolve => {
-      for (let i = 0; BackgroundService.isRunning(); i++) {
-        currentDate.setSeconds(currentDate.getSeconds() + delay / 1000);
-        scheduleData.map(item => updateScehdule(item));
-        // console.log(scheduleData);
-        await sleep(delay);
-      }
-    });
-  };
-
-  const puttonPressHandler = async () => {
-    console.log('hi');
-    await BackgroundService.start(veryIntensiveTask, optionBack);
-  };
-
-  const stopHandler = async () => {
-    await BackgroundService.stop();
-  };
-
+  const [sec, setSec] = useState(0);
   useEffect(() => {
     getSchedule();
   }, []);
@@ -163,7 +102,7 @@ function ScheduleForm() {
                 alignItems: 'center',
                 marginTop: '80%',
               }}>
-              <Text>일정 없습니다</Text>
+              <Text style={{color: 'black'}}>일정 없습니다</Text>
             </View>
           </View>
         </ScrollView>
@@ -178,11 +117,6 @@ function ScheduleForm() {
           <View style={styles.tasksWrapper}>
             <View style={styles.header}>
               <Text style={styles.sectionTitle}>일정</Text>
-              <TouchableOpacity
-                onPress={stopHandler}
-                onLongPress={puttonPressHandler}>
-                <Text style={styles.sectionTitle}>테스트</Text>
-              </TouchableOpacity>
               <ScheduleAddButton style={styles.button} />
             </View>
             <View style={styles.items}>

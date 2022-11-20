@@ -57,6 +57,7 @@ function ScheduleScreen() {
               data={data}
               setData={createChangeTextHandler}
               busTime={busTime}
+              setBus={setBus}
             />
           )}
           options={{headerShown: false}}
