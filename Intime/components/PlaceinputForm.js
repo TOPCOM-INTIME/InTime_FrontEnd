@@ -22,7 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
 function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
-  console.log('데이터', data);
+  console.log('데이터', data.endTime);
   const navigation = useNavigation();
   const name = useRef();
   const start = useRef();
@@ -93,7 +93,7 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
           <View style={styles.item}>
             <View style={styles.itemLeft}>
               <Text style={styles.sectionTitle}>
-                {data.endTime.getFullYear()}-{data.endTime.getMonth()}-
+                {data.endTime.getFullYear()}-{data.endTime.getMonth() + 1}-
                 {data.endTime.getDate()}
               </Text>
               <TouchableOpacity
