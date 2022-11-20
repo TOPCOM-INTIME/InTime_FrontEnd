@@ -42,13 +42,13 @@ function GroupCreateScreen({navigation, route}) {
             headers: {Authorization: user},
           },
         );
-        await axios.put(
-          `http://175.45.204.122:8000//api/update-group/groupId=${route.params.group.id}`,
-          groupPattern,
-          {
-            headers: {Authorization: user},
-          },
-        );
+        // await axios.put(
+        //   `http://175.45.204.122:8000//api/update-group/groupId=${route.params.group.id}`,
+        //   groupPattern,
+        //   {
+        //     headers: {Authorization: user},
+        //   },
+        // );
       } else {
         console.log(1);
         const res = await axios.post(
