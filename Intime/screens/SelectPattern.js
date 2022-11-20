@@ -74,20 +74,10 @@ function SelectPattern({data, setData, date, setDate, setDatas}) {
       repeatTime: 1,
     });
     PushNotification.localNotificationSchedule({
-      channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
+      channelId: '2', // (required) channelId, if the channel doesn't exist, notification will not trigger.
       title: '출발할 시간입니다.',
       message: '출발하세요!!', // (required)
       date: setTime(data.startTime), // in 60 secs
-      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-      playSound: true, // (optional) default: true
-      soundName: 'alarm',
-      repeatTime: 1,
-    });
-    PushNotification.localNotificationSchedule({
-      channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      title: '일정 종료 시간입니다.',
-      message: '일정 종료', // (required)
-      date: setTime(data.endTime), // in 60 secs
       allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
       playSound: true, // (optional) default: true
       soundName: 'alarm',

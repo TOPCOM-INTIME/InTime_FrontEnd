@@ -81,6 +81,7 @@ function ScheduleForm() {
     ]);
   };
 
+  const [sec, setSec] = useState(0);
   useEffect(() => {
     getSchedule();
   }, []);
