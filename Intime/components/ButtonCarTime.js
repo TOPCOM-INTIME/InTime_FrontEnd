@@ -7,11 +7,18 @@ function ButtonCarTime({data, setData, busTime, setBus, isCar}) {
   const navigation = useNavigation();
   const primaryTitle = '확인';
   const secondaryTitle = '취소';
+
+  const setTime = time => {
+    let setTime = new Date(time);
+    setTime.setSeconds(0);
+    return setTime;
+  };
+
   const onPrimaryButtonPress = () => {
     if (isCar) {
-      setData('startTime')(data.startTime);
+      setData('startTime')(setTime(data.startTime));
     } else {
-      setData('startTime')(busTime);
+      setData('startTime')(setTime(busTime));
     }
     navigation.pop();
   };

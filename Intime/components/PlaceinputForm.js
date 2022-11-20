@@ -33,6 +33,11 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
 
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
+  const setTime = time => {
+    let setTime = new Date(time);
+    setTime.setSeconds(0);
+    return setTime;
+  };
 
   // 개인이나 단체를 정하는 토글
   const options = [
@@ -43,7 +48,7 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
-    setData('endTime')(currentDate);
+    setData('endTime')(setTime(currentDate));
   };
 
   //DatePicker 출력
