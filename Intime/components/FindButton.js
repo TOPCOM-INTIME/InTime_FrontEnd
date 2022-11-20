@@ -10,9 +10,6 @@ function FindButton({data, setData, busTime, setBus}) {
   const primaryTitle = '찾기';
   const secondaryTitle = '취소';
   const {user, setUser} = useUserContext();
-  let date = new Date();
-  // const TimeString=date.getFullYear()
-  // console.log("")
   const onPrimaryButtonPress = async () => {
     const startKey = [encodeURI(data.sourceName)];
     const endKey = [encodeURI(data.destName)];
@@ -77,7 +74,7 @@ function FindButton({data, setData, busTime, setBus}) {
         reqCoordType: 'WGS84GEO',
         startX: startData.startX,
         startY: startData.startY,
-        gpsTime: '20221119153000',
+        gpsTime: '20191125153000',
         speed: 10,
         uncetaintyP: 1,
         uncetaintyA: 1,

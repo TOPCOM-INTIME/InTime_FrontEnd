@@ -19,7 +19,7 @@ const ScheduleItem = props => {
   };
   console.log('what data came as item', props.data);
   const NAME = props.data.name;
-  const date = new Date(props.data.readyTime);
+  const date = new Date(props.data.startTime);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const status = props.data.status;
@@ -72,7 +72,7 @@ const ScheduleItem = props => {
               justifyContent: 'space-around',
               alignItems: 'center',
             }}>
-            {print()}
+            <Text>진행중</Text>
           </View>
         </View>
       </View>

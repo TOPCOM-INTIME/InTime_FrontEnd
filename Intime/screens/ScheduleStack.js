@@ -8,8 +8,6 @@ import PlaceinputForm from '../components/PlaceinputForm';
 import SelectPattern from './SelectPattern';
 const Stack = createNativeStackNavigator();
 function ScheduleScreen() {
-  let tmpDate = new Date();
-  tmpDate.setMonth(tmpDate.getMonth() + 1);
   const [data, setData] = useState({
     name: '',
     time: '',
@@ -18,7 +16,7 @@ function ScheduleScreen() {
     readyPatterns_Ids: [],
     startTime: 0,
     readyTime: 0,
-    endTime: new Date(tmpDate),
+    endTime: new Date(),
     status: 'PRE',
   });
   const [busTime, setBus] = useState(0);
