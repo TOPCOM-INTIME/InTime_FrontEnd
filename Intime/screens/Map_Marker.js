@@ -106,7 +106,7 @@ const Map_Marker = () => {
                   // console.log('1', data);
 
                   const res = await axios.post(
-                    `http://175.45.204.122:8000/api/7/location`, data,
+                    `http://175.45.204.122:8000/api/4/location`, data,
                     {
                       headers: { Authorization: user },
                     },
@@ -161,7 +161,7 @@ const Map_Marker = () => {
 
   const locationgetHandler = async () => {
     const res = await axios.get(
-      `http://175.45.204.122:8000/api/6/location`,
+      `http://175.45.204.122:8000/api/2/location`,
       {
         headers: { Authorization: user },
       },
