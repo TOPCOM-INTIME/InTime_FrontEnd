@@ -22,7 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
 function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
-  console.log('데이터', data.endTime);
+  // console.log('데이터', data);
   const navigation = useNavigation();
   const name = useRef();
   const start = useRef();
@@ -52,7 +52,7 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
     setMode(currentMode);
   };
   const onSecondaryButtonPress = () => {
-    // setData('time')(0);
+    // \setData('time')(0);
     navigation.pop();
   };
 

@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
 
-function ButtonCarTime({data, setData, busTime, isCar}) {
+function ButtonCarTime({data, setData, busTime, setBus, isCar}) {
   const navigation = useNavigation();
   const primaryTitle = '확인';
   const secondaryTitle = '취소';
