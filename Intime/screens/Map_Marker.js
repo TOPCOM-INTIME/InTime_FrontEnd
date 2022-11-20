@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Button, PermissionsAndroid } from 'react-native';
+import { StyleSheet, View, Text, Button, Image, PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import axios from 'axios';
@@ -153,8 +153,8 @@ const Map_Marker = () => {
   // };
 
   const [getdata, setgetdata] = useState({
-    latitude: 37.27995,
-    longitude: 127.04365,
+    latitude: 38.2,
+    longitude: 127.0,
   });
 
 
@@ -167,8 +167,8 @@ const Map_Marker = () => {
       },
     );
     if (res.data.gps_x == null) {
-      getdata.latitude = 37.27995;
-      getdata.longitude = 127.04365;
+      getdata.latitude = 38.2;
+      getdata.longitude = 127.0;
     } else {
       getdata.latitude = parseFloat(res.data.gps_x);
       getdata.longitude = parseFloat(res.data.gps_y);
@@ -215,7 +215,12 @@ const Map_Marker = () => {
             latitude: position.latitude,
             longitude: position.longitude,
           }}
-        />
+        >
+          <Image
+            style={{ width: 26, height: 28 }}
+            source={require('../img04.gif')} />
+        </Marker>
+
         <Marker
           id="1"
           title={"파트너"}

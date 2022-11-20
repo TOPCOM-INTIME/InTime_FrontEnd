@@ -3,6 +3,7 @@ import {
     StyleSheet,
     View,
     Text,
+    Alert,
 } from 'react-native';
 import Map_Marker from './Map_Marker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -23,8 +24,8 @@ function ScheduleandMap() {
                                 flexDirection: 'row',
                             }}
                         >
-                            <Icon name="face" size={36} />
-                            <Icon name="face" size={36} />
+                            <Icon name="face" size={36} color={"black"} />
+                            <Icon name="face" size={36} color={"black"} />
                         </View>
                     </View>
                 </View>
