@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {
   View,
@@ -14,15 +14,16 @@ import { useUserContext } from '../contexts/UserContext';
 const ScheduleItem = props => {
   const { user, setUser } = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
+  const [status, setStaus] = useState('PRE');
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
   };
   // console.log('what data came as item', props.data);
   const NAME = props.data.name;
-  const date = new Date(props.data.startTime);
+  const date = new Date(props.data.readyTime);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
-  const status = props.data.status;
+
   // console.log('what set as item', date);
   function print() {
     if (status === 'ING') {
@@ -31,6 +32,19 @@ const ScheduleItem = props => {
       return <Text style={{ color: 'black' }}>예정</Text>;
     }
   }
+
+  useEffect(() => {
+    const NOW = new Date();
+    const timer = date - NOW;
+    if (date <= NOW) {
+      setStaus('ING');
+    } else {
+      let timeout = setTimeout(() => setStaus('ING'), timer);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, []);
 
   return (
     <>

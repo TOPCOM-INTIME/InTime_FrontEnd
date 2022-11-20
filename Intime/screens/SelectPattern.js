@@ -20,7 +20,6 @@ import PatternGroups from '../components/PatternGroups';
 import PushNotification from 'react-native-push-notification';
 
 function SelectPattern({data, setData, date, setDate, setDatas}) {
-  console.log('패턴설정 시작 데이터', data);
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
   const [group, setGroup] = useState([]);
@@ -33,13 +32,18 @@ function SelectPattern({data, setData, date, setDate, setDatas}) {
     setData('readyTime')(0);
   };
 
+  const setTime = time => {
+    let setTime = new Date(time);
+    setTime.setSeconds(0);
+    return setTime;
+  };
   const calTime = () => {
     let readyTime = new Date(data.startTime);
     let tmpTime = 0;
     group.map(item => (tmpTime += item.time));
     readyTime.setSeconds(readyTime.getSeconds() - tmpTime);
-    console.log('패턴으로 걸린 시간:', readyTime);
-    return readyTime;
+    // setTime(readyTime);
+    return setTime(readyTime);
   };
 
   useEffect(() => {
@@ -58,27 +62,27 @@ function SelectPattern({data, setData, date, setDate, setDatas}) {
   // };
 
   const onSaveButtonPress = async () => {
+    console.log('알림 설정한 시간', data.readyTime);
     PushNotification.localNotificationSchedule({
       channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
       title: '준비할 시간입니다.',
       message: '준비를 시작해 주세요', // (required)
-      date: data.readyTime, // in 60 secs
+      date: setTime(data.readyTime),
       allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
       playSound: true, // (optional) default: true
       soundName: 'alarm',
       repeatTime: 1,
     });
     PushNotification.localNotificationSchedule({
-      channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
+      channelId: '2', // (required) channelId, if the channel doesn't exist, notification will not trigger.
       title: '출발할 시간입니다.',
       message: '출발하세요!!', // (required)
-      date: data.startTime, // in 60 secs
+      date: setTime(data.startTime), // in 60 secs
       allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
       playSound: true, // (optional) default: true
       soundName: 'alarm',
       repeatTime: 1,
     });
-    console.log('조재성', data);
     try {
       const res = await axios.post(
         'http://175.45.204.122:8000/api/schedule',
