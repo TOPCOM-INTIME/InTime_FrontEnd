@@ -52,8 +52,8 @@ const Map_Marker = () => {
   const { user, setUser } = useUserContext();
   const [location, setLocation] = useState(false);
   const [position, setPosition] = useState({
-    latitude: 37.27995654097524,
-    longitude: 127.04362949477017,
+    latitude: 37.266833,
+    longitude: 127.000019,
   });
 
   const getLocation = () => {
@@ -93,7 +93,7 @@ const Map_Marker = () => {
         };
         // console.log(i);
         console.log(' ', i % 10);
-        if (i % 10 === 0) {
+        if (i % 5 === 0) {
           const result = requestLocationPermission();
 
           result.then(res => {
@@ -106,7 +106,7 @@ const Map_Marker = () => {
                   // console.log('1', data);
 
                   const res = await axios.post(
-                    `http://175.45.204.122:8000/api/2/location`, data,
+                    `http://175.45.204.122:8000/api/4/location`, data,
                     {
                       headers: { Authorization: user },
                     },
@@ -161,7 +161,7 @@ const Map_Marker = () => {
 
   const locationgetHandler = async () => {
     const res = await axios.get(
-      `http://175.45.204.122:8000/api/4/location`,
+      `http://175.45.204.122:8000/api/2/location`,
       {
         headers: { Authorization: user },
       },
