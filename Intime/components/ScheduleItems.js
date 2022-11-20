@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
   View,
@@ -9,10 +9,10 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useUserContext} from '../contexts/UserContext';
+import { useUserContext } from '../contexts/UserContext';
 
 const ScheduleItem = props => {
-  const {user, setUser} = useUserContext();
+  const { user, setUser } = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
@@ -23,10 +23,13 @@ const ScheduleItem = props => {
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const status = props.data.status;
-  // console.log(status);
-
-  if (status === 'ING') {
-    console.log(status);
+  // console.log('what set as item', date);
+  function print() {
+    if (status === 'ING') {
+      return <Text style={{ color: 'black' }}>진행중</Text>;
+    } else if (status === 'PRE') {
+      return <Text style={{ color: 'black' }}>예정</Text>;
+    }
   }
 
   return (
@@ -34,7 +37,7 @@ const ScheduleItem = props => {
       <View style={styles.item}>
         <View style={styles.itemDate}>
           <Text style={styles.itemMonthDay}>
-            {date.getMonth()}/{date.getDate()}
+            {date.getMonth() + 1}/{date.getDate()}
           </Text>
           <Text style={styles.itemTime}>
             {date.getHours()}:{date.getMinutes()}
@@ -43,7 +46,7 @@ const ScheduleItem = props => {
 
         <View style={styles.itemPlace}>
           {NAME && (
-            <Text style={{fontWeight: 'bold', color: 'black'}}>{NAME}</Text>
+            <Text style={{ fontWeight: 'bold', color: 'black' }}>{NAME}</Text>
           )}
 
           <Text style={styles.itemName}>
@@ -69,7 +72,7 @@ const ScheduleItem = props => {
               justifyContent: 'space-around',
               alignItems: 'center',
             }}>
-            <Text>진행중</Text>
+            {print()}
           </View>
         </View>
       </View>
