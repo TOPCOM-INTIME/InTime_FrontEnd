@@ -4,6 +4,7 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import ScheduleCustomButton from './ScheduleCustomButton';
 import {useUserContext} from '../contexts/UserContext';
+import {API_URL} from '@env';
 
 function FindButton({data, setData, busTime, setBus}) {
   const navigation = useNavigation();
@@ -105,13 +106,9 @@ function FindButton({data, setData, busTime, setBus}) {
       sy: startData.startY,
     };
     try {
-      const res = await axios.post(
-        'http://175.45.204.122:8000/api/odsay',
-        odsayData,
-        {
-          headers: {Authorization: user},
-        },
-      );
+      const res = await axios.post(`${API_URL}/api/odsay`, odsayData, {
+        headers: {Authorization: user},
+      });
       let BUSTime = new Date(data.endTime);
       BUSTime.setMinutes(
         BUSTime.getMinutes() - res.data.result.path[0].info.totalTime,

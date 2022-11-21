@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useLogContext} from '../contexts/LogContext';
 import {useUserContext} from '../contexts/UserContext';
 import TransparentCircleButton from './TransparentCircleButton';
+import {API_URL} from '@env';
 
 function WriteHeader({
   // onSave,
@@ -29,7 +30,7 @@ function WriteHeader({
     if (second === '') second = 0;
     if (!isEditing) {
       const res = await axios.post(
-        'http://175.45.204.122:8000/api/readypattern/',
+        `${API_URL}/api/readypattern/`,
         {
           name: title,
           time: +minute * 60 + +second,
@@ -40,7 +41,7 @@ function WriteHeader({
       );
     } else {
       const res = await axios.put(
-        `http://175.45.204.122:8000/api/readypattern/update-name-or-time/patternId=${id}`,
+        `${API_URL}/api/readypattern/update-name-or-time/patternId=${id}`,
         {
           name: title,
           time: +minute * 60 + +second,
@@ -50,12 +51,9 @@ function WriteHeader({
         },
       );
     }
-    const res = await axios.get(
-      'http://175.45.204.122:8000/api/readypatterns/origin',
-      {
-        headers: {Authorization: user},
-      },
-    );
+    const res = await axios.get(`${API_URL}/api/readypatterns/origin`, {
+      headers: {Authorization: user},
+    });
     setPatterns(res.data);
     navigation.pop();
   };

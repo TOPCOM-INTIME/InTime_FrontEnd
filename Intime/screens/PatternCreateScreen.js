@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {useUserContext} from '../contexts/UserContext';
 import {useLogContext} from '../contexts/LogContext';
+import {API_URL} from '@env';
 
 function WriteScreen({navigation, route}) {
   const log = route.params?.log;
@@ -36,13 +37,13 @@ function WriteScreen({navigation, route}) {
           onPress: async () => {
             try {
               await axios.delete(
-                `http://175.45.204.122:8000/api/readypattern/patternId=${log?.id}`,
+                `${API_URL}/api/readypattern/patternId=${log?.id}`,
                 {
                   headers: {Authorization: user},
                 },
               );
               const res = await axios.get(
-                'http://175.45.204.122:8000/api/readypatterns/origin',
+                `${API_URL}/api/readypatterns/origin`,
                 {
                   headers: {Authorization: user},
                 },

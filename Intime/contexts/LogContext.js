@@ -1,6 +1,8 @@
 import React, {useContext, createContext, useState, useEffect} from 'react';
 import {useUserContext} from './UserContext';
 import axios from 'axios';
+import {API_URL} from '@env';
+
 const LogContext = createContext(null);
 
 export function LogContextProvider({children}) {
@@ -12,7 +14,7 @@ export function LogContextProvider({children}) {
     const fetchData = async () => {
       try {
         const fetchedPattern = await axios.get(
-          'http://175.45.204.122:8000/api/readypatterns/origin',
+          `${API_URL}/api/readypatterns/origin`,
           {
             headers: {Authorization: user},
           },
@@ -20,7 +22,7 @@ export function LogContextProvider({children}) {
         console.log('콘텍스트 패턴', fetchedPattern.data);
         setPatterns(fetchedPattern.data);
         const fetchedGroup = await axios.get(
-          'http://175.45.204.122:8000/api/groups-with-patterns/all',
+          `${API_URL}/api/groups-with-patterns/all`,
           {
             headers: {Authorization: user},
           },

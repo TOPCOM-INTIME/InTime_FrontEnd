@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import TransparentCircleButton from './TransparentCircleButton';
 import {useUserContext} from '../contexts/UserContext';
 import {useLogContext} from '../contexts/LogContext';
+import {API_URL} from '@env';
 
 function ListHeader({group, setGroup, isEmpty}) {
   const navigation = useNavigation();
@@ -22,13 +23,13 @@ function ListHeader({group, setGroup, isEmpty}) {
           text: '삭제',
           onPress: async () => {
             await axios.delete(
-              `http://175.45.204.122:8000/api/patterngroup/groupId=${group.id}`,
+              `${API_URL}/api/patterngroup/groupId=${group.id}`,
               {
                 headers: {Authorization: user},
               },
             );
             const fetchedGroup = await axios.get(
-              'http://175.45.204.122:8000/api/groups-with-patterns/all',
+              `${API_URL}/api/groups-with-patterns/all`,
               {
                 headers: {Authorization: user},
               },
