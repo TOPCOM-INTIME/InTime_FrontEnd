@@ -18,6 +18,7 @@ import {useUserContext} from '../contexts/UserContext';
 import Patterns from '../components/Patterns';
 import PatternGroups from '../components/PatternGroups';
 import PushNotification from 'react-native-push-notification';
+import {API_URL} from '@env';
 
 function SelectPattern({data, setData, date, setDate, setDatas}) {
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
@@ -84,13 +85,9 @@ function SelectPattern({data, setData, date, setDate, setDatas}) {
       repeatTime: 1,
     });
     try {
-      const res = await axios.post(
-        'http://175.45.204.122:8000/api/schedule',
-        data,
-        {
-          headers: {Authorization: user},
-        },
-      );
+      const res = await axios.post(`${API_URL}/api/schedule`, data, {
+        headers: {Authorization: user},
+      });
       console.log('SUCCESS!', data);
       navigation.push('MainTab');
     } catch (e) {

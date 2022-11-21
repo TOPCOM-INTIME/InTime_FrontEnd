@@ -17,6 +17,7 @@ import Patterns from '../components/Patterns';
 import {useLogContext} from '../contexts/LogContext';
 import axios from 'axios';
 import {useUserContext} from '../contexts/UserContext';
+import {API_URL} from '@env';
 
 function GroupCreateScreen({navigation, route}) {
   const {user, setUser} = useUserContext();
@@ -36,7 +37,7 @@ function GroupCreateScreen({navigation, route}) {
     try {
       if (route.params?.group) {
         await axios.put(
-          `http://175.45.204.122:8000/api/update-group-name/groupId=${route.params.group.id}`,
+          `${API_URL}/api/update-group-name/groupId=${route.params.group.id}`,
           {name},
           {
             headers: {Authorization: user},
@@ -52,7 +53,7 @@ function GroupCreateScreen({navigation, route}) {
       } else {
         console.log(1);
         const res = await axios.post(
-          'http://175.45.204.122:8000/api/patterngroup',
+          `${API_URL}/api/patterngroup`,
           {name},
           {
             headers: {Authorization: user},
@@ -61,7 +62,7 @@ function GroupCreateScreen({navigation, route}) {
         console.log(res.data);
         const groupId = res.data.data;
         await axios.post(
-          `http://175.45.204.122:8000/api/PatternsWithGroup/groupId=${groupId}`,
+          `${API_URL}/api/PatternsWithGroup/groupId=${groupId}`,
           groupPattern,
           {
             headers: {Authorization: user},
@@ -69,7 +70,7 @@ function GroupCreateScreen({navigation, route}) {
         );
       }
       const fetchedGroup = await axios.get(
-        'http://175.45.204.122:8000/api/groups-with-patterns/all',
+        `${API_URL}/api/groups-with-patterns/all`,
         {
           headers: {Authorization: user},
         },

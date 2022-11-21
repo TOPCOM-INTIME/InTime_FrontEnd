@@ -14,6 +14,7 @@ import SignUpForm from '../components/SignUpForm';
 import axios from 'axios';
 import authStorage from '../stroages/authStorage';
 import {useUserContext} from '../contexts/UserContext';
+import {API_URL} from '@env';
 
 function SignInScreen({navigation, route}) {
   const {isSignUp} = route.params || {};
@@ -45,11 +46,7 @@ function SignInScreen({navigation, route}) {
       console.log(data);
       setLoading(true);
       try {
-        const res = await axios.post('http://175.45.204.122:8000/join', data);
-        // const res = await axios.post('http://175.45.204.122:8000/join', null, {
-        //   params: {...data},
-        //   headers: {'Content-Type': 'application/json'},
-        // });
+        const res = await axios.post(`${API_URL}/join`, data);
         console.log('결과', res.data);
         navigation.pop();
       } catch (err) {
@@ -78,7 +75,7 @@ function SignInScreen({navigation, route}) {
       };
       setLoading(true);
       try {
-        const res = await axios.post('http://175.45.204.122:8000/login', data);
+        const res = await axios.post(`${API_URL}/login`, data);
         console.log('결과', res.headers.authorization);
         console.log('응답:', res.data);
         setUser(res.headers.authorization);

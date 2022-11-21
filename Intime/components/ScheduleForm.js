@@ -15,6 +15,7 @@ import ScheduleAddButton from './ScheduleAddButton';
 import ScheduleItem from './ScheduleItems';
 import {useUserContext} from '../contexts/UserContext';
 import BackgroundService from 'react-native-background-actions';
+import {API_URL} from '@env';
 
 function ScheduleForm() {
   const {user, setUser} = useUserContext();
@@ -36,12 +37,9 @@ function ScheduleForm() {
 
   const getSchedule = async () => {
     try {
-      const res = await axios.get(
-        'http://175.45.204.122:8000/api/user/schedule/all',
-        {
-          headers: {Authorization: user},
-        },
-      );
+      const res = await axios.get(`${API_URL}/api/user/schedule/all`, {
+        headers: {Authorization: user},
+      });
       setSchedule(res.data);
       // console.log('GET함');
     } catch (e) {
@@ -52,7 +50,7 @@ function ScheduleForm() {
   const deleteSchedule = async ID => {
     try {
       axios
-        .delete(`http://175.45.204.122:8000/api/schedule/scheduleId=${ID}`, {
+        .delete(`${API_URL}/api/schedule/scheduleId=${ID}`, {
           headers: {Authorization: user},
         })
         .then(res => {
