@@ -32,11 +32,12 @@ const styles = StyleSheet.create({
         width: '85%',
         height: 50,
         borderColor: '#ED3648',
-        borderWidth: 1,
+        borderWidth: 3,
         borderRadius: 4,
         marginBottom: 10,
     },
     titleText: {
+        color: 'black',
         marginLeft: 10,
         fontSize: 30,
         fontWeight: "bold",
