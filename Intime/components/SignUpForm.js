@@ -1,6 +1,5 @@
 import React, {useRef} from 'react';
 import {TextInput, StyleSheet} from 'react-native';
-import BorderedInput from './BorderedInput';
 
 function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
   const emailRef = useRef();
@@ -61,6 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     height: 48,
     backgroundColor: 'white',
+    placeholderTextColor: '#000',
   },
   margin: {
     marginBottom: 16,
