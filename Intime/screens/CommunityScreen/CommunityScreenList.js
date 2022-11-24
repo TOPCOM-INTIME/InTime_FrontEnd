@@ -10,9 +10,14 @@ function CommunityScreenList(props) {
                 flex: 1,
                 flexDirection: 'column',
                 alignItems: 'center',
-                marginTop: '80%',
+                marginTop: '5%',
             }}>
-            {userList.length === 0 ? <Text style={{ color: 'black' }}>등록된 친구가 없습니다.</Text> :
+            {userList.length === 0 ? <View style={{
+                flex: 1,
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: '65%',
+            }}><Text style={{ color: 'black' }}>등록된 친구가 없습니다.</Text></View> :
                 userList.map(user => <View style={styles.list} key={user}><Text style={styles.titleText}>{user}</Text></View>)
             }
 
@@ -22,10 +27,10 @@ function CommunityScreenList(props) {
 
 const styles = StyleSheet.create({
     list: {
-        justifyContent: 'space-around',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
         width: '85%',
         height: 50,
-        background: 'white',
         borderColor: '#ED3648',
         borderWidth: 1,
         borderRadius: 4,

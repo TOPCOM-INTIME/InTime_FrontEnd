@@ -18,7 +18,8 @@ function CommunityScreen() {
     }
     useEffect(() => {
         //API 호출
-        const userList = ["mike", "bob"];
+        const userList = ["mike", "bob", "John"];
+        //const userList = [];
         setUserList(userList)
     }, [])
     return (
@@ -27,20 +28,16 @@ function CommunityScreen() {
                 <View style={styles.header}>
                     <Text style={styles.sectionTitle}>친구</Text>
                     <TransparentCircleButton onPress={toggleRoute} name="add" color="#424242" />
-
                 </View>
+            </View>
+            <View>
                 {route === 'list' ? <CommunityScreenList userList={userList} /> : <CommunityScreenAdd />}
-
             </View>
         </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
     tasksWrapper: {
         paddingTop: 20,
         paddingHorizontal: 20,
@@ -53,15 +50,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: 'black',
         fontWeight: 'bold',
-    },
-    form: {
-        marginTop: 80,
-        width: '100%',
-        paddingHorizontal: 16,
-    },
-    button: {
-        flexDirection: 'row-reverse',
-        margin: 15,
     },
 });
 
