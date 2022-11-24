@@ -15,6 +15,7 @@ import axios from 'axios';
 import authStorage from '../stroages/authStorage';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
+import messaging from '@react-native-firebase/messaging';
 
 function SignInScreen({navigation, route}) {
   const {isSignUp} = route.params || {};
@@ -44,6 +45,7 @@ function SignInScreen({navigation, route}) {
         email: userData.email,
       };
       console.log(data);
+      console.log(API_URL);
       setLoading(true);
       try {
         const res = await axios.post(`${API_URL}/join`, data);
@@ -80,6 +82,12 @@ function SignInScreen({navigation, route}) {
         console.log('응답:', res.data);
         setUser(res.headers.authorization);
         authStorage.set(res.headers.authorization);
+        const deviceToken = await messaging().getToken();
+        await axios.put(
+          `${API_URL}/api/device-token`,
+          {deviceToken},
+          {headers: {Authorization: res.headers.authorization}},
+        );
       } catch (err) {
         console.log('에러');
         console.error(err);
