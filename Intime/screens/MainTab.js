@@ -6,6 +6,7 @@ import PatternScreen from './PatternScreen';
 import Map_Marker from './Map_Marker';
 import ScheduleList from './ScheduleListScreen';
 import ListScreen from './ListScreen';
+import CommunityScreen from './CommunityScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ function MainTab() {
       <Tab.Screen
         name="친구"
         HomeStack
-        component={HomeStack}
+        component={CommunityScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="people" size={24} color={color} />
