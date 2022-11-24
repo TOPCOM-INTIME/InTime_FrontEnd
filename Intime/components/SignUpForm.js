@@ -1,7 +1,7 @@
-import React, {useRef} from 'react';
-import {TextInput, StyleSheet} from 'react-native';
+import React, { useRef } from 'react';
+import { TextInput, StyleSheet } from 'react-native';
 
-function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
+function SignUpForm({ onSubmit, createChangeTextHandler, isSignUp }) {
   const emailRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -11,6 +11,7 @@ function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
     <>
       <TextInput
         placeholder="이메일"
+        placeholderTextColor="gray"
         ref={emailRef}
         keyboardType="email-address"
         returnKeyType="next"
@@ -29,6 +30,7 @@ function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
       /> */}
       <TextInput
         placeholder="비밀번호"
+        placeholderTextColor="gray"
         ref={passwordRef}
         secureTextEntry
         onChangeText={createChangeTextHandler('password')}
@@ -40,6 +42,7 @@ function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
       {isSignUp && (
         <TextInput
           placeholder="비밀번호 확인"
+          placeholderTextColor="gray"
           ref={confirmPasswordRef}
           secureTextEntry
           onChangeText={createChangeTextHandler('confirmPassword')}
