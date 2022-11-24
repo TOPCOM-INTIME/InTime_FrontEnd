@@ -1,8 +1,9 @@
 import CommunityScreenAdd from './CommunityScreenAdd.js';
 import CommunityScreenList from './CommunityScreenList.js';
+import TransparentCircleButton from '../../components/TransparentCircleButton';
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, View, Text, Button } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Button, Icon } from 'react-native';
 
 function CommunityScreen() {
     const [route, setRoute] = useState("list") // list, add
@@ -16,6 +17,7 @@ function CommunityScreen() {
         }
     }
     useEffect(() => {
+        //API 호출
         const userList = ["mike", "bob"];
         setUserList(userList)
     }, [])
@@ -24,7 +26,8 @@ function CommunityScreen() {
             <View style={styles.tasksWrapper}>
                 <View style={styles.header}>
                     <Text style={styles.sectionTitle}>친구</Text>
-                    <Button title='추가' onPress={toggleRoute} />
+                    <TransparentCircleButton onPress={toggleRoute} name="add" color="#424242" />
+
                 </View>
                 {route === 'list' ? <CommunityScreenList userList={userList} /> : <CommunityScreenAdd />}
 

@@ -13,7 +13,7 @@ function CommunityScreenList(props) {
                 marginTop: '80%',
             }}>
             {userList.length === 0 ? <Text style={{ color: 'black' }}>등록된 친구가 없습니다.</Text> :
-                userList.map(user => <View key={user}><Text>{user}</Text></View>)
+                userList.map(user => <View style={styles.list} key={user}><Text style={styles.titleText}>{user}</Text></View>)
             }
 
         </View>
@@ -21,31 +21,20 @@ function CommunityScreenList(props) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
+    list: {
+        justifyContent: 'space-around',
+        width: '85%',
+        height: 50,
+        background: 'white',
+        borderColor: '#ED3648',
+        borderWidth: 1,
+        borderRadius: 4,
+        marginBottom: 10,
     },
-    tasksWrapper: {
-        paddingTop: 20,
-        paddingHorizontal: 20,
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    sectionTitle: {
-        fontSize: 24,
-        color: 'black',
-        fontWeight: 'bold',
-    },
-    form: {
-        marginTop: 80,
-        width: '100%',
-        paddingHorizontal: 16,
-    },
-    button: {
-        flexDirection: 'row-reverse',
-        margin: 15,
+    titleText: {
+        marginLeft: 10,
+        fontSize: 30,
+        fontWeight: "bold",
     },
 });
 
