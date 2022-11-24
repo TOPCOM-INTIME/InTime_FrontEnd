@@ -7,6 +7,9 @@ import PatternCreateScreen from './PatternCreateScreen';
 import authStorage from '../stroages/authStorage';
 import {useUserContext} from '../contexts/UserContext';
 import ScheduleScreen from './ScheduleStack';
+import {API_URL} from '@env';
+import axios from 'axios';
+import messaging from '@react-native-firebase/messaging';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +21,12 @@ function RootStack() {
       try {
         const data = await authStorage.get();
         setUser(data);
+        const deviceToken = await messaging().getToken();
+        await axios.put(
+          `${API_URL}/api/device-token`,
+          {deviceToken},
+          {headers: {Authorization: data}},
+        );
       } catch (e) {
         return;
       }
