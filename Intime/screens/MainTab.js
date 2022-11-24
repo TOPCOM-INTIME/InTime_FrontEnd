@@ -53,6 +53,15 @@ function MainTab() {
           ),
         }}
       />
+      <Tab.Screen
+        name="내 정보"
+        component={HomeStack}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="account-circle" size={24} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
