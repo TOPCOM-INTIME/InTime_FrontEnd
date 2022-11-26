@@ -36,12 +36,19 @@ function WriteScreen({navigation, route}) {
           text: '삭제',
           onPress: async () => {
             try {
-              await axios.delete(
+              const dres = await axios.delete(
                 `${API_URL}/api/readypattern/patternId=${log?.id}`,
                 {
                   headers: {Authorization: user},
                 },
               );
+              if (dres.data.status === 424) {
+                Alert.alert(
+                  '실패',
+                  '패턴 그룹에 존재하는 패턴은 삭제할 수 없습니다.',
+                );
+                return;
+              }
               const res = await axios.get(
                 `${API_URL}/api/readypatterns/origin`,
                 {

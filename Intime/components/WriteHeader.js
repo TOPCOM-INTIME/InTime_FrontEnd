@@ -19,7 +19,7 @@ function WriteHeader({
 }) {
   const navigation = useNavigation();
   const {user, setUser, edited, setEdited} = useUserContext();
-  const {patterns, setPatterns} = useLogContext();
+  const {patterns, setPatterns, setPatternGroups} = useLogContext();
 
   const onGoBack = () => {
     navigation.pop();
@@ -51,10 +51,20 @@ function WriteHeader({
         },
       );
     }
-    const res = await axios.get(`${API_URL}/api/readypatterns/origin`, {
-      headers: {Authorization: user},
-    });
-    setPatterns(res.data);
+    const fetchedPattern = await axios.get(
+      `${API_URL}/api/readypatterns/origin`,
+      {
+        headers: {Authorization: user},
+      },
+    );
+    setPatterns(fetchedPattern.data);
+    const fetchedGroup = await axios.get(
+      `${API_URL}/api/groups-with-patterns/all`,
+      {
+        headers: {Authorization: user},
+      },
+    );
+    setPatternGroups(fetchedGroup.data);
     navigation.pop();
   };
 
