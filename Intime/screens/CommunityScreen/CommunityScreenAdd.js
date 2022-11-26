@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, ScrollView, View, Text, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
+import RequestList from './CommunityScreenRequestList';
 
 function CommunityScreenAdd() {
     const [word, setWord] = useState('')
@@ -111,7 +112,7 @@ function CommunityScreenAdd() {
                     </View>
                     :
                     <View>
-                        <View><Text>받은요청이 없습니다.</Text></View>
+                        <RequestList />
                     </View>
             }
 
