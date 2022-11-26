@@ -15,7 +15,7 @@ function CommunityScreenAdd() {
         // 통신 word를 쏴줌 // try catch
         setPhase('loading')
         console.log('word', word)
-        const list = [{ name: "mike", id: '123' }, { name: "john", id: '456' },]
+        const list = [{ name: "mike", id: '1' }, { name: "john", id: '2' }, { name: "john1", id: '3' },]
         setList(list);
         setPhase('done')
     }
@@ -55,12 +55,12 @@ function CommunityScreenAdd() {
 
             <View style={styles.buttonarea}>
                 <View style={{ flex: 1, margin: 5 }}>
-                    {/* <Button color="#ff5c5c" title="친구검색" disabled={isSearch} onPress={togglePage} /> */}
-                    <TouchableOpacity
+                    <Button color="#ff5c5c" title="친구검색" disabled={isSearch} onPress={togglePage} />
+                    {/* <TouchableOpacity
                         disabled={isSearch}
                         //아래 스타일에서 불러오면 오류, 현재에서 처리해야함 -> 어떻게 깔끔하게 할까?
                         style={{
-                            opacity: isSearch ? 0.3 : 1.0,
+                            opacity: !isSearch ? 1.0 : 0.3,
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderRadius: 5,
@@ -70,10 +70,25 @@ function CommunityScreenAdd() {
                         onPress={togglePage}
                     >
                         <Text style={{ color: 'yellow' }}>친구검색</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 <View style={{ flex: 1, margin: 5 }}>
                     <Button color="#ff5c5c" title="받은요청" disabled={!isSearch} onPress={togglePage} />
+                    {/* <TouchableOpacity
+                    //이걸로 띄울시 컴포넌트 전체가 비활성화되는 오류 있음
+                        disabled={!isSearch}
+                        style={{
+                            opacity: isSearch ? 1.0 : 0.3,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 5,
+                            flex: 1,
+                            backgroundColor: '#ff5c5c'
+                        }}
+                        onPress={togglePage}
+                    >
+                        <Text style={{ color: 'yellow' }}>받은요청</Text>
+                    </TouchableOpacity> */}
                 </View>
             </View>
 
@@ -85,14 +100,14 @@ function CommunityScreenAdd() {
                             <Button color="#ff5c5c" title="닉네임 검색" onPress={onSubmit} />
                         </View>
                         {list.length > 0 ?
-                            <View>{list.map(user => <View key={user.id}>
+                            <View><ScrollView>{list.map(user => <View key={user.id}>
                                 <View style={styles.addList}>
                                     <Text style={styles.listText}>{user.name}</Text>
                                     <View style={{ margin: 5 }}>
                                         <Button color='pink' title="친구 추가" onPress={() => onPressSend(user.id)} />
                                     </View>
                                 </View>
-                            </View>)}</View> : phase !== "init" ? <View><Text style={{ color: "black" }}>결과가 없습니다.</Text></View> : null}
+                            </View>)}</ScrollView></View> : phase !== "init" ? <View><Text style={{ color: "black" }}>결과가 없습니다.</Text></View> : null}
                     </View>
                     :
                     <View>
