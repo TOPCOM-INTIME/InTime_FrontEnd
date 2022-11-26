@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, View, Text, Button, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 
@@ -35,12 +35,14 @@ function CommunityScreenAdd() {
 
     const onPressSend = (uId) => {
         // uId로 통신 try catch
+        Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
         console.log('uId', uId)
     }
 
 
     //일단 ifelse로 구현하고 -> 하나의 리턴값으로 리팩토링 -> 컴포넌트화
     //리팩토링에 더 많은 시간 할당하기
+
     return (
         <View>
             <View style={styles.iconButton}>
@@ -52,49 +54,87 @@ function CommunityScreenAdd() {
             </View>
 
             <View style={styles.buttonarea}>
-                <Button title="검색목록" disabled={isSearch} onPress={togglePage} />
-                <Button title="받은요청" disabled={!isSearch} onPress={togglePage} />
+                <View style={{ flex: 1, margin: 5 }}>
+                    {/* <Button color="#ff5c5c" title="친구검색" disabled={isSearch} onPress={togglePage} /> */}
+                    <TouchableOpacity
+                        disabled={isSearch}
+                        //아래 스타일에서 불러오면 오류, 현재에서 처리해야함 -> 어떻게 깔끔하게 할까?
+                        style={{
+                            opacity: isSearch ? 0.3 : 1.0,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 5,
+                            flex: 1,
+                            backgroundColor: '#ff5c5c'
+                        }}
+                        onPress={togglePage}
+                    >
+                        <Text style={{ color: 'yellow' }}>친구검색</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ flex: 1, margin: 5 }}>
+                    <Button color="#ff5c5c" title="받은요청" disabled={!isSearch} onPress={togglePage} />
+                </View>
             </View>
 
-            {isSearch ?
-                <View>
+            {
+                isSearch ?
                     <View>
-                        <TextInput style={{ borderWidth: 1 }} value={word} onChangeText={onChangeInput} />
-                        <Button title="검색" onPress={onSubmit} />
+                        <View>
+                            <TextInput style={{ borderWidth: 1, margin: 3 }} value={word} onChangeText={onChangeInput} />
+                            <Button color="#ff5c5c" title="닉네임 검색" onPress={onSubmit} />
+                        </View>
+                        {list.length > 0 ?
+                            <View>{list.map(user => <View key={user.id}>
+                                <View style={styles.addList}>
+                                    <Text style={styles.listText}>{user.name}</Text>
+                                    <View style={{ margin: 5 }}>
+                                        <Button color='pink' title="친구 추가" onPress={() => onPressSend(user.id)} />
+                                    </View>
+                                </View>
+                            </View>)}</View> : phase !== "init" ? <View><Text style={{ color: "black" }}>결과가 없습니다.</Text></View> : null}
                     </View>
-                    {list.length > 0 ?
-                        <View>{list.map(user => <View key={user.id}>
-                            <View style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between'
-                            }}>
-                                <Text>{user.name}</Text>
-                                <Button title="send" onPress={() => onPressSend(user.id)} />
-                            </View>
-                        </View>)}</View> : phase !== "init" ? <View><Text style={{ color: "black" }}>결과가 없습니다.</Text></View> : null}
-                </View>
-                :
-                <View>
-                    <View><Text>받은요청이 없습니다.</Text></View>
-                </View>}
+                    :
+                    <View>
+                        <View><Text>받은요청이 없습니다.</Text></View>
+                    </View>
+            }
 
-        </View>
+        </View >
     );
 }
 
 const styles = StyleSheet.create({
+    // button: {
+    //     opacity: isSearch ? 0.1 : 0.7,
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     borderRadius: 5,
+    //     flex: 1,
+    //     backgroundColor: '#ff5c5c'
+    // },
     buttonarea: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        // justifyContent: 'space-between'
     },
     iconButton: {
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingVertical: 10,
         paddingHorizontal: 10,
     },
-
+    addList: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderRadius: 6,
+        borderWidth: 1,
+        margin: 2,
+    },
+    listText: {
+        color: 'black',
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+    },
 });
 
 export default CommunityScreenAdd;
