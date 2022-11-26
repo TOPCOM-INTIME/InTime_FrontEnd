@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {
   Platform,
@@ -13,12 +13,12 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ScheduleAddButton from './ScheduleAddButton';
 import ScheduleItem from './ScheduleItems';
-import { useUserContext } from '../contexts/UserContext';
+import {useUserContext} from '../contexts/UserContext';
 import BackgroundService from 'react-native-background-actions';
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 
 function ScheduleForm() {
-  const { user, setUser } = useUserContext();
+  const {user, setUser} = useUserContext();
   const [scheduleData, setSchedule] = useState([]);
   const optionBack = {
     taskName: '준비',
@@ -38,7 +38,7 @@ function ScheduleForm() {
   const getSchedule = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/user/schedule/all`, {
-        headers: { Authorization: user },
+        headers: {Authorization: user},
       });
       setSchedule(res.data);
       // console.log('GET함');
@@ -51,7 +51,7 @@ function ScheduleForm() {
     try {
       axios
         .delete(`${API_URL}/api/schedule/scheduleId=${ID}`, {
-          headers: { Authorization: user },
+          headers: {Authorization: user},
         })
         .then(res => {
           getSchedule();
@@ -87,7 +87,7 @@ function ScheduleForm() {
   if (scheduleData.length == 0) {
     return (
       <>
-        <ScrollView style={{ width: '100%' }}>
+        <ScrollView style={{width: '100%'}}>
           <View style={styles.tasksWrapper}>
             <View style={styles.header}>
               <Text style={styles.sectionTitle}>일정</Text>
@@ -100,7 +100,7 @@ function ScheduleForm() {
                 alignItems: 'center',
                 marginTop: '80%',
               }}>
-              <Text style={{ color: 'black' }}>일정 없습니다</Text>
+              <Text style={{color: 'black'}}>일정 없습니다</Text>
             </View>
           </View>
         </ScrollView>
@@ -110,7 +110,7 @@ function ScheduleForm() {
 
   return (
     <>
-      <ScrollView style={{ width: '100%' }}>
+      <ScrollView style={{width: '100%'}}>
         <View style={styles.container}>
           <View style={styles.tasksWrapper}>
             <View style={styles.header}>
