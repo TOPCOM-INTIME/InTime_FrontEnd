@@ -13,24 +13,26 @@ export function LogContextProvider({children}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(1);
         const fetchedPattern = await axios.get(
           `${API_URL}/api/readypatterns/origin`,
           {
             headers: {Authorization: user},
           },
         );
-        console.log('콘텍스트 패턴', fetchedPattern.data);
         setPatterns(fetchedPattern.data);
+        console.log(2);
         const fetchedGroup = await axios.get(
           `${API_URL}/api/groups-with-patterns/all`,
           {
             headers: {Authorization: user},
           },
         );
-        console.log('콘텍스트 그룹', fetchedGroup.data);
+        console.log(3);
         setPatternGroups(fetchedGroup.data);
       } catch (err) {
-        console.error(err);
+        console.error('로그 컨텍스트 에러', err);
+        console.dir(err);
         setPatternGroups([]);
       }
     };
