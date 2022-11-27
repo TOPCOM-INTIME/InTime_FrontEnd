@@ -8,27 +8,30 @@ import {
   Text,
   StyleSheet,
   Keyboard,
+  ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import ButtonCarTime from '../components/ButtonCarTime';
 import SwitchSelector from 'react-native-switch-selector';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import BusTimeItem from '../components/BusTimeItem';
 
-function CarShowTime({data, setData, busTime, setBus}) {
+function CarShowTime({data, setData, busTime, setBus, OdsayData}) {
   const {sourceName, destName} = data;
   const [isCar, setisCar] = useState();
-  // console.log('쇼타임', data);
+  // console.log('쇼타임', OdsayData);
   // console.log('Find 버튼 누르고 받은 데이터', data);
-
+  const [selectedItem, setselectedItem] = useState();
   const Switchoptions = [
     {
       value: false,
       label: '차',
-      // customIcon: <Icon name={'directions-bus'} size={30} color={'black'} />,
+      customIcon: <Icon name={'directions-car'} size={30} color={'black'} />,
     },
     {
       value: true,
-      label: '버스',
-      // customIcon: <Icon name={'directions-car'} size={30} color={'black'} />,
+      label: '대중 교통',
+      customIcon: <Icon name={'directions-bus'} size={30} color={'black'} />,
     },
   ];
 
@@ -38,7 +41,7 @@ function CarShowTime({data, setData, busTime, setBus}) {
     minute: 0,
   };
 
-  function Time(date) {
+  function setTime(date) {
     let totalTime = date / 1000;
     showTime.hour = parseInt(totalTime / 3600);
     showTime.leftmin = totalTime % 3600;
@@ -47,18 +50,10 @@ function CarShowTime({data, setData, busTime, setBus}) {
 
   function PrintTime() {
     if (isCar) {
-      Time(data.endTime - busTime);
-      if (showTime.hour > 0) {
-        return (
-          <Text style={styles.text}>
-            {showTime.hour}시간 {showTime.min}분 걸림
-          </Text>
-        );
-      } else {
-        return <Text style={styles.text}>{showTime.min}분 걸림</Text>;
-      }
+      OdsayData.map(item => setTime(item.totalTime));
     } else {
-      Time(data.endTime - data.startTime);
+      OdsayData.map(item => setTime(item.totalTime));
+      setTime(data.endTime - data.startTime);
       if (showTime.hour > 0) {
         return (
           <Text style={styles.text}>
@@ -71,38 +66,59 @@ function CarShowTime({data, setData, busTime, setBus}) {
     }
   }
 
+  const selectItem = async item => {
+    setselectedItem(OdsayData.indexOf(item));
+    let BUSTime = new Date(data.endTime);
+    BUSTime.setMinutes(BUSTime.getMinutes() - item.info.totalTime);
+    setBus(BUSTime);
+  };
+
   return (
     <>
-      <SwitchSelector
-        options={Switchoptions}
-        initial={0}
-        selectedColor={'white'}
-        selectedIconColor={'white'}
-        buttonColor={'#ED3648'}
-        borderColor={'#ED3648'}
-        borderWidth={1}
-        hasPadding
-        onPress={value => setisCar(value)}
-      />
+      <View style={{backgroundColor: 'white'}}>
+        <SwitchSelector
+          options={Switchoptions}
+          initial={0}
+          selectedColor={'white'}
+          selectedIconColor={'white'}
+          buttonColor={'#ED3648'}
+          borderColor={'#ED3648'}
+          borderWidth={1}
+          hasPadding
+          onPress={value => setisCar(value)}
+        />
 
-      <KeyboardAvoidingView
-        style={styles.keyboardAvoidingView}
-        behavior={Platform.select({ios: 'padding'})}>
-        <SafeAreaView style={styles.fullscreen}>
-          <Text style={styles.text}>출발지: {sourceName}</Text>
-          <Text style={styles.text}>도착지: {destName}</Text>
-          {PrintTime()}
-          <View style={styles.form}>
-            <ButtonCarTime
-              data={data}
-              setData={setData}
-              busTime={busTime}
-              setBus={setBus}
-              isCar={!isCar}
-            />
-          </View>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
+        <Text style={styles.text}>출발지: {sourceName}</Text>
+        <Text style={styles.text}>도착지: {destName}</Text>
+      </View>
+      <View style={{backgroundColor: 'white'}}>{PrintTime()}</View>
+      <ScrollView style={{width: '100%'}}>
+        {isCar &&
+          OdsayData.map(item => (
+            <View key={OdsayData.indexOf(item)} style={styles.container}>
+              <TouchableOpacity onPress={() => selectItem(item)}>
+                <BusTimeItem
+                  key={OdsayData.indexOf(item)}
+                  id={OdsayData.indexOf(item)}
+                  Busdata={item}
+                  busTime={busTime}
+                  setBus={setBus}
+                  data={data}
+                  selectedItem={selectedItem}
+                />
+              </TouchableOpacity>
+            </View>
+          ))}
+      </ScrollView>
+      <View style={styles.buttons}>
+        <ButtonCarTime
+          data={data}
+          setData={setData}
+          busTime={busTime}
+          setBus={setBus}
+          isCar={!isCar}
+        />
+      </View>
     </>
   );
 }
@@ -118,13 +134,35 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 32,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: 'black',
   },
   form: {
     marginTop: 64,
     width: '100%',
     paddingHorizontal: 16,
+    backgroundColor: 'white',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  tasksWrapper: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  sectionTitle: {
+    fontSize: 24,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  button: {
+    flexDirection: 'row-reverse',
+    margin: 15,
   },
 });
 
