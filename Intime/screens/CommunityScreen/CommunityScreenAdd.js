@@ -97,8 +97,16 @@ function CommunityScreenAdd() {
                 isSearch ?
                     <View>
                         <View>
-                            <TextInput style={{ borderWidth: 1, margin: 3 }} value={word} onChangeText={onChangeInput} />
-                            <Button color="#ff5c5c" title="닉네임 검색" onPress={onSubmit} />
+                            <TextInput
+                                style={{ borderWidth: 2, margin: 3, borderRadius: 5, borderColor: 'pink' }}
+                                value={word}
+                                onChangeText={onChangeInput}
+                                placeholder="닉네임을 입력하세요."
+                                placeholderTextColor='gray'
+                            />
+                            <View>
+                                <Button color="#ff5c5c" title="닉네임 검색" onPress={onSubmit} />
+                            </View>
                         </View>
                         {list.length > 0 ?
                             <View><ScrollView>{list.map(user => <View key={user.id}>
@@ -142,12 +150,15 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        borderColor: '#ff5c5c',
         borderRadius: 6,
         borderWidth: 1,
         margin: 2,
     },
     listText: {
         color: 'black',
+        fontWeight: 'bold',
+        fontSize: 18,
         paddingHorizontal: 10,
         paddingVertical: 10,
     },

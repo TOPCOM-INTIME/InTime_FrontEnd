@@ -11,18 +11,35 @@ function CommunityScreenRequestList() {
         setList(list);
     }
 
+    const addPush = () => {
+        Alert.alert('수락 완료', '친구 목록이 추가되었어요.')
+    }
+
+    const refusePush = () => {
+        Alert.alert('거절', '거절되었어요.')
+    }
+
+    //최초에 API불러와야함..
     return (
         <View>
             {list.length > 0 ?
                 <View>{list.map(user => <View key={user}>
                     <View>
                         <ScrollView>
-                            <Text style={styles.listText}>{user}</Text>
-                            <View style={{ margin: 5 }}>
-                                <Button color='pink' title="수락" />
-                            </View>
-                            <View style={{ margin: 5 }}>
-                                <Button color='pink' title="거절" />
+                            <View style={styles.requestList}>
+                                <Text style={styles.listText}>{user}</Text>
+                                <View style={{
+                                    justifyContent: 'flex-end',
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                }}>
+                                    <View style={{ marginHorizontal: 3, marginVertical: 5, }}>
+                                        <Button color='pink' title="수락" onPress={addPush} />
+                                    </View>
+                                    <View style={{ margin: 5 }}>
+                                        <Button color='pink' title="거절" onPress={refusePush} />
+                                    </View>
+                                </View>
                             </View>
                         </ScrollView>
                     </View>
@@ -30,24 +47,23 @@ function CommunityScreenRequestList() {
 
                 </View> :
                 <View><Text>받은요청이 없습니다.</Text></View>}
-            <View><Button title="새로고침" onPress={getList}></Button></View>
+            <View style={{}}>
+                <Button title="새로고침" onPress={getList}></Button>
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    // button: {
-    //     opacity: isSearch ? 0.1 : 0.7,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     borderRadius: 5,
-    //     flex: 1,
-    //     backgroundColor: '#ff5c5c'
-    // },
-    buttonarea: {
+    requestList: {
         display: 'flex',
         flexDirection: 'row',
-        // justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        borderColor: '#ff5c5c',
+        borderWidth: 1,
+        borderRadius: 7,
+        marginHorizontal: 7,
+        marginVertical: 4,
     },
     iconButton: {
         paddingVertical: 10,
@@ -63,6 +79,8 @@ const styles = StyleSheet.create({
     },
     listText: {
         color: 'black',
+        fontWeight: 'bold',
+        fontSize: 18,
         paddingHorizontal: 10,
         paddingVertical: 10,
     },
