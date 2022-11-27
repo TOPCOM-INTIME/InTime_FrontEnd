@@ -18,6 +18,7 @@ function CommunityScreenAdd() {
         setPhase('loading')
         console.log('word', word)
         const list = [{ name: "mike", id: '1' }, { name: "john", id: '2' }, { name: "john1", id: '3' },]
+        // const list = []
         setList(list);
         setPhase('done')
     }
@@ -124,7 +125,12 @@ function CommunityScreenAdd() {
                                         <Button color='pink' title="친구 추가" onPress={() => onPressSend(user.id)} />
                                     </View>
                                 </View>
-                            </View>)}</ScrollView></View> : phase !== "init" ? <View><Text style={{ color: "black" }}>결과가 없습니다.</Text></View> : null}
+                            </View>)}</ScrollView></View> : phase !== "init" ?
+                                <View style={{ marginTop: '50%', alignItems: 'center' }}>
+                                    <Text style={{ color: "gray", fontSize: 20, fontWeight: 'bold' }}>
+                                        검색 결과가 없습니다.
+                                    </Text>
+                                </View> : null}
                     </View>
                     :
                     <View>

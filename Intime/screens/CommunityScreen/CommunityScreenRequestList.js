@@ -48,8 +48,17 @@ function CommunityScreenRequestList() {
                 </View>)}
 
                 </View> :
-                <View><Text>받은요청이 없습니다.</Text></View>}
-            <View style={{}}>
+                <View style={{ marginTop: '50%', alignItems: 'center' }}>
+                    <Text style={{ color: "gray", fontSize: 20, fontWeight: 'bold' }}>
+                        받은 요청이 없습니다.
+                    </Text>
+                </View>}
+            <View style={{
+                marginTop: '50%',
+                justifyContent: 'flex-end',
+                display: 'flex',
+                flexDirection: 'column',
+            }}>
                 <Button title="새로고침" onPress={getList}></Button>
             </View>
         </View>
