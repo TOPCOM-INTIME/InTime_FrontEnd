@@ -12,10 +12,12 @@ function CommunityScreenRequestList() {
     }
 
     const addPush = () => {
+        //수락 post
         Alert.alert('수락 완료', '친구 목록이 추가되었어요.')
     }
 
     const refusePush = () => {
+        //거절 post
         Alert.alert('거절', '거절되었어요.')
     }
 

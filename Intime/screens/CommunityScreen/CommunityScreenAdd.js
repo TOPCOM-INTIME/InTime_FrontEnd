@@ -4,6 +4,7 @@ import { StyleSheet, ScrollView, View, Text, Button, TouchableOpacity, TextInput
 import { useNavigation } from '@react-navigation/native';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 import RequestList from './CommunityScreenRequestList';
+import Icon from 'react-native-vector-icons';
 
 function CommunityScreenAdd() {
     const [word, setWord] = useState('')
@@ -101,7 +102,7 @@ function CommunityScreenAdd() {
                                 display: 'flex',
                                 flexDirection: 'row',
                             }}>
-                                <View style={{ flex: 5, margin: 2 }}>
+                                <View style={{ flex: 5, margin: 1 }}>
                                     <TextInput
                                         style={{ borderWidth: 2, margin: 3, borderRadius: 5, borderColor: 'pink' }}
                                         value={word}
