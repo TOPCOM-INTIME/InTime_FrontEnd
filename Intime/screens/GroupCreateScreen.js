@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -9,72 +9,70 @@ import {
   Alert,
   Text,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import WriteHeader from '../components/WriteHeader';
 import WriteEditor from '../components/WriteEditor';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Patterns from '../components/Patterns';
-import { useLogContext } from '../contexts/LogContext';
+import {useLogContext} from '../contexts/LogContext';
 import axios from 'axios';
-import { useUserContext } from '../contexts/UserContext';
-import { API_URL } from '@env';
+import {useUserContext} from '../contexts/UserContext';
+import {API_URL} from '@env';
 
-function GroupCreateScreen({ navigation, route }) {
-  const { user, setUser } = useUserContext();
-  const { patterns, setPatterns, patternGroups, setPatternGroups } =
+function GroupCreateScreen({navigation, route}) {
+  const {user, setUser} = useUserContext();
+  const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
   const [group, setGroup] = useState(route.params?.group.patterns || []);
   const [name, setName] = useState(route.params?.group.name || '');
   const [loading, setLoading] = useState(false);
 
-  console.log('스크린', group);
-  console.log('name', name);
   const groupCreateHandler = async () => {
+    if (group.length === 0) {
+      Alert.alert('실패', '패턴을 등록해야 합니다.');
+      return;
+    }
+    if (name === '') {
+      Alert.alert('실패', '이름을 등록해야 합니다.');
+      return;
+    }
     setLoading(true);
-    const groupPattern = group.map((item, index) => {
-      return { name: item.name, orderInGroup: index + 1, time: item.time };
-    });
+    const groupPattern = group.map(item => item.id);
+    console.log(groupPattern);
     try {
       if (route.params?.group) {
         await axios.put(
-          `${API_URL}/api/update-group-name/groupId=${route.params.group.id}`,
-          { name },
+          `${API_URL}/api/update-group/groupId=${route.params.group.id}`,
+          {name, patterns_Ids: groupPattern},
           {
-            headers: { Authorization: user },
+            headers: {Authorization: user},
           },
         );
-        // await axios.put(
-        //   `http://175.45.204.122:8000//api/update-group/groupId=${route.params.group.id}`,
-        //   groupPattern,
-        //   {
-        //     headers: {Authorization: user},
-        //   },
-        // );
       } else {
-        console.log(1);
         const res = await axios.post(
           `${API_URL}/api/patterngroup`,
-          { name },
+          {name},
           {
-            headers: { Authorization: user },
+            headers: {Authorization: user},
           },
         );
         console.log(res.data);
         const groupId = res.data.data;
         await axios.post(
           `${API_URL}/api/PatternsWithGroup/groupId=${groupId}`,
-          groupPattern,
+          {patterns_Ids: groupPattern},
           {
-            headers: { Authorization: user },
+            headers: {Authorization: user},
           },
         );
       }
       const fetchedGroup = await axios.get(
         `${API_URL}/api/groups-with-patterns/all`,
         {
-          headers: { Authorization: user },
+          headers: {Authorization: user},
         },
       );
+      console.log(fetchedGroup.data);
       setPatternGroups(fetchedGroup.data);
     } catch (err) {
       console.error(err);

@@ -19,7 +19,6 @@ export function LogContextProvider({children}) {
             headers: {Authorization: user},
           },
         );
-        console.log('콘텍스트 패턴', fetchedPattern.data);
         setPatterns(fetchedPattern.data);
         const fetchedGroup = await axios.get(
           `${API_URL}/api/groups-with-patterns/all`,
@@ -27,10 +26,10 @@ export function LogContextProvider({children}) {
             headers: {Authorization: user},
           },
         );
-        console.log('콘텍스트 그룹', fetchedGroup.data);
         setPatternGroups(fetchedGroup.data);
       } catch (err) {
-        console.error(err);
+        console.error('로그 컨텍스트 에러', err);
+        console.dir(err);
         setPatternGroups([]);
       }
     };
