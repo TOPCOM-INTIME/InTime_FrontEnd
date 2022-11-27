@@ -97,15 +97,22 @@ function CommunityScreenAdd() {
                 isSearch ?
                     <View>
                         <View>
-                            <TextInput
-                                style={{ borderWidth: 2, margin: 3, borderRadius: 5, borderColor: 'pink' }}
-                                value={word}
-                                onChangeText={onChangeInput}
-                                placeholder="닉네임을 입력하세요."
-                                placeholderTextColor='gray'
-                            />
-                            <View>
-                                <Button color="#ff5c5c" title="닉네임 검색" onPress={onSubmit} />
+                            <View style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}>
+                                <View style={{ flex: 5, margin: 2 }}>
+                                    <TextInput
+                                        style={{ borderWidth: 2, margin: 3, borderRadius: 5, borderColor: 'pink' }}
+                                        value={word}
+                                        onChangeText={onChangeInput}
+                                        placeholder="닉네임을 입력하세요."
+                                        placeholderTextColor='gray'
+                                    />
+                                </View>
+                                <View style={{ flex: 1, margin: 2 }}>
+                                    <Button color="#ff5c5c" title="닉네임 검색" onPress={onSubmit} />
+                                </View>
                             </View>
                         </View>
                         {list.length > 0 ?
