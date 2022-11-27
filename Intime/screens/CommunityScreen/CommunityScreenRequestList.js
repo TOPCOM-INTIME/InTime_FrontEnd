@@ -7,7 +7,7 @@ function CommunityScreenRequestList() {
 
     const getList = () => {
         //통신 요청 리스트 가져옴
-        const list = ["mike", "bob"]
+        const list = ["mike", "bob", "Kim"]
         setList(list);
     }
 
