@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Pressable, Text, Platform} from 'react-native';
+import { StyleSheet, View, Pressable, Text, Platform } from 'react-native';
 import TransparentCircleButton from './TransparentCircleButton';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 function ScheduleAddButton() {
   const navigation = useNavigation();

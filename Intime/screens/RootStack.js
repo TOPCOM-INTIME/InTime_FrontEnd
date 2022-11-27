@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTab from './MainTab';
 import SignInScreen from './SignInScreen';
 import GroupCreateScreen from './GroupCreateScreen';
+import CommunityScreenAdd from './CommunityScreen/CommunityScreenAdd';
 import PatternCreateScreen from './PatternCreateScreen';
 import NickNameScreen from './NickNameScreen';
 import authStorage from '../stroages/authStorage';
@@ -58,6 +59,11 @@ function RootStack() {
           <Stack.Screen
             name="CreateGroup"
             component={GroupCreateScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="CommunityScreenAdd"
+            component={CommunityScreenAdd}
             options={{headerShown: false}}
           />
           <Stack.Screen
