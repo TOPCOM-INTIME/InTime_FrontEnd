@@ -1,21 +1,23 @@
-import React, { useEffect } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useEffect} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTab from './MainTab';
 import SignInScreen from './SignInScreen';
 import GroupCreateScreen from './GroupCreateScreen';
 import CommunityScreenAdd from './CommunityScreen/CommunityScreenAdd';
 import PatternCreateScreen from './PatternCreateScreen';
+import NickNameScreen from './NickNameScreen';
 import authStorage from '../stroages/authStorage';
-import { useUserContext } from '../contexts/UserContext';
+import {useUserContext} from '../contexts/UserContext';
 import ScheduleScreen from './ScheduleStack';
-import { API_URL } from '@env';
+import PasswordScreen from './PasswordScreen';
+import {API_URL} from '@env';
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
-  const { user, setUser } = useUserContext();
+  const {user, setUser} = useUserContext();
 
   useEffect(() => {
     async function fetchData() {
@@ -25,8 +27,8 @@ function RootStack() {
         const deviceToken = await messaging().getToken();
         await axios.put(
           `${API_URL}/api/device-token`,
-          { deviceToken },
-          { headers: { Authorization: data } },
+          {deviceToken},
+          {headers: {Authorization: data}},
         );
       } catch (e) {
         return;
@@ -42,34 +44,44 @@ function RootStack() {
           <Stack.Screen
             name="MainTab"
             component={MainTab}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="write"
             component={PatternCreateScreen}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="ScheduleScreen"
             component={ScheduleScreen}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="CreateGroup"
             component={GroupCreateScreen}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="CommunityScreenAdd"
             component={CommunityScreenAdd}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="NickName"
+            component={NickNameScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Password"
+            component={PasswordScreen}
+            options={{headerShown: false}}
           />
         </>
       ) : (
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
       )}
     </Stack.Navigator>

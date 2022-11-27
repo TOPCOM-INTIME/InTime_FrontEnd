@@ -1,11 +1,13 @@
 import axios from 'axios';
-import React, {useCallback, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Pressable, Text, StyleSheet, View, Linking, Alert} from 'react-native';
 import {useUserContext} from '../contexts/UserContext';
 import authStorage from '../stroages/authStorage';
 import BackgroundService from 'react-native-background-actions';
 import PushNotification from 'react-native-push-notification';
 import messaging from '@react-native-firebase/messaging';
+import {AppBar, Button, Snackbar, ListItem} from '@react-native-material/core';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const options = {
   taskName: '준비',
@@ -28,7 +30,7 @@ function handleOpenURL(evt) {
 
 Linking.addEventListener('url', handleOpenURL);
 
-function HomeStack() {
+function InfoScreen({navigation}) {
   const {user, setUser} = useUserContext();
   const logoutHandler = () => {
     authStorage.remove();
@@ -123,34 +125,28 @@ function HomeStack() {
   };
 
   return (
-    <View style={styles.fullscreen}>
-      <Text>홈</Text>
-      <Pressable onPress={logoutHandler} style={styles.button}>
-        <Text style={styles.text}>로그아웃</Text>
-      </Pressable>
-      <Pressable onPress={testHandler} style={styles.button}>
-        <Text style={styles.text}>테스트</Text>
-      </Pressable>
-      <Pressable onPress={puttonPressHandler} style={styles.button}>
-        <Text style={styles.text}>10초 뒤 알람</Text>
-      </Pressable>
-      <Pressable onPress={pushHandler} style={styles.button}>
-        <Text style={styles.text}>알람 예약</Text>
-      </Pressable>
-      <Pressable onPress={tokenHandler} style={styles.button}>
-        <Text style={styles.text}>Get Token</Text>
-      </Pressable>
-      {/* <Pressable onPress={alarmHandler} style={styles.button}>
-        <Text style={styles.text}>알람</Text>
-      </Pressable>
-      <Pressable onPress={stopHandler} style={styles.button}>
-        <Text style={styles.text}>멈춰!</Text>
-      </Pressable> */}
-    </View>
+    <>
+      <AppBar title="내 정보" centerTitle={true} />
+      <ListItem
+        title="로그아웃"
+        onPress={logoutHandler}
+        trailing={props => <Icon name="chevron-right" {...props} />}
+      />
+      <ListItem
+        title="닉네임 변경"
+        onPress={() => navigation.push('NickName')}
+        trailing={props => <Icon name="chevron-right" {...props} />}
+      />
+      <ListItem
+        title="비밀번호 변경"
+        onPress={() => navigation.push('Password')}
+        trailing={props => <Icon name="chevron-right" {...props} />}
+      />
+    </>
   );
 }
 
-export default HomeStack;
+export default InfoScreen;
 
 const styles = StyleSheet.create({
   fullscreen: {
