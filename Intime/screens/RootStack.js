@@ -4,9 +4,11 @@ import MainTab from './MainTab';
 import SignInScreen from './SignInScreen';
 import GroupCreateScreen from './GroupCreateScreen';
 import PatternCreateScreen from './PatternCreateScreen';
+import NickNameScreen from './NickNameScreen';
 import authStorage from '../stroages/authStorage';
 import {useUserContext} from '../contexts/UserContext';
 import ScheduleScreen from './ScheduleStack';
+import PasswordScreen from './PasswordScreen';
 import {API_URL} from '@env';
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
@@ -56,6 +58,16 @@ function RootStack() {
           <Stack.Screen
             name="CreateGroup"
             component={GroupCreateScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="NickName"
+            component={NickNameScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Password"
+            component={PasswordScreen}
             options={{headerShown: false}}
           />
         </>
