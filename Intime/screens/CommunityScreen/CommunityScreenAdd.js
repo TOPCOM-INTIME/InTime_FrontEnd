@@ -5,8 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 import RequestList from './CommunityScreenRequestList';
 import Icon from 'react-native-vector-icons';
+import axios from 'axios';
+import { API_URL } from '@env';
+import { useUserContext } from '../../contexts/UserContext';
 
 function CommunityScreenAdd() {
+    const { user } = useUserContext();
     const [word, setWord] = useState('')
     const [isSearch, setisSearch] = useState(true);
     const [list, setList] = useState([])
@@ -38,7 +42,23 @@ function CommunityScreenAdd() {
 
     const onPressSend = (uId) => {
         // uId로 통신 try catch
+        const data = [{ username: "치킨" }]
+        try {
+            const res = axios.post(
+                `${API_URL}/friends/request`,
+                {
+                    headers: { Authorization: user },
+                    username: data.username,
+                },
+            );
+            console.log('res', res)
+        } catch (err) {
+            // Alert.alert('실패', '중복되는 닉네임 입니다.');
+            // setLoading(false);
+            sconsole.error(err);
+        }
         Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
+        console.log('data', data.username)
         console.log('uId', uId)
     }
 

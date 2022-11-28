@@ -1,14 +1,32 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView, View, Text, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
-
+import axios from 'axios';
+import { API_URL } from '@env';
+import { useUserContext } from '../../contexts/UserContext';
 
 function CommunityScreenRequestList() {
+    const { user } = useUserContext();
     const [list, setList] = useState([])
 
     const getList = () => {
         //통신 요청 리스트 가져옴
-        const list = ["mike", "bob", "Kim"]
-        setList(list);
+        try {
+            const res = axios.get(
+                `${API_URL}/friends/request`,
+                {
+                    headers: { Authorization: user },
+                },
+            );
+            console.log('res', res)
+            console.log('res', res.username)
+            setList(res);
+        } catch (err) {
+            // Alert.alert('실패', '중복되는 닉네임 입니다.');
+            // setLoading(false);
+            console.error(err);
+        }
+        // const list = ["mike", "bob", "Kim"]
+        // setList(list);
     }
 
     const addPush = () => {

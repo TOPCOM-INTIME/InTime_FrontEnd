@@ -1,14 +1,16 @@
 import CommunityScreenAdd from './CommunityScreenAdd.js';
 import CommunityScreenList from './CommunityScreenList.js';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
-
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, ScrollView, View, Text, Button, Icon } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Button, Alert } from 'react-native';
+import axios from 'axios';
+import { API_URL } from '@env';
+import { useUserContext } from '../../contexts/UserContext';
 
 function CommunityScreen() {
+    const { user } = useUserContext();
     const navigation = useNavigation();
-
     const [userList, setUserList] = useState([]);
 
     const onSubmit = () => {
@@ -17,10 +19,24 @@ function CommunityScreen() {
 
     useEffect(() => {
         //API 호출
-        const userList = ["mike", "bob", "John", "Henderson", "1", "2", "3", "4", "5", "6", "7", "8"];
-        //const userList = [];
-        setUserList(userList)
+        try {
+            const res = axios.get(
+                `${API_URL}/friends`,
+                {
+                    headers: { Authorization: user },
+                },
+            );
+            console.log('res', res);
+            // setUserList(res.username)
+        } catch (err) {
+            // Alert.alert('실패', '중복되는 닉네임 입니다.');
+            console.error(err);
+        }
+        //const userList = ["mike", "bob", "John", "Henderson", "1", "2", "3", "4", "5", "6", "7", "8"];
+        const userList = [];
+        // setUserList(userList)
     }, [])
+
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.tasksWrapper}>

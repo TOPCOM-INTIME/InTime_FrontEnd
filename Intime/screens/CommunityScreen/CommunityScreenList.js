@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, ScrollView, View, Text, Button} from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Button } from 'react-native';
 
 function CommunityScreenList(props) {
-  const {userList} = props;
+  const { userList } = props;
   console.log(userList);
   return (
     <View
@@ -20,7 +20,7 @@ function CommunityScreenList(props) {
             alignItems: 'center',
             marginTop: '65%',
           }}>
-          <Text style={{color: 'black'}}>등록된 친구가 없습니다.</Text>
+          <Text style={{ color: 'black' }}>등록된 친구가 없습니다.</Text>
         </View>
       ) : (
         userList.map(user => (
