@@ -8,22 +8,25 @@ function CommunityScreenRequestList() {
     const { user } = useUserContext();
     const [list, setList] = useState([])
 
-    const getList = () => {
+    const getList = async () => {
         //통신 요청 리스트 가져옴
         try {
-            const res = axios.get(
+            const res = await axios.get(
                 `${API_URL}/friends/request`,
                 {
-                    headers: { Authorization: user },
+                    headers: { Authorization: user }
                 },
             );
-            console.log('res', res)
-            console.log('res', res.username)
-            setList(res);
+            // const obj = JSON.parse(res.data);
+            // console.log('obj', obj.username)
+
+            console.log('res', res.data)
+            console.log('res', res.data)
+            // setList(res.data.username);
         } catch (err) {
             // Alert.alert('실패', '중복되는 닉네임 입니다.');
             // setLoading(false);
-            console.error(err);
+            console.error('err', err);
         }
         // const list = ["mike", "bob", "Kim"]
         // setList(list);

@@ -21,7 +21,7 @@ function CommunityScreenAdd() {
         // 통신 word를 쏴줌 // try catch
         setPhase('loading')
         console.log('word', word)
-        const list = [{ name: "mike", id: '1' }, { name: "john", id: '2' }, { name: "john1", id: '3' },]
+        const list = [{ name: "치킨", id: '1' }, { name: "피자", id: '2' }]
         // const list = []
         setList(list);
         setPhase('done')
@@ -40,26 +40,25 @@ function CommunityScreenAdd() {
         navigation.pop();
     };
 
-    const onPressSend = (uId) => {
+    const onPressSend = (name) => {
         // uId로 통신 try catch
-        const data = [{ username: "치킨" }]
+        // const data = { username: "치킨" }
         try {
-            const res = axios.post(
-                `${API_URL}/friends/request`,
+            const res = axios.post(`${API_URL}/friends/request`, name,
                 {
-                    headers: { Authorization: user },
-                    username: data.username,
-                },
+                    headers: { Authorization: user }
+                }
             );
             console.log('res', res)
+            Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
         } catch (err) {
-            // Alert.alert('실패', '중복되는 닉네임 입니다.');
-            // setLoading(false);
-            sconsole.error(err);
+            Alert.alert('실패', '친구 신청 실패.');
+            console.error('err', err);
+            throw err
         }
-        Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
-        console.log('data', data.username)
-        console.log('uId', uId)
+        // Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
+        console.log('apiurl', API_URL)
+        console.log('data', name)
     }
 
 
@@ -142,7 +141,7 @@ function CommunityScreenAdd() {
                                 <View style={styles.addList}>
                                     <Text style={styles.listText}>{user.name}</Text>
                                     <View style={{ margin: 5 }}>
-                                        <Button color='pink' title="친구 추가" onPress={() => onPressSend(user.id)} />
+                                        <Button color='pink' title="친구 추가" onPress={() => onPressSend(user.name)} />
                                     </View>
                                 </View>
                             </View>)}</ScrollView></View> : phase !== "init" ?
