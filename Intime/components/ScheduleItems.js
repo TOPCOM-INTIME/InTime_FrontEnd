@@ -24,24 +24,35 @@ const ScheduleItem = props => {
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const endTime = new Date(props.data.endTime);
-
+  // console.log('endTime', endTime);
   function print() {
     if (status === 'ING') {
       return <Text style={{color: 'black'}}>진행중</Text>;
     } else if (status === 'PRE') {
       return <Text style={{color: 'black'}}>예정</Text>;
+    } else if (status === 'END') {
+      return <Text style={{color: 'black'}}>종료</Text>;
     }
   }
 
   useEffect(() => {
     const NOW = new Date();
     const timer = date - NOW;
-    if (date <= NOW) {
+    const ENDTIMER = endTime - NOW;
+    if (endTime <= NOW) {
+      setStaus('END');
+    } else if (date <= NOW) {
       setStaus('ING');
-    } else {
-      let timeout = setTimeout(() => setStaus('ING'), timer);
+      let timeout = setTimeout(() => setStaus('END'), ENDTIMER);
       return () => {
         clearTimeout(timeout);
+      };
+    } else {
+      let timeout = setTimeout(() => setStaus('ING'), timer);
+      let timeout2 = setTimeout(() => setStaus('END'), ENDTIMER);
+      return () => {
+        clearTimeout(timeout);
+        clearTimeout(timeout2);
       };
     }
   }, []);
