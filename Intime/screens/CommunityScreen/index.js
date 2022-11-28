@@ -19,19 +19,22 @@ function CommunityScreen() {
 
     useEffect(() => {
         //API 호출
-        try {
-            const res = axios.get(
-                `${API_URL}/friends`,
-                {
-                    headers: { Authorization: user },
-                },
-            );
-            console.log('res', res);
-            // setUserList(res.username)
-        } catch (err) {
-            // Alert.alert('실패', '중복되는 닉네임 입니다.');
-            console.error(err);
+        const listcall = async () => {
+            try {
+                const res = await axios.get(
+                    `${API_URL}/friends`,
+                    {
+                        headers: { Authorization: user },
+                    },
+                );
+                console.log('res', res);
+                // setUserList(res.username)
+            } catch (err) {
+                // Alert.alert('실패', '중복되는 닉네임 입니다.');
+                console.error(err);
+            }
         }
+        listcall();
         //const userList = ["mike", "bob", "John", "Henderson", "1", "2", "3", "4", "5", "6", "7", "8"];
         const userList = [];
         // setUserList(userList)

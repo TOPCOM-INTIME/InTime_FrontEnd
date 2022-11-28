@@ -14,19 +14,16 @@ function CommunityScreenRequestList() {
             const res = await axios.get(
                 `${API_URL}/friends/request`,
                 {
-                    headers: { Authorization: user }
+                    headers: { Authorization: user },
                 },
             );
-            // const obj = JSON.parse(res.data);
-            // console.log('obj', obj.username)
-
-            console.log('res', res.data)
-            console.log('res', res.data)
-            // setList(res.data.username);
+            console.log('res', res)
+            console.log('res', res.username)
+            setList(res);
         } catch (err) {
             // Alert.alert('실패', '중복되는 닉네임 입니다.');
             // setLoading(false);
-            console.error('err', err);
+            console.error(err);
         }
         // const list = ["mike", "bob", "Kim"]
         // setList(list);
