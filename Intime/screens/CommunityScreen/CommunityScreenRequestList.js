@@ -45,8 +45,6 @@ function CommunityScreenRequestList() {
             console.log('userid', userId);
         }
     }
-    //typeerror 콘솔로 확인해보고 데이터 넣기
-
     const refusePush = async (userId) => {
         //거절 delete
         try {

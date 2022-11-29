@@ -70,18 +70,21 @@ function CommunityScreenAdd() {
 
     const requestdel = async () => {
         try {
-            const res = await axios.delete(`${API_URL}/friends/request/17`,
+            const res = await axios.delete(`${API_URL}/friends`,
+                // { username: JSON.stringify(data) },
                 {
+                    data: {
+                        username: "Hamburger"
+                    },
                     headers: {
-                        Authorization: user
+                        Authorization: user,
                     }
                 }
-
             );
-            console.log('API', API_URL)
+            console.log(API_URL);
             console.log('res', res)
         } catch (err) {
-            console.log('API', API_URL)
+            console.log(API_URL);
             console.error('err', err);
         }
     }
