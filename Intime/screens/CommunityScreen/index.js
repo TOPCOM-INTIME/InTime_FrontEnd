@@ -21,14 +21,13 @@ function CommunityScreen() {
         //API 호출
         const listcall = async () => {
             try {
-                const res = await axios.get(
-                    `${API_URL}/friends`,
+                const res = await axios.get(`${API_URL}/friends`,
                     {
                         headers: { Authorization: user },
                     },
                 );
-                // console.log('res', res);
-                // setUserList(res.username)
+                console.log('res', res.data);
+                setUserList(res.data)
             } catch (err) {
                 // Alert.alert('실패', '중복되는 닉네임 입니다.');
                 console.error(err);

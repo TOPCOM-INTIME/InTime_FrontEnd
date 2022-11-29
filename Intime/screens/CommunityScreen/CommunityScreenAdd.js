@@ -17,17 +17,17 @@ function CommunityScreenAdd() {
     const [phase, setPhase] = useState('init'); // init, loading, done
     const navigation = useNavigation();
 
+    // 통신 word를 쏴줌 // try catch
+    // const list = [
+    //     { name: "몰라", id: '0' },
+    //     { name: "치킨", id: '1' },
+    //     { name: "피자", id: '2' },
+    //     { name: "길담배맛", id: '3' },
+    //     { name: "King", id: '4' },
+    //     { name: "123", id: '5' }
+    // ];
+    // const list = []
     const onSubmit = async () => {
-        // 통신 word를 쏴줌 // try catch
-        // const list = [
-        //     { name: "몰라", id: '0' },
-        //     { name: "치킨", id: '1' },
-        //     { name: "피자", id: '2' },
-        //     { name: "길담배맛", id: '3' },
-        //     { name: "King", id: '4' },
-        //     { name: "123", id: '5' }
-        // ];
-        // const list = []
         if (word === '') {
             Alert.alert('실패', '닉네임을 입력해주세요');
             return;
@@ -54,6 +54,7 @@ function CommunityScreenAdd() {
         // setList(list);
         setPhase('done')
     }
+
     const togglePage = () => {
         setisSearch(prev => !prev)
         console.log('isSearch', isSearch)
@@ -88,6 +89,10 @@ function CommunityScreenAdd() {
     const onPressSend = async (name) => {
         try {
             const res = await axios.post(`${API_URL}/friends/request?username=${name}`,
+                {
+                    body: null
+                }
+                ,
                 {
                     headers: {
                         Authorization: user

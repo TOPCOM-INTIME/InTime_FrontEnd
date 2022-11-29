@@ -4,6 +4,8 @@ import axios from 'axios';
 import { API_URL } from '@env';
 import { useUserContext } from '../../contexts/UserContext';
 
+
+//초기에 api호출 1번
 function CommunityScreenRequestList() {
     const { user } = useUserContext();
     const [list, setList] = useState([])
@@ -24,13 +26,42 @@ function CommunityScreenRequestList() {
         // setList(list);
     }
 
-    const addPush = () => {
+    const addPush = async (userId) => {
         //수락 post
-        Alert.alert('수락 완료', '친구 목록이 추가되었어요.')
+        try {
+            const res = await axios.put(`${API_URL}/friends/request/${userId}`,
+                {
+                    body: null
+                },
+                {
+                    headers: { Authorization: user, },
+                }
+            );
+            Alert.alert('수락 완료', '친구 목록이 추가되었어요.')
+            console.log('userid', userId);
+        } catch (err) {
+            Alert.alert('에러!', '에러가 발생 했어요.')
+            console.err(err);
+            console.log('userid', userId);
+        }
     }
+    //typeerror 콘솔로 확인해보고 데이터 넣기
 
-    const refusePush = () => {
-        //거절 post
+    const refusePush = async (userId) => {
+        //거절 delete
+        try {
+            const res = await axios.delete(`${API_URL}/friends/request/${userId}`,
+                {
+                    headers: { Authorization: user, },
+                }
+            );
+            Alert.alert('거절 완료', '거절되었어요.')
+            console.log('userid', userId);
+        } catch (err) {
+            Alert.alert('에러!', '에러가 발생 했어요.')
+            console.err(err);
+            console.log('userid', userId);
+        }
         Alert.alert('거절', '거절되었어요.')
     }
 
@@ -50,10 +81,10 @@ function CommunityScreenRequestList() {
                                     flexDirection: 'row',
                                 }}>
                                     <View style={{ marginHorizontal: 3, marginVertical: 5, }}>
-                                        <Button color='pink' title="수락" onPress={addPush} />
+                                        <Button color='pink' title="수락" onPress={() => addPush(user.id)} />
                                     </View>
                                     <View style={{ margin: 5 }}>
-                                        <Button color='pink' title="거절" onPress={refusePush} />
+                                        <Button color='pink' title="거절" onPress={() => refusePush(user.id)} />
                                     </View>
                                 </View>
                             </View>

@@ -24,8 +24,8 @@ function CommunityScreenList(props) {
         </View>
       ) : (
         userList.map(user => (
-          <View style={styles.list} key={user}>
-            <Text style={styles.titleText}>{user}</Text>
+          <View style={styles.list} key={user.username}>
+            <Text style={styles.titleText}>{user.username}</Text>
           </View>
         ))
       )}
