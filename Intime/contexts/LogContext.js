@@ -29,7 +29,6 @@ export function LogContextProvider({children}) {
         setPatternGroups(fetchedGroup.data);
       } catch (err) {
         console.error('로그 컨텍스트 에러', err);
-        console.dir(err);
         setPatternGroups([]);
       }
     };
