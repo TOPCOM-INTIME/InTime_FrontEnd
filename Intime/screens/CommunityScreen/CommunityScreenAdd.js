@@ -95,7 +95,7 @@ function CommunityScreenAdd() {
                 }
             );
             console.log('res', res)
-            console.log('name', name)
+            console.log('name :', name)
             Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
         } catch (err) {
             console.log('name', name)
