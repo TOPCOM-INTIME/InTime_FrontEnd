@@ -7,22 +7,17 @@ import { useUserContext } from '../../contexts/UserContext';
 function CommunityScreenRequestList() {
     const { user } = useUserContext();
     const [list, setList] = useState([])
-
     const getList = async () => {
         //통신 요청 리스트 가져옴
         try {
             const res = await axios.get(
                 `${API_URL}/friends/request`,
                 {
-                    headers: { Authorization: user },
+                    headers: { Authorization: user, },
                 },
             );
-            console.log('res', res)
-            console.log('res', res.username)
-            setList(res);
+            setList(res.data);
         } catch (err) {
-            // Alert.alert('실패', '중복되는 닉네임 입니다.');
-            // setLoading(false);
             console.error(err);
         }
         // const list = ["mike", "bob", "Kim"]
@@ -39,15 +34,16 @@ function CommunityScreenRequestList() {
         Alert.alert('거절', '거절되었어요.')
     }
 
+    console.log(list)
     //최초에 API불러와야함..
     return (
         <View>
             {list.length > 0 ?
-                <View>{list.map(user => <View key={user}>
+                <View>{list.map(user => <View key={user.id}>
                     <View>
                         <ScrollView>
                             <View style={styles.requestList}>
-                                <Text style={styles.listText}>{user}</Text>
+                                <Text style={styles.listText}>{user.username}</Text>
                                 <View style={{
                                     justifyContent: 'flex-end',
                                     display: 'flex',

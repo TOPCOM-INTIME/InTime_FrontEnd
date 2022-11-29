@@ -27,7 +27,7 @@ function CommunityScreen() {
                         headers: { Authorization: user },
                     },
                 );
-                console.log('res', res);
+                // console.log('res', res);
                 // setUserList(res.username)
             } catch (err) {
                 // Alert.alert('실패', '중복되는 닉네임 입니다.');
