@@ -65,6 +65,7 @@ function CommunityScreenRequestList() {
 
     console.log(list)
     //최초에 API불러와야함..
+    //수락 또는 거절 이후 리스트 삭제
     return (
         <View>
             {list.length > 0 ?

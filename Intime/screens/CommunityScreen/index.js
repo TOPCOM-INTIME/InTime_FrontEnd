@@ -16,7 +16,7 @@ function CommunityScreen() {
     const onSubmit = () => {
         navigation.push('CommunityScreenAdd');
     };
-
+    //추가된 이후 새로고침 안되는 현상 존재
     useEffect(() => {
         //API 호출
         const listcall = async () => {
