@@ -20,6 +20,7 @@ function ScheduleScreen() {
     status: 'PRE',
   });
   const [busTime, setBus] = useState(0);
+  const [OdsayData, setOdsayData] = useState([]);
 
   const createChangeTextHandler = name => value => {
     setData({...data, [name]: value});
@@ -35,6 +36,8 @@ function ScheduleScreen() {
               setData={createChangeTextHandler}
               busTime={busTime}
               setBus={setBus}
+              OdsayData={OdsayData}
+              setOdsayData={setOdsayData}
             />
           )}
           options={{headerShown: false}}
@@ -57,6 +60,7 @@ function ScheduleScreen() {
               data={data}
               setData={createChangeTextHandler}
               busTime={busTime}
+              OdsayData={OdsayData}
               setBus={setBus}
             />
           )}

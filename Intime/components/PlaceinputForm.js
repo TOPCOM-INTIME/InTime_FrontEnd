@@ -21,7 +21,15 @@ import ScheduleSubmitButton from './ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
-function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
+function PlaceinputForm({
+  data,
+  setData,
+  setDate,
+  busTime,
+  setBus,
+  OdsayData,
+  setOdsayData,
+}) {
   // console.log('데이터', data);
   const navigation = useNavigation();
   const name = useRef();
@@ -57,12 +65,13 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
     setMode(currentMode);
   };
   const onSecondaryButtonPress = () => {
-    // \setData('time')(0);
+    setData('startTime')(0);
     navigation.pop();
   };
 
   const selectPress = () => {
-    if (data.time === 0) {
+    console.log(data);
+    if (data.startTime === 0) {
       Alert.alert('출발과 도착을 입력해라');
     } else {
       navigation.push('SelectPattern');
@@ -154,6 +163,8 @@ function PlaceinputForm({data, setData, setDate, busTime, setBus}) {
             setData={setData}
             busTime={busTime}
             setBus={setBus}
+            OdsayData={OdsayData}
+            setOdsayData={setOdsayData}
           />
           {isGroup && (
             <View style={{marginTop: 10}}>
