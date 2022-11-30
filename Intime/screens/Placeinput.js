@@ -17,7 +17,7 @@ import ScheduleSubmitButton from '../components/ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
-function Placeinput({data, setData, busTime, setBus}) {
+function Placeinput({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
   const {user, setUser} = useUserContext();
   const [loading, setLoading] = useState(false);
   return (
@@ -26,6 +26,8 @@ function Placeinput({data, setData, busTime, setBus}) {
       setData={setData}
       busTime={busTime}
       setBus={setBus}
+      OdsayData={OdsayData}
+      setOdsayData={setOdsayData}
     />
   );
 }
