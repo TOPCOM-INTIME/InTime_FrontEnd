@@ -75,7 +75,7 @@ function CommunityScreenList(props) {
         ))
       )
       }
-    </View >
+    </View>
   );
 }
 

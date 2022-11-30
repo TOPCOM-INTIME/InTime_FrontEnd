@@ -15,11 +15,13 @@ import ScheduleAddButton from './ScheduleAddButton';
 import ScheduleItem from './ScheduleItems';
 import {useUserContext} from '../contexts/UserContext';
 import BackgroundService from 'react-native-background-actions';
+import {useNavigation} from '@react-navigation/native';
 import {API_URL} from '@env';
 
 function ScheduleForm() {
   const {user, setUser} = useUserContext();
   const [scheduleData, setSchedule] = useState([]);
+  const navigation = useNavigation();
   const optionBack = {
     taskName: '준비',
     taskTitle: '준비할 시간입니다.',
@@ -40,6 +42,7 @@ function ScheduleForm() {
       const res = await axios.get(`${API_URL}/api/user/schedule/all`, {
         headers: {Authorization: user},
       });
+      // console.log('GET한 data:', res.data);
       setSchedule(res.data);
       // console.log('GET함');
     } catch (e) {
@@ -59,6 +62,11 @@ function ScheduleForm() {
     } catch (e) {
       console.log(`[DELETE_ERROR]${e}`);
     }
+  };
+
+  const onShortPress = item => {
+    // console.log(item);
+    navigation.push('ScheduleScreen', item);
   };
 
   const onLongClick = item => {
@@ -121,7 +129,8 @@ function ScheduleForm() {
               {scheduleData.map(item => (
                 <TouchableOpacity
                   key={item.id}
-                  onLongPress={() => onLongClick(item)}>
+                  onLongPress={() => onLongClick(item)}
+                  onPress={() => onShortPress(item)}>
                   <ScheduleItem data={item} />
                 </TouchableOpacity>
               ))}
