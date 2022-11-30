@@ -5,7 +5,7 @@ import {useUserContext} from '../contexts/UserContext';
 import authStorage from '../stroages/authStorage';
 import BackgroundService from 'react-native-background-actions';
 import PushNotification from 'react-native-push-notification';
-import messaging from '@react-native-firebase/messaging';
+
 import {AppBar, Button, Snackbar, ListItem} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -24,30 +24,12 @@ const options = {
   },
 };
 
-function handleOpenURL(evt) {
-  console.log(evt.url);
-}
-
-Linking.addEventListener('url', handleOpenURL);
-
 function InfoScreen({navigation}) {
   const {user, setUser} = useUserContext();
   const logoutHandler = () => {
     authStorage.remove();
     setUser(null);
   };
-
-  messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log(remoteMessage);
-  });
-
-  // Foreground 상태인 경우
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
-    return unsubscribe;
-  });
 
   const testHandler = async () => {
     const res = await axios.get('http://175.45.204.122:8000/api/user', {
@@ -117,11 +99,6 @@ function InfoScreen({navigation}) {
       /* Android Only Properties */
       repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
     });
-  };
-
-  const tokenHandler = async () => {
-    const fcmToken = await messaging().getToken();
-    console.log(fcmToken);
   };
 
   return (

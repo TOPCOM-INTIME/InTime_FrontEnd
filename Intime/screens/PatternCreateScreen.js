@@ -8,6 +8,8 @@ import axios from 'axios';
 import {useUserContext} from '../contexts/UserContext';
 import {useLogContext} from '../contexts/LogContext';
 import {API_URL} from '@env';
+import {AppBar, IconButton} from '@react-native-material/core';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function WriteScreen({navigation, route}) {
   const log = route.params?.log;
@@ -71,34 +73,36 @@ function WriteScreen({navigation, route}) {
   };
 
   return (
-    <SafeAreaView style={styles.block}>
-      <KeyboardAvoidingView
-        style={styles.avoidingView}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <WriteHeader
-          isEditing={!!log}
-          title={title}
-          minute={minute}
-          second={second}
-          onAskRemove={onAskRemove}
-          id={log?.id}
-        />
-        <WriteEditor
-          title={title}
-          minute={minute}
-          second={second}
-          onChangeTitle={setTitle}
-          onChangeMinute={setMinute}
-          onChangeSecond={value => {
-            if (+value >= 60) {
-              setSecond('59');
-            } else {
-              setSecond(value);
-            }
-          }}
-        />
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={styles.block}>
+        <KeyboardAvoidingView
+          style={styles.avoidingView}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          <WriteHeader
+            isEditing={!!log}
+            title={title}
+            minute={minute}
+            second={second}
+            onAskRemove={onAskRemove}
+            id={log?.id}
+          />
+          <WriteEditor
+            title={title}
+            minute={minute}
+            second={second}
+            onChangeTitle={setTitle}
+            onChangeMinute={setMinute}
+            onChangeSecond={value => {
+              if (+value >= 60) {
+                setSecond('59');
+              } else {
+                setSecond(value);
+              }
+            }}
+          />
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </>
   );
 }
 
