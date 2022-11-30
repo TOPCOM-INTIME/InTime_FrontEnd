@@ -32,7 +32,7 @@ function CommunityScreen() {
     }
 
     useEffect(() => {
-        if (isFocused) console.log('Focused!!');
+        if (isFocused) console.log('화면 리로드');
         listcall();
     }, [isFocused])
 
