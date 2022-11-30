@@ -19,7 +19,7 @@ function MainTab() {
         tabBarActiveTintColor: '#ee2f48',
       }}>
       <Tab.Screen
-        name="알람"
+        name="일정"
         component={ScheduleList}
         options={{
           tabBarIcon: ({color}) => <Icon name="home" size={24} color={color} />,
