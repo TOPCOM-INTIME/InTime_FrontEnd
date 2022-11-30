@@ -20,7 +20,7 @@ import FindButton from '../components/FindButton';
 import ScheduleSubmitButton from './ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
-
+import {API_URL} from '@env';
 function PlaceinputForm({
   data,
   setData,
@@ -29,8 +29,12 @@ function PlaceinputForm({
   setBus,
   OdsayData,
   setOdsayData,
+  checkGroup,
+  setcheckGroup,
+  friendList,
+  setfriendList,
 }) {
-  // console.log('데이터', data);
+  // console.log('데이터', checkGroup);
   const navigation = useNavigation();
   const name = useRef();
   const start = useRef();
@@ -38,6 +42,8 @@ function PlaceinputForm({
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [isGroup, setGroup] = useState(false);
+  const [nowDate, setcurrentDate] = useState(new Date());
+  const {user, setUser} = useUserContext();
 
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
@@ -59,6 +65,10 @@ function PlaceinputForm({
     setData('endTime')(setTime(currentDate));
   };
 
+  const TimeAlert = () => {
+    Alert.alert('오류', '지난 날짜는 설정할 수 없습니다');
+  };
+
   //DatePicker 출력
   const showMode = currentMode => {
     setShow(true);
@@ -73,9 +83,16 @@ function PlaceinputForm({
     console.log(data);
     if (data.startTime === 0) {
       Alert.alert('출발과 도착을 입력해라');
+    } else if (nowDate > data.endTime) {
+      // console.log(nowDate, data.endTime);
+      TimeAlert();
     } else {
       navigation.push('SelectPattern');
     }
+  };
+
+  const OnFriendBox = () => {
+    navigation.push('GroupScheduleFriend');
   };
 
   return (
@@ -88,7 +105,7 @@ function PlaceinputForm({
         borderColor={'#ED3648'}
         borderWidth={1}
         hasPadding
-        onPress={value => setGroup(value)}
+        onPress={value => setcheckGroup(value)}
       />
       <ScrollView style={{marginTop: 20, backgroundColor: 'white'}}>
         <View style={styles.tasksWrapper}>
@@ -166,10 +183,12 @@ function PlaceinputForm({
             OdsayData={OdsayData}
             setOdsayData={setOdsayData}
           />
-          {isGroup && (
+          {checkGroup && (
             <View style={{marginTop: 10}}>
               <Text style={styles.sectionTitle}>친구 추가</Text>
-              <TouchableOpacity style={styles.friendBox}></TouchableOpacity>
+              <TouchableOpacity
+                style={styles.friendBox}
+                onPress={OnFriendBox}></TouchableOpacity>
             </View>
           )}
           {data.time !== 0 && (

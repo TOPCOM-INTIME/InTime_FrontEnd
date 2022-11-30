@@ -18,7 +18,7 @@ const ScheduleItem = props => {
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
   };
-  console.log('what data came as item', props.data);
+  // console.log('what data came as item', props.data);
   const NAME = props.data.name;
   const date = new Date(props.data.readyTime);
   const endplace = props.data.destName;
