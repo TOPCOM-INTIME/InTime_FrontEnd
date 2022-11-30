@@ -36,7 +36,26 @@ function PatternScreen({navigation, route}) {
       <PatternList logs={patterns} onScrolledToBottom={onScrolledToBottom} />
     );
   } else {
-    return <View style={styles.empty}>{content}</View>;
+    return (
+      <>
+        <AppBar
+          title="패턴"
+          titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+          centerTitle={true}
+          color="#ffafcc"
+          tintColor="white"
+          leading={<></>}
+          trailing={props => (
+            <IconButton
+              icon={props => <Icon name="add" {...props} />}
+              color="white"
+              onPress={() => navigation.navigate('write')}
+            />
+          )}
+        />
+        <View style={styles.empty}>{content}</View>
+      </>
+    );
   }
 
   return (
