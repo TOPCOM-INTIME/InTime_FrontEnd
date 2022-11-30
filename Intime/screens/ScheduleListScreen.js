@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Keyboard, View} from 'react-native';
 import ScheduleForm from '../components/ScheduleForm';
 
-function ScheduleList({navigation}) {
+function ScheduleList() {
   return (
     <>
       <View style={styles.container}>

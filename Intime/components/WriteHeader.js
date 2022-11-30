@@ -1,13 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import React, {useReducer, useState} from 'react';
+import React, {useReducer} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useLogContext} from '../contexts/LogContext';
 import {useUserContext} from '../contexts/UserContext';
 import TransparentCircleButton from './TransparentCircleButton';
 import {API_URL} from '@env';
-import {AppBar, HStack, IconButton} from '@react-native-material/core';
 
 function WriteHeader({
   // onSave,
@@ -22,7 +21,6 @@ function WriteHeader({
   const {user, setUser, edited, setEdited} = useUserContext();
   const {patterns, setPatterns, setPatternGroups} = useLogContext();
 
-  const [loading, setLoading] = useState(false);
   const onGoBack = () => {
     navigation.pop();
   };
@@ -71,33 +69,34 @@ function WriteHeader({
   };
 
   return (
-    <AppBar
-      title={isEditing ? '패턴 수정 / 삭제' : '패턴 생성'}
-      centerTitle={true}
-      leading={props => (
-        <IconButton
-          icon={props => <Icon name="chevron-left" {...props} />}
-          color="white"
+    <View style={styles.block}>
+      <View style={styles.iconButtonWrapper}>
+        <TransparentCircleButton
           onPress={onGoBack}
+          name="arrow-back"
+          color="#424242"
         />
-      )}
-      trailing={props => (
-        <HStack>
+      </View>
+      <View style={styles.buttons}>
+        <View style={[styles.iconButtonWrapper, styles.marginRight]}>
           {isEditing && (
-            <IconButton
-              icon={props => <Icon name="delete-forever" {...props} />}
-              color="red"
+            <TransparentCircleButton
+              name="delete-forever"
+              color="#ef5350"
+              hasMarginRight
               onPress={onAskRemove}
             />
           )}
-          <IconButton
-            icon={props => <Icon name="check" {...props} />}
-            color="green"
+        </View>
+        <View style={styles.iconButtonWrapper}>
+          <TransparentCircleButton
+            name="check"
+            color="#009688"
             onPress={onSave}
           />
-        </HStack>
-      )}
-    />
+        </View>
+      </View>
+    </View>
   );
 }
 

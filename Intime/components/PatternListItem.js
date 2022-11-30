@@ -1,7 +1,6 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {ListItem} from '@react-native-material/core';
 
 function PatternListItem({log, isCreatingGroup, setGroup}) {
   const navigation = useNavigation();
@@ -20,41 +19,47 @@ function PatternListItem({log, isCreatingGroup, setGroup}) {
 
   if (isCreatingGroup === 1) {
     return (
-      <ListItem
-        // style={({pressed}) => [
-        //   styles.block,
-        //   Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
-        // ]}
-        android_ripple={{color: '#ededed'}}
-        title={log.name}
-        secondaryText={`${parseInt(log.time / 60)}분 ${log.time % 60}초`}
-      />
+      <Pressable
+        style={({pressed}) => [
+          styles.block,
+          Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
+        ]}
+        android_ripple={{color: '#ededed'}}>
+        <Text style={styles.title}>{log.name}</Text>
+        <Text style={styles.body}>
+          {parseInt(log.time / 60)}분 {log.time % 60}초
+        </Text>
+      </Pressable>
     );
   } else if (isCreatingGroup === 2) {
     return (
-      <ListItem
-        // style={({pressed}) => [
-        //   styles.block,
-        //   Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
-        // ]}
+      <Pressable
+        style={({pressed}) => [
+          styles.block,
+          Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
+        ]}
         onPress={onPress}
-        android_ripple={{color: '#ededed'}}
-        title={log.name}
-        secondaryText={`${parseInt(log.time / 60)}분 ${log.time % 60}초`}
-      />
+        android_ripple={{color: '#ededed'}}>
+        <Text style={styles.title}>{log.name}</Text>
+        <Text style={styles.body}>
+          {parseInt(log.time / 60)}분 {log.time % 60}초
+        </Text>
+      </Pressable>
     );
   }
   return (
-    <ListItem
-      // style={({pressed}) => [
-      //   styles.block,
-      //   Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
-      // ]}
+    <Pressable
+      style={({pressed}) => [
+        styles.block,
+        Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
+      ]}
       onLongPress={onLongPress}
-      android_ripple={{color: '#ededed'}}
-      title={log.name}
-      secondaryText={`${parseInt(log.time / 60)}분 ${log.time % 60}초`}
-    />
+      android_ripple={{color: '#ededed'}}>
+      <Text style={styles.title}>{log.name}</Text>
+      <Text style={styles.body}>
+        {parseInt(log.time / 60)}분 {log.time % 60}초
+      </Text>
+    </Pressable>
   );
 }
 

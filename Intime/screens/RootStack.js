@@ -13,12 +13,30 @@ import PasswordScreen from './PasswordScreen';
 import {API_URL} from '@env';
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
-import {Text} from '@react-native-material/core';
-import {Linking} from 'react-native';
+
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
   const {user, setUser} = useUserContext();
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await authStorage.get();
+        setUser(data);
+        const deviceToken = await messaging().getToken();
+        await axios.put(
+          `${API_URL}/api/device-token`,
+          {deviceToken},
+          {headers: {Authorization: data}},
+        );
+      } catch (e) {
+        return;
+      }
+    }
+    fetchData();
+  }, [setUser]);
+
   return (
     <Stack.Navigator>
       {user ? (

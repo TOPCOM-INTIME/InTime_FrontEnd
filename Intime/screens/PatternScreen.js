@@ -17,10 +17,8 @@ import {useUserContext} from '../contexts/UserContext';
 import FloatingWriteButton from '../components/FloatingWriteButton';
 import PatternList from '../components/PatternList';
 import {useLogContext} from '../contexts/LogContext';
-import {AppBar, IconButton} from '@react-native-material/core';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function PatternScreen({navigation, route}) {
+function PatternScreen({navigate, route}) {
   const {patterns, setPatterns} = useLogContext();
   const [hidden, setHidden] = useState(false);
 
@@ -35,40 +33,19 @@ function PatternScreen({navigation, route}) {
     content = (
       <PatternList logs={patterns} onScrolledToBottom={onScrolledToBottom} />
     );
-  } else {
-    return <View style={styles.empty}>{content}</View>;
   }
 
   return (
-    <>
-      <AppBar
-        title="패턴"
-        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
-        centerTitle={true}
-        color="#ffafcc"
-        tintColor="white"
-        leading={<></>}
-        trailing={props => (
-          <IconButton
-            icon={props => <Icon name="add" {...props} />}
-            color="white"
-            onPress={() => navigation.navigate('write')}
-          />
-        )}
-      />
-      <View style={styles.block}>{content}</View>
-    </>
+    <View style={styles.block}>
+      {content}
+      <FloatingWriteButton hidden={hidden} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   block: {
     flex: 1,
-  },
-  empty: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   fullscreen: {
     flex: 1,
