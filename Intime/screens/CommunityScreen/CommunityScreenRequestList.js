@@ -35,6 +35,7 @@ function CommunityScreenRequestList() {
             );
             Alert.alert('수락 완료', '친구 목록이 추가되었어요.')
             console.log('userid', userId);
+            //요기서
         } catch (err) {
             Alert.alert('에러!', '에러가 발생 했어요.')
             console.err(err);

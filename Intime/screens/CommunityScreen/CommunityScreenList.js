@@ -66,8 +66,9 @@ function CommunityScreenList(props) {
       ) : (
         userList.map(user => (
           <TouchableOpacity style={styles.list}
+            key={user.username}
             onLongPress={() => isDel(user.username)}>
-            <View key={user.username}>
+            <View>
               <Text style={styles.titleText}>{user.username}</Text>
             </View>
           </TouchableOpacity>
