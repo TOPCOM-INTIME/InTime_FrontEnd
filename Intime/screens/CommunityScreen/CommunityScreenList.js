@@ -1,9 +1,52 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Text, Button } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Alert, Button, TouchableOpacity } from 'react-native';
+import axios from 'axios';
+import { API_URL } from '@env';
+import { useUserContext } from '../../contexts/UserContext';
 
 function CommunityScreenList(props) {
+  const { user } = useUserContext();
   const { userList } = props;
   console.log(userList);
+
+  const requestdel = async (username) => {
+    try {
+      const res = await axios.delete(`${API_URL}/friends`,
+        {
+          data: {
+            username: username
+          },
+          headers: {
+            Authorization: user,
+          }
+        }
+      );
+      console.log(API_URL);
+      console.log('res', res)
+    } catch (err) {
+      console.log(API_URL);
+      console.error('err', err);
+    }
+  }
+
+  const isDel = async (username) => {
+    Alert.alert("친구 삭제", "정말 삭제하시겠습니까?",
+      [
+        {
+          text: "아니요", onPress: () => console.log('삭제 안됌'),
+          style: "cancel"
+        },
+        {
+          text: "네", onPress: () => {
+            requestdel(username);
+            console.log('삭제됌');
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  }
+
   return (
     <View
       style={{
@@ -24,15 +67,28 @@ function CommunityScreenList(props) {
         </View>
       ) : (
         userList.map(user => (
-          <View style={styles.list} key={user.username}>
-            <Text style={styles.titleText}>{user.username}</Text>
-          </View>
+          <TouchableOpacity style={styles.list}
+            onLongPress={() => isDel(user.username)}>
+            <View key={user.username}>
+              <Text style={styles.titleText}>{user.username}</Text>
+            </View>
+          </TouchableOpacity>
         ))
-      )}
-    </View>
+      )
+      }
+    </View >
   );
 }
 
+{/* <View style={styles.items}>
+              {scheduleData.map(item => (
+                <TouchableOpacity
+                  key={item.id}
+                  onLongPress={() => onLongClick(item)}>
+                  <ScheduleItem data={item} />
+                </TouchableOpacity>
+              ))}
+            </View> */}
 const styles = StyleSheet.create({
   list: {
     flexDirection: 'column',

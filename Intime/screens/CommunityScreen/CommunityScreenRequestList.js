@@ -97,12 +97,14 @@ function CommunityScreenRequestList() {
                         받은 요청이 없습니다.
                     </Text>
                 </View>}
-            <View style={{
+            {/* <View style={{
                 marginTop: '50%',
                 justifyContent: 'flex-end',
                 display: 'flex',
                 flexDirection: 'column',
             }}>
+            </View> */}
+            <View>
                 <Button title="새로고침" onPress={getList}></Button>
             </View>
         </View>

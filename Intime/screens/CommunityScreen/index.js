@@ -17,26 +17,23 @@ function CommunityScreen() {
         navigation.push('CommunityScreenAdd');
     };
     //추가된 이후 새로고침 안되는 현상 존재
+    const listcall = async () => {
+        try {
+            const res = await axios.get(`${API_URL}/friends`,
+                {
+                    headers: { Authorization: user },
+                },
+            );
+            console.log('res', res.data);
+            setUserList(res.data)
+        } catch (err) {
+            // Alert.alert('실패', '중복되는 닉네임 입니다.');
+            console.error(err);
+        }
+    }
     useEffect(() => {
         //API 호출
-        const listcall = async () => {
-            try {
-                const res = await axios.get(`${API_URL}/friends`,
-                    {
-                        headers: { Authorization: user },
-                    },
-                );
-                console.log('res', res.data);
-                setUserList(res.data)
-            } catch (err) {
-                // Alert.alert('실패', '중복되는 닉네임 입니다.');
-                console.error(err);
-            }
-        }
         listcall();
-        //const userList = ["mike", "bob", "John", "Henderson", "1", "2", "3", "4", "5", "6", "7", "8"];
-        const userList = [];
-        // setUserList(userList)
     }, [])
 
     return (
@@ -52,6 +49,9 @@ function CommunityScreen() {
                     <CommunityScreenList userList={userList} />
                 </View>
             </ScrollView>
+            <View>
+                <Button title="새로고침" onPress={listcall}></Button>
+            </View>
         </View>
     );
 }

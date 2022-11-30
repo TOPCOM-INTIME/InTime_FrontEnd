@@ -68,26 +68,6 @@ function CommunityScreenAdd() {
         navigation.pop();
     };
 
-    const requestdel = async () => {
-        try {
-            const res = await axios.delete(`${API_URL}/friends`,
-                // { username: JSON.stringify(data) },
-                {
-                    data: {
-                        username: "Hamburger"
-                    },
-                    headers: {
-                        Authorization: user,
-                    }
-                }
-            );
-            console.log(API_URL);
-            console.log('res', res)
-        } catch (err) {
-            console.log(API_URL);
-            console.error('err', err);
-        }
-    }
 
     const onPressSend = async (name) => {
         try {
@@ -198,7 +178,6 @@ function CommunityScreenAdd() {
                                     </View>
                                 </View>
                             </View>)}</ScrollView>
-                                <Button title="삭제용" onPress={requestdel}></Button>
                             </View> : phase !== "init" ?
                                 <View style={{ marginTop: '50%', alignItems: 'center' }}>
                                     <Text style={{ color: "gray", fontSize: 20, fontWeight: 'bold' }}>
