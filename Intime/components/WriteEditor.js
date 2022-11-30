@@ -1,6 +1,5 @@
 import React, {useRef} from 'react';
-import {View, StyleSheet, Keyboard} from 'react-native';
-import {TextInput, Text, VStack} from '@react-native-material/core';
+import {View, StyleSheet, TextInput, Text} from 'react-native';
 import BorderedInput from './BorderedInput';
 
 function WriteEditor({
@@ -14,50 +13,57 @@ function WriteEditor({
   const minuteRef = useRef();
   const secondRef = useRef();
   return (
-    <>
-      <VStack spacing={10} mt={15} mh={'5%'}>
-        <TextInput
-          label="패턴 이름"
-          variant="outlined"
-          returnKeyType="next"
-          onChangeText={onChangeTitle}
-          value={title}
-          onSubmitEditing={() => {
-            minuteRef.current.focus();
-          }}
-          backgroundColor="white"
-        />
-        <TextInput
-          label="분"
-          maxLength={2}
-          variant="outlined"
-          returnKeyType="next"
-          keyboardType="number-pad"
-          onChangeText={onChangeMinute}
-          value={minute}
-          ref={minuteRef}
-          // hasMarginBottom
-          onSubmitEditing={() => {
-            secondRef.current.focus();
-          }}
-        />
-        {/* </View>
+    <View style={styles.block}>
+      <View style={styles.container}>
+        <View style={[styles.inputline, styles.margin]}>
+          <Text style={styles.text}>패턴 이름: </Text>
+          <TextInput
+            placeholder="패턴 이름"
+            style={[styles.Input, styles.title]}
+            returnKeyType="next"
+            onChangeText={onChangeTitle}
+            value={title}
+            hasMarginBottom
+            onSubmitEditing={() => {
+              minuteRef.current.focus();
+            }}
+          />
+        </View>
+        <View style={styles.inputline}>
+          <TextInput
+            placeholder="분"
+            style={[styles.Input, styles.body]}
+            maxLength={2}
+            returnKeyType="done"
+            keyboardType="number-pad"
+            textAlignVertical="top"
+            onChangeText={onChangeMinute}
+            value={minute}
+            ref={minuteRef}
+            // hasMarginBottom
+            onSubmitEditing={() => {
+              secondRef.current.focus();
+            }}
+          />
+          <Text style={styles.text}>분</Text>
+          {/* </View>
         <View style={styles.inputline}> */}
-        <TextInput
-          label="초"
-          maxLength={2}
-          variant="outlined"
-          returnKeyType="done"
-          keyboardType="number-pad"
-          onChangeText={onChangeSecond}
-          value={second}
-          ref={secondRef}
-          onSubmitEditing={() => {
-            Keyboard.dismiss();
-          }}
-        />
-      </VStack>
-    </>
+          <TextInput
+            placeholder="초"
+            style={[styles.Input, styles.body]}
+            // style={{width: '90%'}}
+            maxLength={2}
+            returnKeyType="done"
+            keyboardType="number-pad"
+            textAlignVertical="top"
+            onChangeText={onChangeSecond}
+            value={second}
+            ref={secondRef}
+          />
+          <Text style={styles.text}>초</Text>
+        </View>
+      </View>
+    </View>
   );
 }
 
