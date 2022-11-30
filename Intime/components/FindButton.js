@@ -117,8 +117,8 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
       sy: startData.startY,
     };
     try {
-      console.log(data.endTime);
-      console.log(currentDate);
+      console.log('설정된 도착시간:', data.endTime);
+      console.log('현재 시간:', currentDate);
       if (data.endTime < currentDate) {
         throw 3;
       }

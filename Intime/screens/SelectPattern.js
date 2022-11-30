@@ -20,7 +20,18 @@ import PatternGroups from '../components/PatternGroups';
 import PushNotification from 'react-native-push-notification';
 import {API_URL} from '@env';
 
-function SelectPattern({data, setData, date, setDate, setDatas}) {
+// api​/schedule={id}​/update/
+function SelectPattern({
+  data,
+  setData,
+  date,
+  setDate,
+  setDatas,
+  isUpdate,
+  ItemID,
+  checkGroup,
+  friendList,
+}) {
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
   const [group, setGroup] = useState([]);
@@ -28,11 +39,15 @@ function SelectPattern({data, setData, date, setDate, setDatas}) {
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
   const navigation = useNavigation();
+  let group_data;
+  console.log('일정 확인', checkGroup);
+  console.log('친구 목록', friendList);
+
   const onSecondaryButtonPress = () => {
     navigation.pop();
     setData('readyTime')(0);
   };
-
+  // console.log(data.readyPatterns_Ids);
   const setTime = time => {
     let setTime = new Date(time);
     setTime.setSeconds(0);
@@ -43,7 +58,6 @@ function SelectPattern({data, setData, date, setDate, setDatas}) {
     let tmpTime = 0;
     group.map(item => (tmpTime += item.time));
     readyTime.setSeconds(readyTime.getSeconds() - tmpTime);
-    // setTime(readyTime);
     return setTime(readyTime);
   };
 
@@ -85,14 +99,55 @@ function SelectPattern({data, setData, date, setDate, setDatas}) {
       repeatTime: 1,
     });
     try {
-      const res = await axios.post(`${API_URL}/api/schedule`, data, {
-        headers: {Authorization: user},
-      });
-      console.log('SUCCESS!', data);
-      navigation.push('MainTab');
+      if (!isUpdate) {
+        // 그룹 일정 생성
+        if (checkGroup) {
+          try {
+            group_data = data;
+            group_data.members_Ids = friendList;
+            console.log(group_data);
+            const res = await axios.post(
+              `${API_URL}/api/group-schedule`,
+              group_data,
+              {
+                headers: {Authorization: user},
+              },
+            );
+            console.log('GROUP_POST_SUCCESS!', group_data, res);
+            navigation.push('MainTab');
+          } catch (e) {
+            console.log(group_data);
+            console.log(`[GROUP_POST_ERROR]${e} SENT${group_data}`);
+          }
+        } //개인 일정 생성
+        else {
+          try {
+            const res = await axios.post(`${API_URL}/api/schedule`, data, {
+              headers: {Authorization: user},
+            });
+            console.log('POST_SUCCESS!', data);
+            navigation.push('MainTab');
+          } catch {
+            console.log(data);
+            console.log(`[POST_ERROR]${e} SENT${data}`);
+          }
+        }
+      } // 기존 일정 수정
+      else {
+        console.log(`UPDATE ${ItemID}`);
+        const res = await axios.put(
+          `${API_URL}/api/schedule=${ItemID}/update/`,
+          data,
+          {
+            headers: {Authorization: user},
+          },
+        );
+        console.log('UPDATE_SUCCESS!', data);
+        navigation.push('MainTab');
+      }
     } catch (e) {
       console.log(data);
-      console.log(`[ERROR]${e} SENT${data.name}`);
+      console.log(`[POST_ERROR]${e} SENT${data}`);
     }
   };
 

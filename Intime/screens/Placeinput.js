@@ -17,7 +17,18 @@ import ScheduleSubmitButton from '../components/ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 
-function Placeinput({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
+function Placeinput({
+  data,
+  setData,
+  busTime,
+  setBus,
+  OdsayData,
+  setOdsayData,
+  checkGroup,
+  setcheckGroup,
+  friendList,
+  setfriendList,
+}) {
   const {user, setUser} = useUserContext();
   const [loading, setLoading] = useState(false);
   return (
@@ -28,6 +39,10 @@ function Placeinput({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
       setBus={setBus}
       OdsayData={OdsayData}
       setOdsayData={setOdsayData}
+      checkGroup={checkGroup}
+      setcheckGroup={setcheckGroup}
+      friendList={friendList}
+      setfriendList={setfriendList}
     />
   );
 }
