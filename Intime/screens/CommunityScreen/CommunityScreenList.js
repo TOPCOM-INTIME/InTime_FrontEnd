@@ -79,15 +79,6 @@ function CommunityScreenList(props) {
   );
 }
 
-{/* <View style={styles.items}>
-              {scheduleData.map(item => (
-                <TouchableOpacity
-                  key={item.id}
-                  onLongPress={() => onLongClick(item)}>
-                  <ScheduleItem data={item} />
-                </TouchableOpacity>
-              ))}
-            </View> */}
 const styles = StyleSheet.create({
   list: {
     flexDirection: 'column',
@@ -98,7 +89,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 10,
     marginBottom: 10,
-    // backgroundColor: '#FEE5E1'
   },
   titleText: {
     color: 'black',
