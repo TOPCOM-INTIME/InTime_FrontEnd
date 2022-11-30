@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, View, Text, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
 import axios from 'axios';
 import { API_URL } from '@env';
@@ -22,12 +22,9 @@ function CommunityScreenRequestList() {
         } catch (err) {
             console.error(err);
         }
-        // const list = ["mike", "bob", "Kim"]
-        // setList(list);
     }
 
     const addPush = async (userId) => {
-        //수락 post
         try {
             const res = await axios.put(`${API_URL}/friends/request/${userId}`,
                 {
@@ -46,7 +43,6 @@ function CommunityScreenRequestList() {
         }
     }
     const refusePush = async (userId) => {
-        //거절 delete
         try {
             const res = await axios.delete(`${API_URL}/friends/request/${userId}`,
                 {
@@ -63,9 +59,11 @@ function CommunityScreenRequestList() {
         Alert.alert('거절', '거절되었어요.')
     }
 
+    useEffect(() => {
+        getList();
+    }, [])
+
     console.log(list)
-    //최초에 API불러와야함..
-    //수락 또는 거절 이후 리스트 삭제
     return (
         <View>
             {list.length > 0 ?
