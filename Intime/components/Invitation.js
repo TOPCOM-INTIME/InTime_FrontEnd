@@ -15,66 +15,36 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
-const list = [{username: 'mike'}, {username: 'john'}, {username: 'john1'}];
 
-function GroupScheduleFriend({friendList, setfriendList}) {
+function Invitation() {
   const navigation = useNavigation();
   const {user, setUser} = useUserContext();
   const [allFriend, setAllFriend] = useState([]);
-  let inviteList = allFriend;
-
-  const onPrimaryButtonPress = () => {
-    setfriendList(inviteList);
-    navigation.pop();
-  };
-
-  const onSecondaryButtonPress = () => {
-    navigation.pop();
-  };
-
-  const getFriend = async () => {
+  const getInvitation = async () => {
     try {
-      const res = await axios.get(`${API_URL}/friends`, {
+      const res = await axios.get(`${API_URL}/api/schedule-invitations`, {
         headers: {Authorization: user},
       });
-      setAllFriend(res.data);
-      console.log('GET함', res.data);
+      // console.log('GET한 data:', res.data);
+      console.log(res.data);
+      // console.log('GET함');
     } catch (e) {
-      console.log(`[GET_FRIEND_ERROR]${e}`);
+      console.log(`[CHECK_ERROR]${e}`);
     }
   };
 
-  onShortPress = item => {
-    if (inviteList.includes(item.id)) {
-      let tmp = inviteList.indexOf(item.id);
-      inviteList.pop(tmp);
-    } else {
-      inviteList.push(item.id);
-    }
-    console.log(inviteList);
+  const OnPrimaryPress = () => {
+    navigation.pop();
   };
+
   useEffect(() => {
-    getFriend();
+    getInvitation();
   }, []);
-
   return (
     <>
       <View>
-        {allFriend.map(item => (
-          <TouchableOpacity
-            key={item.username}
-            onPress={() => onShortPress(item)}>
-            <Text style={{color: 'black'}}>{item.username}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <View>
-        <TouchableOpacity onPress={onPrimaryButtonPress}>
-          <Text>초대</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={onSecondaryButtonPress}>
-          <Text>취소</Text>
+        <TouchableOpacity onPress={OnPrimaryPress}>
+          <Text>HI</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -124,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GroupScheduleFriend;
+export default Invitation;

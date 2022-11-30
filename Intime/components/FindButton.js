@@ -117,8 +117,9 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
       sy: startData.startY,
     };
     try {
-      console.log('설정된 도착시간:', data.endTime);
-      console.log('현재 시간:', currentDate);
+      // console.log('설정된 도착시간:', data.endTime);
+      // console.log('현재 시간:', currentDate);
+      // console.log(odsayData);
       if (data.endTime < currentDate) {
         throw 3;
       }
@@ -126,7 +127,7 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
         headers: {Authorization: user},
       });
       console.log('ODsay SUCCESS!', res.data.result.path[0].info.totalTime);
-      console.log('ODsay path:', res.data.result.path[0].info);
+      // console.log('ODsay path:', res.data.result.path[0].info);
       // res.data.result.path.map(item => console.log(item));
       setOdsayData(res.data.result.path);
       navigation.push('CarScreen', BusData);
@@ -136,7 +137,7 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
       } else {
         PlaceAlert();
       }
-      console.log(`[ODsay ERROR]${e} SENT${data.name}`);
+      console.log(`[ODsay ERROR]${e} SENT${res.data.result.path}`);
     }
   };
 

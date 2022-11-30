@@ -28,6 +28,7 @@ function Placeinput({
   setcheckGroup,
   friendList,
   setfriendList,
+  INVITE,
 }) {
   const {user, setUser} = useUserContext();
   const [loading, setLoading] = useState(false);
@@ -43,6 +44,7 @@ function Placeinput({
       setcheckGroup={setcheckGroup}
       friendList={friendList}
       setfriendList={setfriendList}
+      INVITE={INVITE}
     />
   );
 }

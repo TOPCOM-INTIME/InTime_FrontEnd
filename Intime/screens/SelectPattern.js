@@ -31,6 +31,8 @@ function SelectPattern({
   ItemID,
   checkGroup,
   friendList,
+  INVITE,
+  schedulePoolId,
 }) {
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
@@ -40,8 +42,8 @@ function SelectPattern({
   const secondaryTitle = '취소';
   const navigation = useNavigation();
   let group_data;
-  console.log('일정 확인', checkGroup);
-  console.log('친구 목록', friendList);
+  // console.log('일정 확인', checkGroup, schedulePoolId);
+  // console.log('친구 목록', friendList);
 
   const onSecondaryButtonPress = () => {
     navigation.pop();
@@ -71,11 +73,6 @@ function SelectPattern({
     });
   }, [group]);
 
-  // const setDatass = () => {
-  //   setData('readyPatterns_Ids')(group.map(item => item.id));
-  //   setData('readyTime')(calTime());
-  // };
-
   const onSaveButtonPress = async () => {
     console.log('알림 설정한 시간', data.readyTime);
     PushNotification.localNotificationSchedule({
@@ -100,8 +97,28 @@ function SelectPattern({
     });
     try {
       if (!isUpdate) {
+        if (INVITE === 1) {
+          console.log('초대장으로 인한', schedulePoolId);
+          try {
+            group_data = data;
+            group_data.members_Ids = friendList;
+            console.log(group_data);
+            const res = await axios.post(
+              `${API_URL}/api/group-scehduel-after-invitation/schedulepool=${schedulePoolId}`,
+              group_data,
+              {
+                headers: {Authorization: user},
+              },
+            );
+            console.log('INVITE_POST_SUCCESS!', group_data, res.data);
+            navigation.push('MainTab');
+          } catch (e) {
+            console.log(group_data);
+            console.log(`[INVITE_POST_ERROR]${e} SENT${schedulePoolId}`);
+          }
+        }
         // 그룹 일정 생성
-        if (checkGroup) {
+        else if (checkGroup) {
           try {
             group_data = data;
             group_data.members_Ids = friendList;
@@ -113,7 +130,7 @@ function SelectPattern({
                 headers: {Authorization: user},
               },
             );
-            console.log('GROUP_POST_SUCCESS!', group_data, res);
+            console.log('GROUP_POST_SUCCESS!', group_data, res.data);
             navigation.push('MainTab');
           } catch (e) {
             console.log(group_data);

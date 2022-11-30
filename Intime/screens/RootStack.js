@@ -15,6 +15,7 @@ import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import {Text} from '@react-native-material/core';
 import {Linking} from 'react-native';
+import InvitationScreen from './InvitationScreen';
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
@@ -56,6 +57,11 @@ function RootStack() {
           <Stack.Screen
             name="Password"
             component={PasswordScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="InvitationScreen"
+            component={InvitationScreen}
             options={{headerShown: false}}
           />
         </>
