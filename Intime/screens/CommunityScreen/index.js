@@ -1,9 +1,7 @@
-import CommunityScreenAdd from './CommunityScreenAdd.js';
-import CommunityScreenList from './CommunityScreenList.js';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, ScrollView, View, Text, Button, Alert } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Button, Alert, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { API_URL } from '@env';
 import { useUserContext } from '../../contexts/UserContext';
@@ -34,9 +32,44 @@ function CommunityScreen() {
     }
 
     useEffect(() => {
-        //API 호출
         listcall();
     }, [])
+
+    const requestdel = async (username) => {
+        try {
+            const res = await axios.delete(`${API_URL}/friends`,
+                {
+                    data: {
+                        username: username
+                    },
+                    headers: {
+                        Authorization: user,
+                    }
+                }
+            );
+            Alert.alert("삭제 완료")
+        } catch (err) {
+            console.error('err', err);
+        }
+    }
+
+    const isDel = async (username) => {
+        Alert.alert("친구 삭제", "정말 삭제하시겠습니까?",
+            [
+                {
+                    text: "아니요", onPress: () => console.log('삭제 안됌'),
+                    style: "cancel"
+                },
+                {
+                    text: "네", onPress: () => {
+                        requestdel(username);
+                        console.log('삭제됌');
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
 
     return (
         <View style={{ flex: 1 }}>
@@ -48,7 +81,36 @@ function CommunityScreen() {
             </View>
             <ScrollView style={{ width: '100%' }}>
                 <View>
-                    <CommunityScreenList userList={userList} />
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            marginTop: '5%',
+                        }}>
+                        {userList.length === 0 ? (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    marginTop: '65%',
+                                }}>
+                                <Text style={{ color: 'black' }}>등록된 친구가 없습니다.</Text>
+                            </View>
+                        ) : (
+                            userList.map(user => (
+                                <TouchableOpacity style={styles.list}
+                                    key={user.username}
+                                    onLongPress={() => isDel(user.username)}>
+                                    <View>
+                                        <Text style={styles.titleText}>{user.username}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            ))
+                        )
+                        }
+                    </View>
                 </View>
             </ScrollView>
             <View>
@@ -59,6 +121,23 @@ function CommunityScreen() {
 }
 
 const styles = StyleSheet.create({
+    list: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        width: '85%',
+        height: 50,
+        borderColor: '#ED3648',
+        borderWidth: 3,
+        borderRadius: 10,
+        marginBottom: 10,
+        // backgroundColor: '#FEE5E1'
+    },
+    titleText: {
+        color: 'black',
+        marginLeft: 10,
+        fontSize: 30,
+        fontWeight: 'bold',
+    },
     tasksWrapper: {
         paddingTop: 20,
         paddingHorizontal: 20,
