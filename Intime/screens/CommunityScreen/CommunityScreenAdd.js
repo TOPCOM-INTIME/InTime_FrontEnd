@@ -17,16 +17,6 @@ function CommunityScreenAdd() {
     const [phase, setPhase] = useState('init'); // init, loading, done
     const navigation = useNavigation();
 
-    // 통신 word를 쏴줌 // try catch
-    // const list = [
-    //     { name: "몰라", id: '0' },
-    //     { name: "치킨", id: '1' },
-    //     { name: "피자", id: '2' },
-    //     { name: "길담배맛", id: '3' },
-    //     { name: "King", id: '4' },
-    //     { name: "123", id: '5' }
-    // ];
-    // const list = []
     const onSubmit = async () => {
         if (word === '') {
             Alert.alert('실패', '닉네임을 입력해주세요');
@@ -51,7 +41,6 @@ function CommunityScreenAdd() {
         } catch (err) {
             console.err(err);
         }
-        // setList(list);
         setPhase('done')
     }
 
@@ -90,13 +79,7 @@ function CommunityScreenAdd() {
             Alert.alert('실패', '이미 친구이거나 친구신청을 보냈어요.');
             console.error('err', err);
         }
-        // Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
-        // console.log('apiurl', API_URL)
     }
-
-
-    //일단 ifelse로 구현하고 -> 하나의 리턴값으로 리팩토링 -> 컴포넌트화
-    //리팩토링에 더 많은 시간 할당하기
 
     return (
         <View>
@@ -207,7 +190,6 @@ const styles = StyleSheet.create({
     buttonarea: {
         display: 'flex',
         flexDirection: 'row',
-        // justifyContent: 'space-between'
     },
     iconButton: {
         paddingVertical: 10,
@@ -232,3 +214,5 @@ const styles = StyleSheet.create({
 });
 
 export default CommunityScreenAdd;
+
+//리팩토링시 데이터 흐름, 기능에 따라 컴포넌트 별로 나누기, import 구분, 에러처리 확실하게

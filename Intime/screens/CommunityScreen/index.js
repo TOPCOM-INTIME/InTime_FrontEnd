@@ -1,12 +1,13 @@
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { StyleSheet, ScrollView, View, Text, Button, Alert, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { API_URL } from '@env';
 import { useUserContext } from '../../contexts/UserContext';
 
 function CommunityScreen() {
+    const isFocused = useIsFocused();
     const { user } = useUserContext();
     const navigation = useNavigation();
     const [userList, setUserList] = useState([]);
@@ -14,7 +15,6 @@ function CommunityScreen() {
     const onSubmit = () => {
         navigation.push('CommunityScreenAdd');
     };
-    //추가된 이후 새로고침 안되는 현상 존재
 
     const listcall = async () => {
         try {
@@ -32,8 +32,9 @@ function CommunityScreen() {
     }
 
     useEffect(() => {
+        if (isFocused) console.log('화면 리로드');
         listcall();
-    }, [])
+    }, [isFocused])
 
     const requestdel = async (username) => {
         try {
@@ -49,7 +50,6 @@ function CommunityScreen() {
             );
             const newList = userList.filter(userObj => userObj.username !== username);
             setUserList(newList)
-            // console.log('res data', res.data)
             Alert.alert("삭제 완료", res.data)
         } catch (err) {
             console.error('err', err);

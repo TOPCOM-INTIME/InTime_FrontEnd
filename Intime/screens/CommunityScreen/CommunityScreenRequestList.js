@@ -22,12 +22,6 @@ function CommunityScreenRequestList() {
         } catch (err) {
             console.error(err);
         }
-
-        // //-----------dummy data
-
-        // const List = [{ username: "bob", id: "0" }, { username: "john", id: "1" }, { username: "bill", id: "2" },]
-
-        // setList(List)
     }
 
     const addPush = async (userId) => {
@@ -51,11 +45,6 @@ function CommunityScreenRequestList() {
             console.err(err);
             console.log('userid', userId);
         }
-
-        // //----------dummy
-        // const newList = list.filter(userObj => userObj.id !== userId);
-        // console.log('뉴 리스또', newList)
-        // setList(newList)
     }
 
     const refusePush = async (userId) => {
@@ -116,14 +105,6 @@ function CommunityScreenRequestList() {
                         받은 요청이 없습니다.
                     </Text>
                 </View>}
-            {/* <View style={{
-                marginTop: '50%',
-                justifyContent: 'flex-end',
-                display: 'flex',
-                flexDirection: 'column',
-            }}>
-            </View> */}
-
         </View>
     );
 }
