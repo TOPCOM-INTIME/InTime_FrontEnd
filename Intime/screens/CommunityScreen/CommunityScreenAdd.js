@@ -5,20 +5,53 @@ import { useNavigation } from '@react-navigation/native';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 import RequestList from './CommunityScreenRequestList';
 import Icon from 'react-native-vector-icons';
+import axios from 'axios';
+import { API_URL } from '@env';
+import { useUserContext } from '../../contexts/UserContext';
 
 function CommunityScreenAdd() {
+    const { user } = useUserContext();
     const [word, setWord] = useState('')
     const [isSearch, setisSearch] = useState(true);
     const [list, setList] = useState([])
     const [phase, setPhase] = useState('init'); // init, loading, done
     const navigation = useNavigation();
 
-    const onSubmit = () => {
-        // 통신 word를 쏴줌 // try catch
+    // 통신 word를 쏴줌 // try catch
+    // const list = [
+    //     { name: "몰라", id: '0' },
+    //     { name: "치킨", id: '1' },
+    //     { name: "피자", id: '2' },
+    //     { name: "길담배맛", id: '3' },
+    //     { name: "King", id: '4' },
+    //     { name: "123", id: '5' }
+    // ];
+    // const list = []
+    const onSubmit = async () => {
+        if (word === '') {
+            Alert.alert('실패', '닉네임을 입력해주세요');
+            return;
+        }
         setPhase('loading')
-        console.log('word', word)
-        const list = [{ name: "mike", id: '1' }, { name: "john", id: '2' }, { name: "john1", id: '3' },]
-        setList(list);
+        console.log('onsubmit word', word)
+        try {
+            const res = await axios.post(`${API_URL}/user`,
+                {
+                    username: word,
+                },
+                {
+                    headers: {
+                        Authorization: user
+                    }
+                }
+
+            );
+            console.log(res.data);
+            setList(res.data);
+        } catch (err) {
+            console.err(err);
+        }
+        // setList(list);
         setPhase('done')
     }
 
@@ -35,10 +68,30 @@ function CommunityScreenAdd() {
         navigation.pop();
     };
 
-    const onPressSend = (uId) => {
-        // uId로 통신 try catch
-        Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
-        console.log('uId', uId)
+
+    const onPressSend = async (name) => {
+        try {
+            const res = await axios.post(`${API_URL}/friends/request?username=${name}`,
+                {
+                    body: null
+                }
+                ,
+                {
+                    headers: {
+                        Authorization: user
+                    }
+                }
+            );
+            console.log('res', res)
+            console.log('name :', name)
+            Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
+        } catch (err) {
+            console.log('name', name)
+            Alert.alert('실패', '이미 친구이거나 친구신청을 보냈어요.');
+            console.error('err', err);
+        }
+        // Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
+        // console.log('apiurl', API_URL)
     }
 
 
@@ -117,14 +170,20 @@ function CommunityScreenAdd() {
                             </View>
                         </View>
                         {list.length > 0 ?
-                            <View><ScrollView>{list.map(user => <View key={user.id}>
+                            <View><ScrollView>{list.map(user => <View key={user.username}>
                                 <View style={styles.addList}>
-                                    <Text style={styles.listText}>{user.name}</Text>
+                                    <Text style={styles.listText}>{user.username}</Text>
                                     <View style={{ margin: 5 }}>
-                                        <Button color='pink' title="친구 추가" onPress={() => onPressSend(user.id)} />
+                                        <Button color='pink' title="친구 추가" onPress={() => onPressSend(user.username)} />
                                     </View>
                                 </View>
-                            </View>)}</ScrollView></View> : phase !== "init" ? <View><Text style={{ color: "black" }}>결과가 없습니다.</Text></View> : null}
+                            </View>)}</ScrollView>
+                            </View> : phase !== "init" ?
+                                <View style={{ marginTop: '50%', alignItems: 'center' }}>
+                                    <Text style={{ color: "gray", fontSize: 20, fontWeight: 'bold' }}>
+                                        검색 결과가 없습니다.
+                                    </Text>
+                                </View> : null}
                     </View>
                     :
                     <View>
