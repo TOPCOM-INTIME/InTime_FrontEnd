@@ -22,10 +22,7 @@ function CommunityScreenList(props) {
         }
       );
       Alert.alert("삭제 완료")
-      console.log(API_URL);
-      console.log('res', res)
     } catch (err) {
-      console.log(API_URL);
       console.error('err', err);
     }
   }

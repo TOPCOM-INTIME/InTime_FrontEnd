@@ -17,6 +17,7 @@ function CommunityScreen() {
         navigation.push('CommunityScreenAdd');
     };
     //추가된 이후 새로고침 안되는 현상 존재
+
     const listcall = async () => {
         try {
             const res = await axios.get(`${API_URL}/friends`,
@@ -31,6 +32,7 @@ function CommunityScreen() {
             console.error(err);
         }
     }
+
     useEffect(() => {
         //API 호출
         listcall();

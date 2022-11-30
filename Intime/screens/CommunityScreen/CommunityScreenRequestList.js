@@ -5,7 +5,6 @@ import { API_URL } from '@env';
 import { useUserContext } from '../../contexts/UserContext';
 
 
-//초기에 api호출 1번
 function CommunityScreenRequestList() {
     const { user } = useUserContext();
     const [list, setList] = useState([])
@@ -56,7 +55,6 @@ function CommunityScreenRequestList() {
             console.err(err);
             console.log('userid', userId);
         }
-        Alert.alert('거절', '거절되었어요.')
     }
 
     useEffect(() => {
@@ -78,10 +76,19 @@ function CommunityScreenRequestList() {
                                     flexDirection: 'row',
                                 }}>
                                     <View style={{ marginHorizontal: 3, marginVertical: 5, }}>
-                                        <Button color='pink' title="수락" onPress={() => addPush(user.id)} />
+                                        <Button color='pink' title="수락" onPress={() => {
+                                            addPush(user.id);
+                                            console.log('is Run?')
+                                            getList();
+                                        }} />
                                     </View>
                                     <View style={{ margin: 5 }}>
-                                        <Button color='pink' title="거절" onPress={() => refusePush(user.id)} />
+                                        <Button color='pink' title="거절" onPress={() => {
+                                            refusePush(user.id);
+                                            console.log('is Run?')
+                                            getList();
+                                            //되다 말다가 함
+                                        }} />
                                     </View>
                                 </View>
                             </View>

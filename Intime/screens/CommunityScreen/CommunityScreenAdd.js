@@ -87,7 +87,7 @@ function CommunityScreenAdd() {
             Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
         } catch (err) {
             console.log('name', name)
-            Alert.alert('실패', '친구 신청 실패.');
+            Alert.alert('실패', '이미 친구이거나 친구신청을 보냈어요.');
             console.error('err', err);
         }
         // Alert.alert("성공!", "상대방에게 친구 신청을 보냈어요.")
