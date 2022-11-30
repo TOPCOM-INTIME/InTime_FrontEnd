@@ -26,7 +26,7 @@ function CommunityScreen() {
             console.log('res', res.data);
             setUserList(res.data)
         } catch (err) {
-            // Alert.alert('실패', '중복되는 닉네임 입니다.');
+            Alert.alert('오류', '오류 입니다.');
             console.error(err);
         }
     }
@@ -47,7 +47,10 @@ function CommunityScreen() {
                     }
                 }
             );
-            Alert.alert("삭제 완료")
+            const newList = userList.filter(userObj => userObj.username !== username);
+            setUserList(newList)
+            // console.log('res data', res.data)
+            Alert.alert("삭제 완료", res.data)
         } catch (err) {
             console.error('err', err);
         }
@@ -57,15 +60,15 @@ function CommunityScreen() {
         Alert.alert("친구 삭제", "정말 삭제하시겠습니까?",
             [
                 {
-                    text: "아니요", onPress: () => console.log('삭제 안됌'),
-                    style: "cancel"
-                },
-                {
-                    text: "네", onPress: () => {
+                    text: "예", onPress: () => {
                         requestdel(username);
                         console.log('삭제됌');
                     }
-                }
+                },
+                {
+                    text: "아니요", onPress: () => console.log('삭제 안됌'),
+                    style: "cancel"
+                },
             ],
             { cancelable: false }
         );
@@ -113,9 +116,6 @@ function CommunityScreen() {
                     </View>
                 </View>
             </ScrollView>
-            <View>
-                <Button title="새로고침" onPress={listcall}></Button>
-            </View>
         </View>
     );
 }

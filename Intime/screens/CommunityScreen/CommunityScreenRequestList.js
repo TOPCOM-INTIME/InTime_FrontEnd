@@ -8,8 +8,9 @@ import { useUserContext } from '../../contexts/UserContext';
 function CommunityScreenRequestList() {
     const { user } = useUserContext();
     const [list, setList] = useState([])
+
     const getList = async () => {
-        //통신 요청 리스트 가져옴
+        // 통신 요청 API
         try {
             const res = await axios.get(
                 `${API_URL}/friends/request`,
@@ -21,9 +22,16 @@ function CommunityScreenRequestList() {
         } catch (err) {
             console.error(err);
         }
+
+        // //-----------dummy data
+
+        // const List = [{ username: "bob", id: "0" }, { username: "john", id: "1" }, { username: "bill", id: "2" },]
+
+        // setList(List)
     }
 
     const addPush = async (userId) => {
+        //수락 통신 API
         try {
             const res = await axios.put(`${API_URL}/friends/request/${userId}`,
                 {
@@ -33,6 +41,8 @@ function CommunityScreenRequestList() {
                     headers: { Authorization: user, },
                 }
             );
+            const newList = list.filter(userObj => userObj.id !== userId);
+            setList(newList)
             Alert.alert('수락 완료', '친구 목록이 추가되었어요.')
             console.log('userid', userId);
             //요기서
@@ -41,7 +51,13 @@ function CommunityScreenRequestList() {
             console.err(err);
             console.log('userid', userId);
         }
+
+        // //----------dummy
+        // const newList = list.filter(userObj => userObj.id !== userId);
+        // console.log('뉴 리스또', newList)
+        // setList(newList)
     }
+
     const refusePush = async (userId) => {
         try {
             const res = await axios.delete(`${API_URL}/friends/request/${userId}`,
@@ -49,6 +65,8 @@ function CommunityScreenRequestList() {
                     headers: { Authorization: user, },
                 }
             );
+            const newList = list.filter(userObj => userObj.id !== userId);
+            setList(newList)
             Alert.alert('거절 완료', '거절되었어요.')
             console.log('userid', userId);
         } catch (err) {
@@ -79,16 +97,11 @@ function CommunityScreenRequestList() {
                                     <View style={{ marginHorizontal: 3, marginVertical: 5, }}>
                                         <Button color='pink' title="수락" onPress={() => {
                                             addPush(user.id);
-                                            console.log('is Run?')
-                                            getList();
                                         }} />
                                     </View>
                                     <View style={{ margin: 5 }}>
                                         <Button color='pink' title="거절" onPress={() => {
                                             refusePush(user.id);
-                                            console.log('is Run?')
-                                            getList();
-                                            //되다 말다가 함
                                         }} />
                                     </View>
                                 </View>
@@ -110,9 +123,7 @@ function CommunityScreenRequestList() {
                 flexDirection: 'column',
             }}>
             </View> */}
-            <View>
-                <Button title="새로고침" onPress={getList}></Button>
-            </View>
+
         </View>
     );
 }
