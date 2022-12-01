@@ -22,40 +22,92 @@ const options = {
   },
 };
 
-const requestLocationPermission = async () => {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Geolocation Permission',
-        message: 'Can we access your location?',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    console.log('granted', granted);
-    if (granted === 'granted') {
-      console.log('You can use Geolocation');
-      return true;
-    } else {
-      console.log('You cannot use Geolocation');
-      return false;
-    }
-  } catch (err) {
-    return false;
-  }
-};
-
 
 const Map_Marker = () => {
-  
   const { user, setUser } = useUserContext();
   const [location, setLocation] = useState(false);
   const [position, setPosition] = useState({
     latitude: 37.266833,
     longitude: 127.000019,
   });
+
+  const getmyid = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/my-info`,
+        {
+          headers: {
+            Authorization: user,
+          }
+        }
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const postscheduleidx = async () => {
+    const data = { gps_x: "37.5", gps_y: "127.2", useridx: 4 }
+    try {
+      const res = await axios.post(`${API_URL}/api/24/location`,
+        {
+          gps_x: data.gps_x,
+          gps_y: data.gps_y,
+          useridx: data.useridx
+        },
+        {
+          headers: {
+            Authorization: user,
+          }
+        }
+      );
+      console.log(res);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      console.log(data);
+    }
+  }
+
+  const getscheduleidx = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/24/locations`,
+        {
+          headers: {
+            Authorization: user,
+          }
+        }
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Geolocation Permission',
+          message: 'Can we access your location?',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      console.log('granted', granted);
+      if (granted === 'granted') {
+        console.log('You can use Geolocation');
+        return true;
+      } else {
+        console.log('You cannot use Geolocation');
+        return false;
+      }
+    } catch (err) {
+      return false;
+    }
+  };
 
   const getLocation = () => {
     const result = requestLocationPermission();
@@ -82,11 +134,11 @@ const Map_Marker = () => {
     console.log(location);
   };
 
-  const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
+  const sleep = time => new Promise((resolve) => setTimeout(() => resolve(), time));
 
   const locationpostHandler = async taskDataArguments => {
     const { delay } = taskDataArguments;
-    await new Promise(async resolve => {
+    await new Promise(async (resolve) => {
       for (let i = 0; BackgroundService.isRunning(); i++) {
         const data = {
           gps_x: 0.0,
@@ -96,7 +148,6 @@ const Map_Marker = () => {
         console.log(' ', i % 10);
         if (i % 5 === 0) {
           const result = requestLocationPermission();
-
           result.then(res => {
             // console.log('res is:', res);
             if (res) {
@@ -104,15 +155,14 @@ const Map_Marker = () => {
                 async position => {
                   data.gps_x = position.coords.latitude;
                   data.gps_y = position.coords.longitude;
-                  // console.log('1', data);
+                  console.log('1', data);
 
                   const res = await axios.post(
-                    `${API_URL}/api/4/location`,
+                    `${API_URL}/api/location`,
                     {
                       body: data
                     },
                     {
-                      method: 'POST',
                       headers: { Authorization: user },
                     },
                   );
@@ -193,8 +243,10 @@ const Map_Marker = () => {
   };
 
   const functionCombine = () => {
-    getLocation();
-    locationgetHandler();
+    // getLocation();
+    // locationgetHandler();
+    getmyid();
+    getscheduleidx();
   };
 
   // console.log('123123', getdata);
@@ -269,7 +321,8 @@ const Map_Marker = () => {
 
       <Text style={{ color: 'green' }}>{new Date().toString()}</Text>
       <View>
-        <Button title="location refresh" onPress={() => functionCombine()} />
+        <Button title="postscheduleidx" onPress={() => postscheduleidx()}></Button>
+        <Button title="location refresh" onPress={() => getLocation()} />
         {/* <Button title="Refresh Location" onPress={getLocation} />
         <Button title="get Location" onPress={locationgetHandler} /> */}
       </View>
