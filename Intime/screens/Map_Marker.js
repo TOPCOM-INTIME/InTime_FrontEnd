@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, Button, Image, PermissionsAndroid } from 'react
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import axios from 'axios';
+import { API_URL } from '@env';
 import BackgroundService from 'react-native-background-actions';
 import { useUserContext } from '../contexts/UserContext';
-
 
 const options = {
   taskName: '위치',
@@ -106,7 +106,7 @@ const Map_Marker = () => {
                   // console.log('1', data);
 
                   const res = await axios.post(
-                    `http://175.45.204.122:8000/api/4/location`,
+                    `${API_URL}/api/4/location`,
                     {
                       body: data
                     },
@@ -167,7 +167,7 @@ const Map_Marker = () => {
 
   const locationgetHandler = async () => {
     const res = await axios.get(
-      `http://175.45.204.122:8000/api/4/location`,
+      `${API_URL}/api/4/location`,
       {
         headers: { Authorization: user },
       },
@@ -193,7 +193,7 @@ const Map_Marker = () => {
 
   const functionCombine = () => {
     getLocation();
-    locationgetHandler();
+    // locationgetHandler();
   };
 
   // console.log('123123', getdata);
