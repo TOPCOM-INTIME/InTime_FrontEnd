@@ -44,6 +44,7 @@ function PasswordScreen({navigation}) {
       <AppBar
         title="비밀번호 변경"
         centerTitle={true}
+        color="#6c757d"
         leading={props => (
           <IconButton
             icon={props => <Icon name="chevron-left" {...props} />}
@@ -60,6 +61,7 @@ function PasswordScreen({navigation}) {
               label="비밀번호"
               value={password}
               onChangeText={setPassword}
+              color="#6c757d"
               secureTextEntry
             />
           </Box>
@@ -69,6 +71,7 @@ function PasswordScreen({navigation}) {
               titleStyle={{fontSize: 20}}
               style={{padding: 5}}
               disabled={loading}
+              color="#6c757d"
               onPress={passwordChangeHandler}
             />
           </Box>

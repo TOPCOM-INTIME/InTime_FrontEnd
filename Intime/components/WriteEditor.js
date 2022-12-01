@@ -25,6 +25,7 @@ function WriteEditor({
           onSubmitEditing={() => {
             minuteRef.current.focus();
           }}
+          color="#6c757d"
           backgroundColor="white"
         />
         <TextInput
@@ -40,6 +41,7 @@ function WriteEditor({
           onSubmitEditing={() => {
             secondRef.current.focus();
           }}
+          color="#6c757d"
         />
         {/* </View>
         <View style={styles.inputline}> */}
@@ -55,6 +57,7 @@ function WriteEditor({
           onSubmitEditing={() => {
             Keyboard.dismiss();
           }}
+          color="#6c757d"
         />
       </VStack>
     </>
