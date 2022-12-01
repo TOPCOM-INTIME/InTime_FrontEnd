@@ -7,6 +7,7 @@ import TransparentCircleButton from './TransparentCircleButton';
 import {useUserContext} from '../contexts/UserContext';
 import {useLogContext} from '../contexts/LogContext';
 import {API_URL} from '@env';
+import {AppBar, HStack, IconButton} from '@react-native-material/core';
 
 function ListHeader({group, setGroup, isEmpty}) {
   const navigation = useNavigation();
@@ -54,45 +55,36 @@ function ListHeader({group, setGroup, isEmpty}) {
   };
 
   return (
-    <View style={styles.block}>
-      <View style={styles.iconButtonWrapper}>
-        {/* <TransparentCircleButton
-          onPress={onPress}
-          name="arrow-back"
-          color="#424242"
-        /> */}
-      </View>
-      <View style={styles.buttons}>
-        {!isEmpty && (
-          <>
-            <View style={[styles.iconButtonWrapper, styles.marginRight]}>
-              <TransparentCircleButton
-                name="edit"
-                color="blue"
-                hasMarginRight
-                onPress={onEdit}
-              />
-            </View>
-
-            <View style={[styles.iconButtonWrapper, styles.marginRight]}>
-              <TransparentCircleButton
-                name="delete-forever"
-                color="#ef5350"
-                hasMarginRight
-                onPress={onAskRemove}
-              />
-            </View>
-          </>
-        )}
-        <View style={styles.iconButtonWrapper}>
-          <TransparentCircleButton
-            name="add-circle-outline"
-            color="#009688"
+    <AppBar
+      title="리스트"
+      centerTitle={true}
+      color="#6c757d"
+      titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+      leading={<></>}
+      trailing={props => (
+        <HStack>
+          {!isEmpty && (
+            <IconButton
+              icon={props => <Icon name="edit" {...props} />}
+              color="white"
+              onPress={onEdit}
+            />
+          )}
+          {!isEmpty && (
+            <IconButton
+              icon={props => <Icon name="delete" {...props} />}
+              color="white"
+              onPress={onAskRemove}
+            />
+          )}
+          <IconButton
+            icon={props => <Icon name="add" {...props} />}
+            color="white"
             onPress={() => navigation.navigate('CreateGroup')}
           />
-        </View>
-      </View>
-    </View>
+        </HStack>
+      )}
+    />
   );
 }
 

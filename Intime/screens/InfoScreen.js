@@ -103,7 +103,12 @@ function InfoScreen({navigation}) {
 
   return (
     <>
-      <AppBar title="내 정보" centerTitle={true} />
+      <AppBar
+        title="내 정보"
+        centerTitle={true}
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        color="#6c757d"
+      />
       <ListItem
         title="로그아웃"
         onPress={logoutHandler}

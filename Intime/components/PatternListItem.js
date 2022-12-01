@@ -27,7 +27,11 @@ function PatternListItem({log, isCreatingGroup, setGroup}) {
         // ]}
         android_ripple={{color: '#ededed'}}
         title={log.name}
-        secondaryText={`${parseInt(log.time / 60)}분 ${log.time % 60}초`}
+        secondaryText={
+          log.time >= 60
+            ? `${parseInt(log.time / 60)}분 ${log.time % 60}초`
+            : `${log.time % 60}초`
+        }
       />
     );
   } else if (isCreatingGroup === 2) {
@@ -40,7 +44,11 @@ function PatternListItem({log, isCreatingGroup, setGroup}) {
         onPress={onPress}
         android_ripple={{color: '#ededed'}}
         title={log.name}
-        secondaryText={`${parseInt(log.time / 60)}분 ${log.time % 60}초`}
+        secondaryText={
+          log.time >= 60
+            ? `${parseInt(log.time / 60)}분 ${log.time % 60}초`
+            : `${log.time % 60}초`
+        }
       />
     );
   }
@@ -53,7 +61,11 @@ function PatternListItem({log, isCreatingGroup, setGroup}) {
       onLongPress={onLongPress}
       android_ripple={{color: '#ededed'}}
       title={log.name}
-      secondaryText={`${parseInt(log.time / 60)}분 ${log.time % 60}초`}
+      secondaryText={
+        log.time >= 60
+          ? `${parseInt(log.time / 60)}분 ${log.time % 60}초`
+          : `${log.time % 60}초`
+      }
     />
   );
 }

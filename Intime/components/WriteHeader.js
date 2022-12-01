@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import React, {useReducer, useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useLogContext} from '../contexts/LogContext';
 import {useUserContext} from '../contexts/UserContext';
@@ -28,6 +28,10 @@ function WriteHeader({
   };
 
   const onSave = async () => {
+    if (title === '') {
+      Alert.alert('실패', '이름을 입력해 주세요.');
+      return;
+    }
     if (minute === '') minute = 0;
     if (second === '') second = 0;
     if (!isEditing) {
@@ -74,6 +78,8 @@ function WriteHeader({
     <AppBar
       title={isEditing ? '패턴 수정 / 삭제' : '패턴 생성'}
       centerTitle={true}
+      color="#6c757d"
+      titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
       leading={props => (
         <IconButton
           icon={props => <Icon name="chevron-left" {...props} />}

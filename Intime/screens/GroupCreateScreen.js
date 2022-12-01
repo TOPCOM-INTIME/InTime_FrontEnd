@@ -5,7 +5,6 @@ import {
   Pressable,
   StyleSheet,
   View,
-  TextInput,
   Alert,
   Text,
 } from 'react-native';
@@ -18,6 +17,8 @@ import {useLogContext} from '../contexts/LogContext';
 import axios from 'axios';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
+import {AppBar, TextInput, IconButton} from '@react-native-material/core';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function GroupCreateScreen({navigation, route}) {
   const {user, setUser} = useUserContext();
@@ -84,13 +85,43 @@ function GroupCreateScreen({navigation, route}) {
   console.log(name);
   return (
     <>
+      <AppBar
+        title={route.params?.group ? '그룹 수정' : '그룹 생성'}
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        centerTitle={true}
+        color="#6c757d"
+        tintColor="white"
+        leading={props => (
+          <IconButton
+            icon={props => <Icon name="chevron-left" {...props} />}
+            color="white"
+            onPress={() => navigation.pop()}
+            {...props}
+          />
+        )}
+        trailing={props =>
+          loading ? (
+            <></>
+          ) : (
+            <IconButton
+              icon={props => <Icon name="check" {...props} />}
+              color="green"
+              onPress={groupCreateHandler}
+            />
+          )
+        }
+      />
       <TextInput
-        style={styles.input}
         onChangeText={setName}
-        placeholder="그룹 이름"
-        placeholderTextColor="gray"
+        label="그룹 이름"
+        color="#6c757d"
         value={name}
       />
+      <View style={styles.text}>
+        <Text style={styles.caution}>
+          그룹에 넣고 싶은 패턴을 순서대로 클릭하여 주세요.
+        </Text>
+      </View>
       <View style={styles.block}>
         <View style={styles.container}>
           <View style={styles.text}>
@@ -109,23 +140,6 @@ function GroupCreateScreen({navigation, route}) {
           <Patterns patterns={group} setGroup={setGroup} isCreatingGroup={2} />
         </View>
       </View>
-      <View style={styles.text}>
-        <Text style={styles.caution}>
-          그룹에 넣고 싶은 패턴을 순서대로 클릭하여 주세요.
-        </Text>
-      </View>
-      {loading ? (
-        <View style={styles.buttonView} />
-      ) : (
-        <View style={styles.buttonView}>
-          <Pressable style={styles.button} onPress={() => navigation.pop()}>
-            <Text style={styles.caution}>뒤로</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={groupCreateHandler}>
-            <Text style={styles.caution}>저장</Text>
-          </Pressable>
-        </View>
-      )}
     </>
   );
 }
@@ -168,6 +182,8 @@ const styles = StyleSheet.create({
     width: '50%',
     justifyContent: 'center',
     paddingHorizontal: 5,
+    borderColor: '#6c757d',
+    borderRightWidth: 1,
   },
   buttonView: {
     height: '7%',
