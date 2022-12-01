@@ -140,7 +140,7 @@ function CommunityScreenAdd() {
                             }}>
                                 <View style={{ flex: 5, margin: 1 }}>
                                     <TextInput
-                                        style={{ borderWidth: 2, margin: 3, borderRadius: 5, borderColor: 'pink' }}
+                                        style={{ color: 'black', borderWidth: 2, margin: 3, borderRadius: 5, borderColor: 'pink' }}
                                         value={word}
                                         onChangeText={onChangeInput}
                                         placeholder="닉네임을 입력하세요."
