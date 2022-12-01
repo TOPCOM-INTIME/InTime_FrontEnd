@@ -49,6 +49,7 @@ const requestLocationPermission = async () => {
 
 
 const Map_Marker = () => {
+  
   const { user, setUser } = useUserContext();
   const [location, setLocation] = useState(false);
   const [position, setPosition] = useState({
@@ -193,7 +194,7 @@ const Map_Marker = () => {
 
   const functionCombine = () => {
     getLocation();
-    // locationgetHandler();
+    locationgetHandler();
   };
 
   // console.log('123123', getdata);
