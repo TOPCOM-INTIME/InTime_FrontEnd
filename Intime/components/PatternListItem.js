@@ -21,11 +21,6 @@ function PatternListItem({log, isCreatingGroup, setGroup}) {
   if (isCreatingGroup === 1) {
     return (
       <ListItem
-        // style={({pressed}) => [
-        //   styles.block,
-        //   Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
-        // ]}
-        android_ripple={{color: '#ededed'}}
         title={log.name}
         secondaryText={
           log.time >= 60

@@ -1,49 +1,60 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Text, Alert, Button, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  Alert,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
 import axios from 'axios';
-import { API_URL } from '@env';
-import { useUserContext } from '../../contexts/UserContext';
+import {API_URL} from '@env';
+import {useUserContext} from '../../contexts/UserContext';
+import {ListItem} from '@react-native-material/core';
 
 function CommunityScreenList(props) {
-  const { user } = useUserContext();
-  const { userList } = props;
+  const {user} = useUserContext();
+  const {userList} = props;
   console.log(userList);
 
-  const requestdel = async (username) => {
+  const requestdel = async username => {
     try {
-      const res = await axios.delete(`${API_URL}/friends`,
-        {
-          data: {
-            username: username
-          },
-          headers: {
-            Authorization: user,
-          }
-        }
-      );
-      Alert.alert("삭제 완료")
+      const res = await axios.delete(`${API_URL}/friends`, {
+        data: {
+          username: username,
+        },
+        headers: {
+          Authorization: user,
+        },
+      });
+      Alert.alert('삭제 완료');
     } catch (err) {
       console.error('err', err);
     }
-  }
+  };
 
-  const isDel = async (username) => {
-    Alert.alert("친구 삭제", "정말 삭제하시겠습니까?",
+  const isDel = async username => {
+    Alert.alert(
+      '친구 삭제',
+      '정말 삭제하시겠습니까?',
       [
         {
-          text: "아니요", onPress: () => console.log('삭제 안됌'),
-          style: "cancel"
+          text: '아니요',
+          onPress: () => console.log('삭제 안됌'),
+          style: 'cancel',
         },
         {
-          text: "네", onPress: () => {
+          text: '네',
+          onPress: () => {
             requestdel(username);
             console.log('삭제됌');
-          }
-        }
+          },
+        },
       ],
-      { cancelable: false }
+      {cancelable: false},
     );
-  }
+  };
 
   return (
     <View
@@ -61,20 +72,17 @@ function CommunityScreenList(props) {
             alignItems: 'center',
             marginTop: '65%',
           }}>
-          <Text style={{ color: 'black' }}>등록된 친구가 없습니다.</Text>
+          <Text style={{color: 'black'}}>등록된 친구가 없습니다.</Text>
         </View>
       ) : (
         userList.map(user => (
-          <TouchableOpacity style={styles.list}
+          <ListItem
             key={user.username}
-            onLongPress={() => isDel(user.username)}>
-            <View>
-              <Text style={styles.titleText}>{user.username}</Text>
-            </View>
-          </TouchableOpacity>
+            onLongPress={() => isDel(user.username)}
+            title={user.username}
+          />
         ))
-      )
-      }
+      )}
     </View>
   );
 }

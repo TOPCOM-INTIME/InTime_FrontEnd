@@ -5,27 +5,6 @@ import PatternListItem from './PatternListItem';
 
 function PatternList({logs, onScrolledToBottom, ListHeaderComponent}) {
   const navigation = useNavigation();
-  const onScroll = e => {
-    if (!onScrolledToBottom) return;
-    const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
-    const distanceFromBottom =
-      contentSize.height - layoutMeasurement.height - contentOffset.y;
-
-    if (
-      distanceFromBottom < 72 &&
-      contentSize.height > layoutMeasurement.height
-    ) {
-      onScrolledToBottom(true);
-    } else {
-      onScrolledToBottom(false);
-    }
-  };
-
-  const onPressFun = item => () => {
-    navigation.navigate('write', {
-      log: item,
-    });
-  };
 
   return (
     <FlatList
@@ -34,7 +13,6 @@ function PatternList({logs, onScrolledToBottom, ListHeaderComponent}) {
       renderItem={({item}) => <PatternListItem log={item} />}
       keyExtractor={log => log.id}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
-      onScroll={onScroll}
       ListHeaderComponent={ListHeaderComponent}
     />
   );

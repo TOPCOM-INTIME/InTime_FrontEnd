@@ -16,19 +16,19 @@ import messaging from '@react-native-firebase/messaging';
 import {Text} from '@react-native-material/core';
 import {Linking} from 'react-native';
 import PasswordChangeScreen from './PasswordChangeScreen';
+import {useLogContext} from '../contexts/LogContext';
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
   const {user, setUser} = useUserContext();
-  const [friendInvite, setFriendInvite] = useState(0);
   return (
     <Stack.Navigator>
       {user ? (
         <>
           <Stack.Screen
             name="MainTab"
+            component={MainTab}
             options={{headerShown: false}}
-            children={navigation => <MainTab friendInvite={friendInvite} />}
           />
           <Stack.Screen
             name="write"
@@ -47,10 +47,8 @@ function RootStack() {
           />
           <Stack.Screen
             name="CommunityScreenAdd"
+            component={CommunityScreenAdd}
             options={{headerShown: false}}
-            children={navigation => (
-              <CommunityScreenAdd setFriendInvite={setFriendInvite} />
-            )}
           />
           <Stack.Screen
             name="NickName"
