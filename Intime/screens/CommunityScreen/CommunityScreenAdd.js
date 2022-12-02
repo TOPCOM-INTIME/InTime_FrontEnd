@@ -3,19 +3,27 @@ import {
   StyleSheet,
   ScrollView,
   View,
-  Text,
-  Button,
   TouchableOpacity,
-  TextInput,
   Alert,
+  Keyboard,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import TransparentCircleButton from '../../components/TransparentCircleButton';
 import RequestList from './CommunityScreenRequestList';
-import Icon from 'react-native-vector-icons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import {API_URL} from '@env';
 import {useUserContext} from '../../contexts/UserContext';
+import {
+  AppBar,
+  IconButton,
+  HStack,
+  Button,
+  TextInput,
+  Text,
+  Box,
+  VStack,
+} from '@react-native-material/core';
 
 function CommunityScreenAdd({setFriendInvite}) {
   const {user} = useUserContext();
@@ -26,6 +34,7 @@ function CommunityScreenAdd({setFriendInvite}) {
   const navigation = useNavigation();
 
   const onSubmit = async () => {
+    Keyboard.dismiss();
     if (word === '') {
       Alert.alert('실패', '닉네임을 입력해주세요');
       return;
@@ -89,114 +98,103 @@ function CommunityScreenAdd({setFriendInvite}) {
   };
 
   return (
-    <View>
-      <View style={styles.iconButton}>
-        <TransparentCircleButton
-          onPress={onGoBack}
-          name="arrow-back"
-          color="#000000"
+    <>
+      <AppBar
+        title="친구 추가"
+        centerTitle={true}
+        color="#6c757d"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        leading={props => (
+          <IconButton
+            icon={props => <Icon name="chevron-left" {...props} />}
+            color="white"
+            onPress={onGoBack}
+          />
+        )}
+      />
+      <HStack m={'2%'} spacing={'2%'} justify="center">
+        <Button
+          title="친구검색"
+          color={isSearch ? '#6c757d' : '#E0E0E0'}
+          style={{width: '48%', height: 40, justifyContent: 'center'}}
+          onPress={() => setisSearch(true)}
         />
-      </View>
-
-      <View style={styles.buttonarea}>
-        <View style={{flex: 1, margin: 5}}>
-          <Button
-            color="#ff5c5c"
-            title="친구검색"
-            disabled={isSearch}
-            onPress={togglePage}
-          />
-          {/* <TouchableOpacity
-                        disabled={isSearch}
-                        //아래 스타일에서 불러오면 오류, 현재에서 처리해야함 -> 어떻게 깔끔하게 할까?
-                        style={{
-                            opacity: !isSearch ? 1.0 : 0.3,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 5,
-                            flex: 1,
-                            backgroundColor: '#ff5c5c'
-                        }}
-                        onPress={togglePage}
-                    >
-                        <Text style={{ color: 'yellow' }}>친구검색</Text>
-                    </TouchableOpacity> */}
-        </View>
-        <View style={{flex: 1, margin: 5}}>
-          <Button
-            color="#ff5c5c"
-            title="받은요청"
-            disabled={!isSearch}
-            onPress={togglePage}
-          />
-          {/* <TouchableOpacity
-                    //이걸로 띄울시 컴포넌트 전체가 비활성화되는 오류 있음
-                        disabled={!isSearch}
-                        style={{
-                            opacity: isSearch ? 1.0 : 0.3,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 5,
-                            flex: 1,
-                            backgroundColor: '#ff5c5c'
-                        }}
-                        onPress={togglePage}
-                    >
-                        <Text style={{ color: 'yellow' }}>받은요청</Text>
-                    </TouchableOpacity> */}
-        </View>
-      </View>
-
+        <Button
+          title="받은요청"
+          color={!isSearch ? '#6c757d' : '#E0E0E0'}
+          style={{width: '48%', height: 40, justifyContent: 'center'}}
+          onPress={() => setisSearch(false)}
+        />
+      </HStack>
       {isSearch ? (
-        <View>
-          <View>
-            <View
+        <Box>
+          <HStack mh={'2%'} spacing={'2%'} h={54}>
+            <TextInput
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-              }}>
-              <View style={{flex: 5, margin: 1}}>
-                <TextInput
-                  style={{
-                    borderWidth: 2,
-                    margin: 3,
-                    borderRadius: 5,
-                    borderColor: 'pink',
-                  }}
-                  value={word}
-                  onChangeText={onChangeInput}
-                  placeholder="닉네임을 입력하세요."
-                  placeholderTextColor="gray"
-                />
-              </View>
-              <View style={{flex: 1, margin: 2}}>
-                <Button
-                  color="#ff5c5c"
-                  title="닉네임 검색"
-                  onPress={onSubmit}
-                />
-              </View>
-            </View>
-          </View>
+                width: '80%',
+              }}
+              inputContainerStyle={{height: '100%'}}
+              value={word}
+              onChangeText={onChangeInput}
+              label="닉네임"
+              color="#6c757d"
+              placeholderTextColor="gray"
+              variant="outlined"
+            />
+
+            <Button
+              color="#6c757d"
+              title="검색"
+              style={{justifyContent: 'center', height: '100%'}}
+              onPress={onSubmit}
+            />
+          </HStack>
+
           {list.length > 0 ? (
-            <View>
-              <ScrollView>
+            <ScrollView>
+              <VStack
+                mt={4}
+                spacing={1}
+                divider={true}
+                dividerStyle={{backgroundColor: '#343a40'}}>
                 {list.map(user => (
-                  <View key={user.username}>
-                    <View style={styles.addList}>
-                      <Text style={styles.listText}>{user.username}</Text>
-                      <View style={{margin: 5}}>
-                        <Button
-                          color="pink"
-                          title="친구 추가"
-                          onPress={() => onPressSend(user.username)}
-                        />
-                      </View>
-                    </View>
-                  </View>
+                  <Box
+                    key={user.username}
+                    style={{
+                      width: '100%',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      backgroundColor: 'white',
+                      height: 60,
+                    }}>
+                    <Text
+                      color="#212121"
+                      style={{fontSize: 18, marginLeft: 15}}>
+                      {user.username}
+                    </Text>
+                    <Button
+                      style={{marginRight: 15}}
+                      title="친구 추가"
+                      color="#6c757d"
+                      onPress={() => onPressSend(user.username)}
+                    />
+                  </Box>
+                  // <View key={user.username}>
+                  //   <View>
+                  //     <Text style={styles.listText}>{user.username}</Text>
+                  //     <View style={{margin: 5}}>
+                  //       <Button
+                  //         color="pink"
+                  //         title="친구 추가"
+                  //         onPress={() => onPressSend(user.username)}
+                  //       />
+                  //     </View>
+                  //   </View>
+                  // </View>
                 ))}
-              </ScrollView>
-            </View>
+              </VStack>
+            </ScrollView>
           ) : phase !== 'init' ? (
             <View style={{marginTop: '50%', alignItems: 'center'}}>
               <Text style={{color: 'gray', fontSize: 20, fontWeight: 'bold'}}>
@@ -204,13 +202,13 @@ function CommunityScreenAdd({setFriendInvite}) {
               </Text>
             </View>
           ) : null}
-        </View>
+        </Box>
       ) : (
         <View>
           <RequestList setFriendInvite={setFriendInvite} />
         </View>
       )}
-    </View>
+    </>
   );
 }
 

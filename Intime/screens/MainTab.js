@@ -7,10 +7,12 @@ import Map_Marker from './Map_Marker';
 import ScheduleList from './ScheduleListScreen';
 import ListScreen from './ListScreen';
 import CommunityScreen from './CommunityScreen';
+import {useLogContext} from '../contexts/LogContext';
 
 const Tab = createBottomTabNavigator();
 
-function MainTab({friendInvite}) {
+function MainTab() {
+  const {friendInvite} = useLogContext();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -33,7 +35,7 @@ function MainTab({friendInvite}) {
           tabBarIcon: ({color}) => (
             <Icon name="people" size={24} color={color} />
           ),
-          tabBarBadge: friendInvite > 0 ? friendInvite : null,
+          tabBarBadge: friendInvite.length > 0 ? friendInvite.length : null,
         }}
       />
       <Tab.Screen

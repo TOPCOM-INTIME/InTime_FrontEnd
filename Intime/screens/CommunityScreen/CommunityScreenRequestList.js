@@ -3,8 +3,6 @@ import {
   StyleSheet,
   ScrollView,
   View,
-  Text,
-  Button,
   TouchableOpacity,
   TextInput,
   Alert,
@@ -12,23 +10,19 @@ import {
 import axios from 'axios';
 import {API_URL} from '@env';
 import {useUserContext} from '../../contexts/UserContext';
+import {
+  Box,
+  Text,
+  HStack,
+  ListItem,
+  Button,
+  VStack,
+} from '@react-native-material/core';
+import {useLogContext} from '../../contexts/LogContext';
 
-function CommunityScreenRequestList({setFriendInvite}) {
+function CommunityScreenRequestList() {
   const {user} = useUserContext();
-  const [list, setList] = useState([]);
-
-  const getList = async () => {
-    // 통신 요청 API
-    try {
-      const res = await axios.get(`${API_URL}/friends/request`, {
-        headers: {Authorization: user},
-      });
-      setList(res.data);
-      setFriendInvite(res.data.length);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const {friendInvite, setFriendInvite} = useLogContext();
 
   const addPush = async userId => {
     //수락 통신 API
@@ -42,9 +36,8 @@ function CommunityScreenRequestList({setFriendInvite}) {
           headers: {Authorization: user},
         },
       );
-      const newList = list.filter(userObj => userObj.id !== userId);
-      setList(newList);
-      setFriendInvite(newList.length);
+      const newList = friendInvite.filter(userObj => userObj.id !== userId);
+      setFriendInvite(newList);
       Alert.alert('수락 완료', '친구 목록이 추가되었어요.');
       console.log('userid', userId);
       //요기서
@@ -60,9 +53,8 @@ function CommunityScreenRequestList({setFriendInvite}) {
       const res = await axios.delete(`${API_URL}/friends/request/${userId}`, {
         headers: {Authorization: user},
       });
-      const newList = list.filter(userObj => userObj.id !== userId);
-      setList(newList);
-      setFriendInvite(newList.length);
+      const newList = friendInvite.filter(userObj => userObj.id !== userId);
+      setFriendInvite(newList);
       Alert.alert('거절 완료', '거절되었어요.');
       console.log('userid', userId);
     } catch (err) {
@@ -72,52 +64,84 @@ function CommunityScreenRequestList({setFriendInvite}) {
     }
   };
 
-  useEffect(() => {
-    getList();
-  }, []);
-
-  console.log(list);
+  console.log(friendInvite);
   return (
     <View>
-      {list.length > 0 ? (
-        <View>
-          {list.map(user => (
-            <View key={user.id}>
-              <View>
-                <ScrollView>
-                  <View style={styles.requestList}>
-                    <Text style={styles.listText}>{user.username}</Text>
-                    <View
-                      style={{
-                        justifyContent: 'flex-end',
-                        display: 'flex',
-                        flexDirection: 'row',
-                      }}>
-                      <View style={{marginHorizontal: 3, marginVertical: 5}}>
-                        <Button
-                          color="pink"
-                          title="수락"
-                          onPress={() => {
-                            addPush(user.id);
-                          }}
-                        />
-                      </View>
-                      <View style={{margin: 5}}>
-                        <Button
-                          color="pink"
-                          title="거절"
-                          onPress={() => {
-                            refusePush(user.id);
-                          }}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                </ScrollView>
-              </View>
-            </View>
-          ))}
-        </View>
+      {friendInvite.length > 0 ? (
+        <ScrollView>
+          <VStack
+            mt={4}
+            divider={true}
+            dividerStyle={{backgroundColor: '#343a40'}}>
+            {friendInvite.map(user => (
+              <Box
+                key={user.id}
+                title={user.username}
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  backgroundColor: 'white',
+                  height: 60,
+                }}>
+                <Text color="#212121" style={{fontSize: 18, marginLeft: 15}}>
+                  {user.username}
+                </Text>
+                <HStack spacing={4} style={{marginRight: 15}}>
+                  <Button
+                    // style={{marginRight: 15}}
+                    title="수락"
+                    color="#6c757d"
+                    onPress={() => {
+                      addPush(user.id);
+                    }}
+                  />
+                  <Button
+                    // style={{marginRight: 15}}
+                    title="거절"
+                    color="#6c757d"
+                    onPress={() => {
+                      refusePush(user.id);
+                    }}
+                  />
+                </HStack>
+              </Box>
+              // <Box key={user.id}>
+              //   <View>
+              //     <View style={styles.requestList}>
+              //       <Text style={styles.listText}>{user.username}</Text>
+              //       <View
+              //         style={{
+              //           justifyContent: 'flex-end',
+              //           display: 'flex',
+              //           flexDirection: 'row',
+              //         }}>
+              //         <View style={{marginHorizontal: 3, marginVertical: 5}}>
+              //           <Button
+              //             color="pink"
+              //             title="수락"
+              //             onPress={() => {
+              //               addPush(user.id);
+              //             }}
+              //           />
+              //         </View>
+              //         <View style={{margin: 5}}>
+              //           <Button
+              //             color="pink"
+              //             title="거절"
+              //             onPress={() => {
+              //               refusePush(user.id);
+              //             }}
+              //           />
+              //         </View>
+              //       </View>
+              //     </View>
+              //   </View>
+              // </Box>
+            ))}
+          </VStack>
+        </ScrollView>
       ) : (
         <View style={{marginTop: '50%', alignItems: 'center'}}>
           <Text style={{color: 'gray', fontSize: 20, fontWeight: 'bold'}}>

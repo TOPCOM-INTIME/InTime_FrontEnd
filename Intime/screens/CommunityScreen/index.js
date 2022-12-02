@@ -13,7 +13,8 @@ import {
 import axios from 'axios';
 import {API_URL} from '@env';
 import {useUserContext} from '../../contexts/UserContext';
-
+import {AppBar, ListItem, IconButton} from '@react-native-material/core';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 function CommunityScreen() {
   const isFocused = useIsFocused();
   const {user} = useUserContext();
@@ -83,52 +84,39 @@ function CommunityScreen() {
   };
 
   return (
-    <View style={{flex: 1}}>
-      <View style={styles.tasksWrapper}>
-        <View style={styles.header}>
-          <Text style={styles.sectionTitle}>친구</Text>
-          <TransparentCircleButton
+    <>
+      <AppBar
+        title="친구"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        centerTitle={true}
+        color="#6c757d"
+        tintColor="white"
+        leading={<></>}
+        trailing={props => (
+          <IconButton
+            icon={props => <Icon name="add" {...props} />}
+            color="white"
             onPress={onSubmit}
-            name="add"
-            color="#424242"
           />
+        )}
+      />
+
+      {userList.length === 0 ? (
+        <View style={styles.empty}>
+          <Text style={styles.emptyText}>등록된 친구가 없습니다.</Text>
         </View>
-      </View>
-      <ScrollView style={{width: '100%'}}>
-        <View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: '5%',
-            }}>
-            {userList.length === 0 ? (
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  marginTop: '65%',
-                }}>
-                <Text style={{color: 'black'}}>등록된 친구가 없습니다.</Text>
-              </View>
-            ) : (
-              userList.map(user => (
-                <TouchableOpacity
-                  style={styles.list}
-                  key={user.username}
-                  onLongPress={() => isDel(user.username)}>
-                  <View>
-                    <Text style={styles.titleText}>{user.username}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))
-            )}
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+      ) : (
+        <ScrollView style={{flex: 1}}>
+          {userList.map(user => (
+            <ListItem
+              key={user.username}
+              onLongPress={() => isDel(user.username)}
+              title={user.username}
+            />
+          ))}
+        </ScrollView>
+      )}
+    </>
   );
 }
 
@@ -162,6 +150,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: 'black',
     fontWeight: 'bold',
+  },
+  empty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'black',
   },
 });
 
