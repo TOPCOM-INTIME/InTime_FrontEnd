@@ -91,14 +91,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   leftContainer: {
-    width: '30%',
-    borderRightColor: '#ee2f48',
+    width: '35%',
+    borderRightColor: '#6c757d',
     borderRightWidth: 1,
   },
   rightContainer: {
-    width: '70%',
+    width: '65%',
     justifyContent: 'center',
-    paddingHorizontal: 5,
   },
   buttonView: {
     height: '7%',

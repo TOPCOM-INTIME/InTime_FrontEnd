@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTab from './MainTab';
 import SignInScreen from './SignInScreen';
@@ -15,7 +15,12 @@ import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import {Text} from '@react-native-material/core';
 import {Linking} from 'react-native';
+<<<<<<< HEAD
 import InvitationScreen from './InvitationScreen';
+=======
+import PasswordChangeScreen from './PasswordChangeScreen';
+import {useLogContext} from '../contexts/LogContext';
+>>>>>>> e2aad6bf6fd84dc301ebce9a215a7d02a931d9e3
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
@@ -66,11 +71,18 @@ function RootStack() {
           />
         </>
       ) : (
-        <Stack.Screen
-          name="SignIn"
-          component={SignInScreen}
-          options={{headerShown: false}}
-        />
+        <>
+          <Stack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="changePassword"
+            component={PasswordChangeScreen}
+            options={{headerShown: false}}
+          />
+        </>
       )}
     </Stack.Navigator>
   );

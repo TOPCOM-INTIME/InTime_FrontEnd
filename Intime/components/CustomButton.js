@@ -1,3 +1,4 @@
+import {Button} from '@react-native-material/core';
 import React from 'react';
 import {StyleSheet, View, Pressable, Text, Platform} from 'react-native';
 
@@ -6,22 +7,14 @@ function CustomButton({onPress, title, hasMarginBottom, theme}) {
 
   return (
     <View style={[styles.block, hasMarginBottom && styles.margin]}>
-      <Pressable
+      <Button
         onPress={onPress}
-        style={({pressed}) => [
-          styles.wrapper,
-          isPrimary && styles.primaryWrapper,
-          Platform.OS === 'ios' && pressed && {opacity: 0.5},
-        ]}
-        android_ripple={{color: isPrimary ? '#ffffff' : '#ee2f48'}}>
-        <Text
-          style={[
-            styles.text,
-            isPrimary ? styles.primaryText : styles.secondaryText,
-          ]}>
-          {title}
-        </Text>
-      </Pressable>
+        title={title}
+        color={isPrimary ? '#6c757d' : '#ffffff'}
+        tintColor={isPrimary ? '#ffffff' : '#6c757d'}
+        android_ripple={{color: isPrimary ? '#ffffff' : '#6c757d'}}
+        pressableContainerStyle={{paddingVertical: 8}}
+      />
     </View>
   );
 }
@@ -51,13 +44,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   primaryWrapper: {
-    backgroundColor: '#ee2f48',
+    backgroundColor: '#adb5bd',
   },
   primaryText: {
     color: 'white',
   },
   secondaryText: {
-    color: '#ee2f48',
+    color: '#adb5bd',
   },
 });
 

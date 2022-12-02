@@ -36,7 +36,26 @@ function PatternScreen({navigation, route}) {
       <PatternList logs={patterns} onScrolledToBottom={onScrolledToBottom} />
     );
   } else {
-    return <View style={styles.empty}>{content}</View>;
+    return (
+      <>
+        <AppBar
+          title="패턴"
+          titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+          centerTitle={true}
+          color="#6c757d"
+          tintColor="white"
+          leading={<></>}
+          trailing={props => (
+            <IconButton
+              icon={props => <Icon name="add" {...props} />}
+              color="white"
+              onPress={() => navigation.navigate('write')}
+            />
+          )}
+        />
+        <View style={styles.empty}>{content}</View>
+      </>
+    );
   }
 
   return (
@@ -45,7 +64,7 @@ function PatternScreen({navigation, route}) {
         title="패턴"
         titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
         centerTitle={true}
-        color="#ffafcc"
+        color="#6c757d"
         tintColor="white"
         leading={<></>}
         trailing={props => (
@@ -85,6 +104,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   emptyText: {
+    fontWeight: 'bold',
+    fontSize: 20,
     color: 'black',
   },
 });

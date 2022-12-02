@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
-import { TextInput, StyleSheet } from 'react-native';
+import React, {useRef} from 'react';
+import {TextInput, StyleSheet} from 'react-native';
 
-function SignUpForm({ onSubmit, createChangeTextHandler, isSignUp }) {
+function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
   const emailRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -16,18 +16,25 @@ function SignUpForm({ onSubmit, createChangeTextHandler, isSignUp }) {
         keyboardType="email-address"
         returnKeyType="next"
         onChangeText={createChangeTextHandler('email')}
-        onSubmitEditing={() => passwordRef.current.focus()}
+        onSubmitEditing={
+          isSignUp
+            ? () => usernameRef.current.focus()
+            : () => passwordRef.current.focus()
+        }
         style={[styles.input, styles.margin]}
       />
-
-      {/* <BorderedInput
-        placeholder="아이디"
-        ref={usernameRef}
-        returnKeyType="next"
-        onChangeText={createChangeTextHandler('username')}
-        onSubmitEditing={() => passwordRef.current.focus()}
-        hasMarginBottom
-      /> */}
+      {isSignUp && (
+        <TextInput
+          placeholder="닉네임"
+          placeholderTextColor="gray"
+          ref={usernameRef}
+          returnKeyType="next"
+          onChangeText={createChangeTextHandler('username')}
+          onSubmitEditing={() => passwordRef.current.focus()}
+          hasMarginBottom
+          style={[styles.input, styles.margin]}
+        />
+      )}
       <TextInput
         placeholder="비밀번호"
         placeholderTextColor="gray"
@@ -56,7 +63,7 @@ function SignUpForm({ onSubmit, createChangeTextHandler, isSignUp }) {
 
 const styles = StyleSheet.create({
   input: {
-    borderColor: '#ee2f48',
+    borderColor: '#adb5bd',
     borderWidth: 1,
     color: 'black',
     paddingHorizontal: 16,

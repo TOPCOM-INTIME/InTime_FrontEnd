@@ -14,36 +14,33 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {API_URL} from '@env';
 import {useUserContext} from '../contexts/UserContext';
 
-function NickNameScreen({navigation}) {
+function PasswordChangeScreen({navigation}) {
   const {user} = useUserContext();
-  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const nicknameChangeHandler = async () => {
-    if (nickname === '') {
-      Alert.alert('실패', '닉네임을 입력해주세요');
+    if (email === '') {
+      Alert.alert('실패', '이메일을 입력해주세요');
       return;
     }
     setLoading(true);
     try {
-      const res = await axios.put(
-        `${API_URL}/username`,
-        {username: nickname},
-        {
-          headers: {Authorization: user},
-        },
-      );
+      const res = await axios.get(`${API_URL}/email?email=${email}`);
+      console.log(res);
       navigation.pop();
     } catch (err) {
-      Alert.alert('실패', '중복되는 닉네임 입니다.');
+      if (err.response.status === 405) {
+        Alert.alert('실패', '등록되지 않은 이메일입니다.');
+      } else {
+        Alert.alert('실패', '이메일을 제대로 입력해주세요.');
+      }
       setLoading(false);
-      console.error(err);
     }
   };
-  console.log(loading);
   return (
     <>
       <AppBar
-        title="닉네임 변경"
+        title="비밀번호 변경"
         centerTitle={true}
         color="#6c757d"
         leading={props => (
@@ -59,19 +56,20 @@ function NickNameScreen({navigation}) {
         <VStack mt={20}>
           <Box mh={40}>
             <TextInput
-              label="닉네임"
-              value={nickname}
-              color="#6c757d"
-              onChangeText={setNickname}
+              label="이메일"
+              value={email}
+              onChangeText={setEmail}
+              color="black"
+              helperText="입력한 이메일로 임시 비밀번호를 전송합니다."
             />
           </Box>
           <Box mh={'35%'} mt={20}>
             <Button
-              title="변경"
+              title="전송"
               titleStyle={{fontSize: 20}}
               style={{padding: 5}}
-              disabled={loading}
               color="#6c757d"
+              disabled={loading}
               onPress={nicknameChangeHandler}
             />
           </Box>
@@ -81,4 +79,4 @@ function NickNameScreen({navigation}) {
   );
 }
 
-export default NickNameScreen;
+export default PasswordChangeScreen;

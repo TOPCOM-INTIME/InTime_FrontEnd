@@ -8,6 +8,7 @@ const LogContext = createContext(null);
 export function LogContextProvider({children}) {
   const [patterns, setPatterns] = useState([]);
   const [patternGroups, setPatternGroups] = useState([]);
+  const [friendInvite, setFriendInvite] = useState([]);
   const {user} = useUserContext();
 
   useEffect(() => {
@@ -27,6 +28,14 @@ export function LogContextProvider({children}) {
           },
         );
         setPatternGroups(fetchedGroup.data);
+        const fetchedInvitation = await axios.get(
+          `${API_URL}/friends/request`,
+          {
+            headers: {Authorization: user},
+          },
+        );
+        setFriendInvite(fetchedInvitation.data);
+        console.log('컨텍스트:', fetchedInvitation);
       } catch (err) {
         console.error('로그 컨텍스트 에러', err);
         setPatternGroups([]);
@@ -39,7 +48,14 @@ export function LogContextProvider({children}) {
   return (
     <LogContext.Provider
       children={children}
-      value={{patterns, setPatterns, patternGroups, setPatternGroups}}
+      value={{
+        patterns,
+        setPatterns,
+        patternGroups,
+        setPatternGroups,
+        friendInvite,
+        setFriendInvite,
+      }}
     />
   );
 }
