@@ -15,12 +15,9 @@ import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import {Text} from '@react-native-material/core';
 import {Linking} from 'react-native';
-<<<<<<< HEAD
 import InvitationScreen from './InvitationScreen';
-=======
 import PasswordChangeScreen from './PasswordChangeScreen';
 import {useLogContext} from '../contexts/LogContext';
->>>>>>> e2aad6bf6fd84dc301ebce9a215a7d02a931d9e3
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
