@@ -16,6 +16,7 @@ import authStorage from '../stroages/authStorage';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
 import messaging from '@react-native-firebase/messaging';
+import {Button} from '@react-native-material/core';
 
 function SignInScreen({navigation, route}) {
   const {isSignUp} = route.params || {};
@@ -39,8 +40,16 @@ function SignInScreen({navigation, route}) {
       return;
     }
     if (isSignUp) {
+      if (
+        userData.username === '' ||
+        userData.password === '' ||
+        userData.email === ''
+      ) {
+        Alert.alert('실패', '모든 부분을 입력하셔야 합니다.');
+        return;
+      }
       const data = {
-        // username: userData.username,
+        username: userData.username,
         password: userData.password,
         email: userData.email,
       };
@@ -114,6 +123,15 @@ function SignInScreen({navigation, route}) {
               isSignUp={isSignUp}
               loading={loading}
             />
+            {!isSignUp && (
+              <Button
+                title="비밀번호 변경"
+                color="white"
+                tintColor="#6c757d"
+                onPress={() => navigation.navigate('changePassword')}
+                pressableContainerStyle={{paddingVertical: 8}}
+              />
+            )}
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>

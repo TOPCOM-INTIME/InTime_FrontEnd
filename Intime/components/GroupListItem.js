@@ -1,32 +1,31 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {ListItem} from '@react-native-material/core';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function GroupListItem({item, group, onPress}) {
   console.log('그룹리스트아이템', item);
+  console.log('그룹', group);
+  console.log('같음?', group?.id === item?.id);
   const time = item.patterns.reduce((a, b) => a + b.time, 0);
   return (
-    <Pressable
-      style={[styles.block, group?.id === item.id && styles.active]}
-      // style={styles.block, }
-      // style={({pressed}) => [
-      //   styles.block,
-      //   Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
-      //   group?.id === item.id ? styles.active : '',
-      // ]}
-      // android_ripple={{color: '#ededed'}}>
-      onPress={() => onPress(item)}>
-      <Text
-        style={[
-          group?.id === item.id ? styles.activeTitle : styles.title,
-          styles.name,
-        ]}>
-        {item.name}
-      </Text>
-      <Text style={[group?.id === item.id && styles.activeTitle, styles.date]}>
-        {parseInt(time / 60)}분 {time % 60}초
-      </Text>
-    </Pressable>
+    <ListItem
+      onPress={() => onPress(item)}
+      title={item.name}
+      secondaryText={
+        time >= 60
+          ? `${parseInt(time / 60)}분 ${time % 60}초`
+          : `${time % 60}초`
+      }
+      trailing={props => {
+        if (group?.id === item?.id) {
+          return <Icon name="chevron-right" {...props} />;
+        } else {
+          return <></>;
+        }
+      }}
+    />
   );
 }
 

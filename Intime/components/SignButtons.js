@@ -15,11 +15,11 @@ function SignButtons({isSignUp, onSubmit, loading}) {
       navigation.push('SignIn', {isSignUp: true});
     }
   };
-  
+
   if (loading) {
     return (
       <View style={styles.spinnerWrapper}>
-        <ActivityIndicator size={32} color="#6200ee" />
+        <ActivityIndicator size={32} color="#adb5bd" />
       </View>
     );
   }
@@ -31,6 +31,7 @@ function SignButtons({isSignUp, onSubmit, loading}) {
         title={secondaryTitle}
         theme="secondary"
         onPress={onSecondaryButtonPress}
+        hasMarginBottom
       />
     </View>
   );

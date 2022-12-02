@@ -42,7 +42,7 @@ function PatternScreen({navigation, route}) {
           title="패턴"
           titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
           centerTitle={true}
-          color="#ffafcc"
+          color="#6c757d"
           tintColor="white"
           leading={<></>}
           trailing={props => (
@@ -64,7 +64,7 @@ function PatternScreen({navigation, route}) {
         title="패턴"
         titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
         centerTitle={true}
-        color="#ffafcc"
+        color="#6c757d"
         tintColor="white"
         leading={<></>}
         trailing={props => (
@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   emptyText: {
+    fontWeight: 'bold',
+    fontSize: 20,
     color: 'black',
   },
 });

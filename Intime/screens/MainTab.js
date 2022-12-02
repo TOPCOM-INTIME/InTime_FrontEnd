@@ -10,13 +10,13 @@ import CommunityScreen from './CommunityScreen';
 
 const Tab = createBottomTabNavigator();
 
-function MainTab() {
+function MainTab({friendInvite}) {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         // tabBarShowLabel: false,
-        tabBarActiveTintColor: '#ee2f48',
+        tabBarActiveTintColor: '#a2d2ff',
       }}>
       <Tab.Screen
         name="일정"
@@ -33,6 +33,7 @@ function MainTab() {
           tabBarIcon: ({ color }) => (
             <Icon name="people" size={24} color={color} />
           ),
+          tabBarBadge: friendInvite > 0 ? friendInvite : null,
         }}
       />
       <Tab.Screen
