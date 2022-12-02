@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useUserContext} from '../contexts/UserContext';
+import {API_URL} from '@env';
 
 const ScheduleItem = props => {
   const {user, setUser} = useUserContext();
@@ -24,7 +25,22 @@ const ScheduleItem = props => {
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const endTime = new Date(props.data.endTime);
-  // console.log('endTime', endTime);
+  // console.log(props.data.schedulePoolId);
+
+  const checkGroup = async () => {
+    try {
+      const res = await axios.get(
+        `${API_URL}/api/schedulePools=${props.data.schedulePoolId}/members`,
+        {
+          headers: {Authorization: user},
+        },
+      );
+      console.log('SCHEDULEPOOL_SUCCESS!', res.data);
+    } catch (e) {
+      console.log(`[SCHEDULEPOOL_ERROR]${e}`);
+    }
+  };
+
   function print() {
     if (status === 'ING') {
       return <Text style={{color: 'black'}}>진행중</Text>;

@@ -6,7 +6,7 @@ import ScheduleCustomButton from './ScheduleCustomButton';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
 
-function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
+function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
   const navigation = useNavigation();
   const primaryTitle = '찾기';
   const secondaryTitle = '취소';
@@ -107,7 +107,8 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
       // console.log('계산된 시간', totalTime, '설정된 시간', data.time);
       let tmpTime = new Date(data.endTime);
       tmpTime.setSeconds(tmpTime.getSeconds() - totalTime);
-      setData('startTime')(tmpTime);
+      setCarTime(totalTime);
+      // setData('time')(totalTime);
     } catch (e) {}
 
     const odsayData = {
@@ -117,8 +118,9 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
       sy: startData.startY,
     };
     try {
-      console.log('설정된 도착시간:', data.endTime);
-      console.log('현재 시간:', currentDate);
+      // console.log('설정된 도착시간:', data.endTime);
+      // console.log('현재 시간:', currentDate);
+      // console.log(odsayData);
       if (data.endTime < currentDate) {
         throw 3;
       }
@@ -126,17 +128,17 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
         headers: {Authorization: user},
       });
       console.log('ODsay SUCCESS!', res.data.result.path[0].info.totalTime);
-      console.log('ODsay path:', res.data.result.path[0].info);
+      // console.log('ODsay path:', res.data.result.path[0].info);
       // res.data.result.path.map(item => console.log(item));
       setOdsayData(res.data.result.path);
       navigation.push('CarScreen', BusData);
     } catch (e) {
+      console.log(`[ODsay ERROR]${e} SENT${e}`);
       if (e === 3) {
         TimeAlert();
       } else {
         PlaceAlert();
       }
-      console.log(`[ODsay ERROR]${e} SENT${data.name}`);
     }
   };
 

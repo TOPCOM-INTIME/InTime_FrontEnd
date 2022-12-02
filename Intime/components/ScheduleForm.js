@@ -16,25 +16,23 @@ import ScheduleItem from './ScheduleItems';
 import {useUserContext} from '../contexts/UserContext';
 import BackgroundService from 'react-native-background-actions';
 import {useNavigation} from '@react-navigation/native';
+import PushNotification from 'react-native-push-notification';
 import {API_URL} from '@env';
 
 function ScheduleForm() {
   const {user, setUser} = useUserContext();
   const [scheduleData, setSchedule] = useState([]);
   const navigation = useNavigation();
-  const optionBack = {
-    taskName: '준비',
-    taskTitle: '준비할 시간입니다.',
-    taskDesc: '준비하세욧!!!!!!!!!!!!',
-    taskIcon: {
-      name: 'ic_launcher',
-      type: 'mipmap',
-    },
-    color: '#ff00ff',
-    linkingURI: 'Intime://', // See Deep Linking for more info
-    parameters: {
-      delay: 1000,
-    },
+
+  const checkInvitation = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/schedule-invitations`, {
+        headers: {Authorization: user},
+      });
+      console.log('get한 데이터', res.data);
+    } catch (e) {
+      console.log(`[CHECK_ERROR]${e}`);
+    }
   };
 
   const getSchedule = async () => {
@@ -42,16 +40,20 @@ function ScheduleForm() {
       const res = await axios.get(`${API_URL}/api/user/schedule/all`, {
         headers: {Authorization: user},
       });
-      // console.log('GET한 data:', res.data);
       setSchedule(res.data);
-      // console.log('GET함');
+      console.log('GET_SCHEDULE', res.data);
     } catch (e) {
-      console.log(`[GETERROR]${e}`);
+      console.log(`[GET_SCHEDULE_ERROR]${e}`);
     }
+  };
+
+  const deleteNotification = ID => {
+    PushNotification.cancelLocalNotification(ID);
   };
 
   const deleteSchedule = async ID => {
     try {
+      deleteNotification(ID);
       axios
         .delete(`${API_URL}/api/schedule/scheduleId=${ID}`, {
           headers: {Authorization: user},
@@ -65,7 +67,8 @@ function ScheduleForm() {
   };
 
   const onShortPress = item => {
-    // console.log(item);
+    let isUpdate = true;
+    item.isUpdate = true;
     navigation.push('ScheduleScreen', item);
   };
 
@@ -87,8 +90,13 @@ function ScheduleForm() {
     ]);
   };
 
+  const onNoticePress = () => {
+    navigation.push('InvitationScreen');
+  };
+
   const [sec, setSec] = useState(0);
   useEffect(() => {
+    // checkInvitation();
     getSchedule();
   }, []);
 
@@ -99,7 +107,12 @@ function ScheduleForm() {
           <View style={styles.tasksWrapper}>
             <View style={styles.header}>
               <Text style={styles.sectionTitle}>일정</Text>
-              <ScheduleAddButton style={styles.button} />
+              <View style={styles.rightButton}>
+                <TouchableOpacity onPress={onNoticePress}>
+                  <Icon name={'notifications'} size={30} color={'black'} />
+                </TouchableOpacity>
+                <ScheduleAddButton style={styles.button} />
+              </View>
             </View>
             <View
               style={{
@@ -123,7 +136,12 @@ function ScheduleForm() {
           <View style={styles.tasksWrapper}>
             <View style={styles.header}>
               <Text style={styles.sectionTitle}>일정</Text>
-              <ScheduleAddButton style={styles.button} />
+              <View style={styles.rightButton}>
+                <TouchableOpacity onPress={onNoticePress}>
+                  <Icon name={'notifications'} size={30} color={'black'} />
+                </TouchableOpacity>
+                <ScheduleAddButton style={styles.button} />
+              </View>
             </View>
             <View style={styles.items}>
               {scheduleData.map(item => (
@@ -168,6 +186,10 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row-reverse',
     margin: 15,
+  },
+  rightButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
 

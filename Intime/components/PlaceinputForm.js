@@ -33,8 +33,11 @@ function PlaceinputForm({
   setcheckGroup,
   friendList,
   setfriendList,
+  INVITE,
+  isCar,
+  setCarTime,
+  CarTime,
 }) {
-  // console.log('데이터', checkGroup);
   const navigation = useNavigation();
   const name = useRef();
   const start = useRef();
@@ -44,15 +47,16 @@ function PlaceinputForm({
   const [isGroup, setGroup] = useState(false);
   const [nowDate, setcurrentDate] = useState(new Date());
   const {user, setUser} = useUserContext();
-
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
+  const [INTIAL, SETINTIAL] = useState(0);
   const setTime = time => {
     let setTime = new Date(time);
     setTime.setSeconds(0);
     return setTime;
   };
 
+  console.log('데이터', data.time);
   // 개인이나 단체를 정하는 토글
   const options = [
     {label: '개인', value: false},
@@ -71,23 +75,51 @@ function PlaceinputForm({
 
   //DatePicker 출력
   const showMode = currentMode => {
-    setShow(true);
-    setMode(currentMode);
+    if (!INVITE) {
+      setShow(true);
+      setMode(currentMode);
+    } else {
+      Alert.alert('오류', '초대 받은 일정의 날짜는 수정할 수 없습니다');
+    }
   };
   const onSecondaryButtonPress = () => {
     setData('startTime')(0);
     navigation.pop();
   };
 
-  const selectPress = () => {
-    console.log(data);
-    if (data.startTime === 0) {
+  // const setBusStart = () => {
+  //   console.log();
+  //   let BUSTime = new Date(data.endTime);
+  //   BUSTime.setMinutes(BUSTime.getMinutes() - busTime);
+  //   console.log(BUSTime);
+  //   setData('startTime')(BUSTime);
+  //   setData('time')(busTime);
+  // };
+
+  // const setCarStart = () => {
+  //   let carTime = new Date(data.endTime);
+  //   carTime.setSeconds(carTime.getSeconds() - CarTime);
+  //   console.log(carTime);
+  //   setData('startTime')(carTime);
+  //   setData('time')(CarTime);
+  // };
+
+  const setendTime = () => {
+    if (data.time === 0) {
       Alert.alert('출발과 도착을 입력해라');
-    } else if (nowDate > data.endTime) {
-      // console.log(nowDate, data.endTime);
+    } else {
+      let tmpDate = new Date(data.endTime);
+      tmpDate.setSeconds(tmpDate.getSeconds() - data.time);
+      setData('startTime')(tmpDate);
+      navigation.push('SelectPattern');
+    }
+  };
+
+  const selectPress = async () => {
+    if (nowDate > data.endTime) {
       TimeAlert();
     } else {
-      navigation.push('SelectPattern');
+      setendTime();
     }
   };
 
@@ -95,17 +127,25 @@ function PlaceinputForm({
     navigation.push('GroupScheduleFriend');
   };
 
+  const OnSwitchChange = value => {
+    if (INVITE !== 1) {
+      setcheckGroup(value);
+    }
+  };
+
   return (
     <>
       <SwitchSelector
         options={options}
-        initial={0}
+        initial={INVITE}
         selectedColor={'white'}
         buttonColor={'#ED3648'}
         borderColor={'#ED3648'}
         borderWidth={1}
+        value={INVITE}
         hasPadding
-        onPress={value => setcheckGroup(value)}
+        onPress={value => OnSwitchChange(value)}
+        disabled={INVITE ? true : false}
       />
       <ScrollView style={{marginTop: 20, backgroundColor: 'white'}}>
         <View style={styles.tasksWrapper}>
@@ -152,6 +192,7 @@ function PlaceinputForm({
               is24Hour={true}
               display="default"
               onChange={onChange}
+              disabled={INVITE ? true : false}
             />
           )}
 
@@ -174,6 +215,7 @@ function PlaceinputForm({
             value={data.destName}
             returnKeyType="next"
             onChangeText={setData('destName')}
+            editable={!INVITE}
           />
           <FindButton
             data={data}
@@ -182,6 +224,7 @@ function PlaceinputForm({
             setBus={setBus}
             OdsayData={OdsayData}
             setOdsayData={setOdsayData}
+            setCarTime={setCarTime}
           />
           {checkGroup && (
             <View style={{marginTop: 10}}>
@@ -190,16 +233,6 @@ function PlaceinputForm({
                 style={styles.friendBox}
                 onPress={OnFriendBox}></TouchableOpacity>
             </View>
-          )}
-          {data.time !== 0 && (
-            <>
-              {/* <Text>현재 입력된 정보</Text> */}
-              <Text style={styles.sectionTitle}>
-                {data.sourceName}{' '}
-                <Icon name={'arrow-forward'} size={10} color={'black'} />{' '}
-                {data.destName}
-              </Text>
-            </>
           )}
         </View>
       </ScrollView>

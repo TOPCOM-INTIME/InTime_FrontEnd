@@ -31,6 +31,9 @@ function SelectPattern({
   ItemID,
   checkGroup,
   friendList,
+  INVITE,
+  schedulePoolId,
+  friendtoken,
 }) {
   const {patterns, setPatterns, patternGroups, setPatternGroups} =
     useLogContext();
@@ -40,8 +43,8 @@ function SelectPattern({
   const secondaryTitle = '취소';
   const navigation = useNavigation();
   let group_data;
-  console.log('일정 확인', checkGroup);
-  console.log('친구 목록', friendList);
+  // console.log('일정 확인', checkGroup, schedulePoolId);
+  // console.log('친구 목록', friendtoken);
 
   const onSecondaryButtonPress = () => {
     navigation.pop();
@@ -61,6 +64,49 @@ function SelectPattern({
     return setTime(readyTime);
   };
 
+  const sendnotice = async item => {
+    let fcm_data = {
+      destName: data.destName,
+      scheduleName: data.name,
+      scheduleTime: String(data.endTime),
+      targetToken: item,
+    };
+    try {
+      const res = await axios.post(`${API_URL}/api/fcm/schedule`, fcm_data, {
+        headers: {Authorization: user},
+      });
+      console.log(`[NOTICE_SUCCESS]`);
+    } catch (e) {
+      console.log(`[NOTICE_ERROR],${e}`, fcm_data);
+    }
+  };
+
+  const sendNotification = res => {
+    // console.log('알림 데이터', data, res);
+    PushNotification.localNotificationSchedule({
+      channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
+      title: '준비할 시간입니다.',
+      message: '준비를 시작해 주세요', // (required)
+      date: setTime(data.readyTime),
+      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+      playSound: true, // (optional) default: true
+      soundName: 'alarm',
+      repeatTime: 1,
+      id: res.data,
+    });
+    PushNotification.localNotificationSchedule({
+      channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
+      title: '출발할 시간입니다.',
+      message: '출발하세요!!', // (required)
+      date: setTime(data.startTime), // in 60 secs
+      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+      playSound: true, // (optional) default: true
+      soundName: 'alarm',
+      repeatTime: 1,
+      id: res.data,
+    });
+  };
+
   useEffect(() => {
     setDatas(data => {
       return {
@@ -71,41 +117,42 @@ function SelectPattern({
     });
   }, [group]);
 
-  // const setDatass = () => {
-  //   setData('readyPatterns_Ids')(group.map(item => item.id));
-  //   setData('readyTime')(calTime());
-  // };
-
   const onSaveButtonPress = async () => {
-    console.log('알림 설정한 시간', data.readyTime);
-    PushNotification.localNotificationSchedule({
-      channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      title: '준비할 시간입니다.',
-      message: '준비를 시작해 주세요', // (required)
-      date: setTime(data.readyTime),
-      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-      playSound: true, // (optional) default: true
-      soundName: 'alarm',
-      repeatTime: 1,
-    });
-    PushNotification.localNotificationSchedule({
-      channelId: '2', // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      title: '출발할 시간입니다.',
-      message: '출발하세요!!', // (required)
-      date: setTime(data.startTime), // in 60 secs
-      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-      playSound: true, // (optional) default: true
-      soundName: 'alarm',
-      repeatTime: 1,
-    });
+    // console.log('알림 설정한 시간', data.readyTime);
     try {
       if (!isUpdate) {
-        // 그룹 일정 생성
-        if (checkGroup) {
+        if (INVITE === 1) {
+          console.log('초대장으로 인한', schedulePoolId);
           try {
             group_data = data;
             group_data.members_Ids = friendList;
+            // console.log(group_data);
+            const res = await axios.post(
+              `${API_URL}/api/group-scehduel-after-invitation/schedulepool=${schedulePoolId}`,
+              group_data,
+              {
+                headers: {Authorization: user},
+              },
+            );
+            sendNotification(res);
+
+            console.log('INVITE_POST_SUCCESS!', group_data, res.data);
+            navigation.push('MainTab');
+          } catch (e) {
             console.log(group_data);
+            console.log(`[INVITE_POST_ERROR]${e} SENT${schedulePoolId}`);
+          }
+        }
+        // 그룹 일정 생성
+        else if (checkGroup) {
+          try {
+            group_data = data;
+            group_data.members_Ids = friendList;
+
+            friendtoken.map(item => {
+              sendnotice(item);
+            });
+
             const res = await axios.post(
               `${API_URL}/api/group-schedule`,
               group_data,
@@ -113,7 +160,8 @@ function SelectPattern({
                 headers: {Authorization: user},
               },
             );
-            console.log('GROUP_POST_SUCCESS!', group_data, res);
+            sendNotification(res);
+            console.log('GROUP_POST_SUCCESS!', group_data, res.data);
             navigation.push('MainTab');
           } catch (e) {
             console.log(group_data);
@@ -125,11 +173,11 @@ function SelectPattern({
             const res = await axios.post(`${API_URL}/api/schedule`, data, {
               headers: {Authorization: user},
             });
-            console.log('POST_SUCCESS!', data);
+            sendNotification(res);
+            console.log('[INDIVIDUAL_POST_SUCCESS]', data);
             navigation.push('MainTab');
-          } catch {
-            console.log(data);
-            console.log(`[POST_ERROR]${e} SENT${data}`);
+          } catch (e) {
+            console.log(`[INDIVIDUAL_POST_ERROR]${e} SENT${data}`);
           }
         }
       } // 기존 일정 수정
@@ -142,6 +190,7 @@ function SelectPattern({
             headers: {Authorization: user},
           },
         );
+        sendNotification(res);
         console.log('UPDATE_SUCCESS!', data);
         navigation.push('MainTab');
       }

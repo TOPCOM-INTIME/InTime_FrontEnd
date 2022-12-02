@@ -7,6 +7,7 @@ import Placeinput from './Placeinput';
 import PlaceinputForm from '../components/PlaceinputForm';
 import SelectPattern from './SelectPattern';
 import GroupScheduleFriend from '../components/GroupScheduleFriend';
+import Invitation from '../components/Invitation';
 const Stack = createNativeStackNavigator();
 function ScheduleScreen({route}) {
   // console.log(route);
@@ -21,19 +22,44 @@ function ScheduleScreen({route}) {
     endTime: new Date(),
     status: 'PRE',
   });
+
   const [busTime, setBus] = useState(0);
+  const [CarTime, setCarTime] = useState(0);
+  const [isCar, setisCar] = useState(false);
+
   const [OdsayData, setOdsayData] = useState([]);
   const [isCreatingGroup, setisCreatingGroup] = useState(false);
   const [isUpdate, setisUPdate] = useState(false);
   const [checkGroup, setcheckGroup] = useState(false);
   const [ItemID, setTiemID] = useState('');
   const [friendList, setfriendList] = useState([]);
+  const [UPDATEDATA, SETUPDATEDATA] = useState([]);
+  const [INVITE, SETINVITE] = useState(0);
+  const [schedulePoolId, setSchedulePool] = useState();
+  const [friendtoken, setfriendtoken] = useState([]);
+
   useEffect(() => {
     if (route.params === undefined) {
-      // console.log('when add');
-    } else {
+      // console.log('when add', route);
+    } else if (route.params.isUpdate) {
+      // console.log('when update', route.params);
       setisUPdate(true);
       setTiemID(route.params.id);
+      setData({
+        name: route.params.name,
+        time: route.params.time,
+        sourceName: route.params.sourceName,
+        destName: route.params.destName,
+        readyPatterns_Ids: route.params.readyPatterns_Ids,
+        startTime: new Date(route.params.startTime),
+        readyTime: new Date(route.params.readyTime),
+        endTime: new Date(route.params.endTime),
+        status: route.params.status,
+      });
+    } else {
+      SETINVITE(1);
+      // console.log('when invite');
+      setSchedulePool(route.params.schedulePoolId);
       setData({
         name: route.params.name,
         time: route.params.time,
@@ -68,6 +94,10 @@ function ScheduleScreen({route}) {
               setcheckGroup={setcheckGroup}
               friendList={friendList}
               setfriendList={setfriendList}
+              INVITE={INVITE}
+              isCar={isCar}
+              setCarTime={setCarTime}
+              CarTime={CarTime}
             />
           )}
           options={{headerShown: false}}
@@ -84,6 +114,9 @@ function ScheduleScreen({route}) {
               checkGroup={checkGroup}
               friendList={friendList}
               setfriendList={setfriendList}
+              INVITE={INVITE}
+              schedulePoolId={schedulePoolId}
+              friendtoken={friendtoken}
             />
           )}
           options={{headerShown: false}}
@@ -97,6 +130,9 @@ function ScheduleScreen({route}) {
               busTime={busTime}
               OdsayData={OdsayData}
               setBus={setBus}
+              isCar={isCar}
+              setisCar={setisCar}
+              CarTime={CarTime}
             />
           )}
           options={{headerShown: false}}
@@ -107,6 +143,19 @@ function ScheduleScreen({route}) {
             <GroupScheduleFriend
               friendList={friendList}
               setfriendList={setfriendList}
+              friendtoken={friendtoken}
+              setfriendtoken={setfriendtoken}
+            />
+          )}
+        />
+        <Stack.Screen
+          name="Invitation"
+          children={({navigation}) => (
+            <Invitation
+              friendList={friendList}
+              setfriendList={setfriendList}
+              friendtoken={friendtoken}
+              setfriendtoken={setfriendtoken}
             />
           )}
         />
