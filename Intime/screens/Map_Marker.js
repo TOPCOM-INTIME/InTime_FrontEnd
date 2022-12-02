@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Button, Image, PermissionsAndroid } from 'react-native';
+import { StyleSheet, View, Text, Button, Image, PermissionsAndroid, Linking } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import axios from 'axios';
 import { API_URL } from '@env';
 import BackgroundService from 'react-native-background-actions';
 import { useUserContext } from '../contexts/UserContext';
+
 
 const options = {
   taskName: '위치',
@@ -18,9 +19,11 @@ const options = {
   color: '#ff00ff',
   linkingURI: 'Intime://', // See Deep Linking for more info
   parameters: {
-    delay: 1000,
+    delay: 2000,
   },
 };
+
+
 
 
 const Map_Marker = () => {
@@ -134,74 +137,89 @@ const Map_Marker = () => {
     console.log(location);
   };
 
-  const sleep = time => new Promise((resolve) => setTimeout(() => resolve(), time));
+  const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 
-  const locationpostHandler = async taskDataArguments => {
+  const backpostservice = async taskDataArguments => {
     const { delay } = taskDataArguments;
-    await new Promise(async (resolve) => {
+    await new Promise(async resolve => {
       for (let i = 0; BackgroundService.isRunning(); i++) {
-        const data = {
-          gps_x: 0.0,
-          gps_y: 0.0,
-        };
-        // console.log(i);
-        console.log(' ', i % 10);
-        if (i % 5 === 0) {
-          const result = requestLocationPermission();
-          result.then(res => {
-            // console.log('res is:', res);
-            if (res) {
-              Geolocation.getCurrentPosition(
-                async position => {
-                  data.gps_x = position.coords.latitude;
-                  data.gps_y = position.coords.longitude;
-                  console.log('1', data);
-
-                  const res = await axios.post(
-                    `${API_URL}/api/location`,
-                    {
-                      body: data
-                    },
-                    {
-                      headers: { Authorization: user },
-                    },
-                  );
-                  console.log('data', data)
-                  // console.log("location post");
-                  console.log(res.data);
-                },
-                error => {
-                  console.log(error.code, error.message);
-                  console.log('data', data)
-                  setLocation(false);
-                },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-              );
-            }
-          });
-          // console.log('2', data);
-          // const res = await axios.post(
-          //   `http://175.45.204.122:8000/api/7/location`, data,
-          //   {
-          //     headers: { Authorization: user },
-          //   },
-          // );
-          // console.log("location post");
-          // console.log(res.data);
-
-        }
-        if (i === 1000) {
+        console.log(i);
+        if (i === 10) {
+          console.log("Hello 10 sec!")
           await BackgroundService.stop();
         }
         await sleep(delay);
       }
     });
+  };
 
-  }
+
+  // const sleep = time => new Promise((resolve) => setTimeout(() => resolve(), time));
+  // const locationpostHandler = async taskDataArguments => {
+  //   const { delay } = taskDataArguments;
+  //   await new Promise(async (resolve) => {
+  //     for (let i = 0; BackgroundService.isRunning(); i++) {
+  //       const data = {
+  //         gps_x: 0.0,
+  //         gps_y: 0.0,
+  //       };
+  //       // console.log(i);
+  //       console.log(' ', i % 10);
+  //       if (i % 5 === 0) {
+  //         const result = requestLocationPermission();
+  //         result.then(res => {
+  //           // console.log('res is:', res);
+  //           if (res) {
+  //             Geolocation.getCurrentPosition(
+  //               async position => {
+  //                 data.gps_x = position.coords.latitude;
+  //                 data.gps_y = position.coords.longitude;
+  //                 console.log('1', data);
+
+  //                 const res = await axios.post(
+  //                   `${API_URL}/api/location`,
+  //                   {
+  //                     body: data
+  //                   },
+  //                   {
+  //                     headers: { Authorization: user },
+  //                   },
+  //                 );
+  //                 console.log('data', data)
+  //                 // console.log("location post");
+  //                 console.log(res.data);
+  //               },
+  //               error => {
+  //                 console.log(error.code, error.message);
+  //                 console.log('data', data)
+  //                 setLocation(false);
+  //               },
+  //               { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+  //             );
+  //           }
+  //         });
+  //         // console.log('2', data);
+  //         // const res = await axios.post(
+  //         //   `http://175.45.204.122:8000/api/7/location`, data,
+  //         //   {
+  //         //     headers: { Authorization: user },
+  //         //   },
+  //         // );
+  //         // console.log("location post");
+  //         // console.log(res.data);
+
+  //       }
+  //       if (i === 1000) {
+  //         await BackgroundService.stop();
+  //       }
+  //       await sleep(delay);
+  //     }
+  //   });
+  // }
 
   const backgroundHandler = async () => {
     console.log('hi');
-    await BackgroundService.start(locationpostHandler, options);
+    await BackgroundService.start(backpostservice, options);
   };
 
   // let getdata = {
@@ -254,7 +272,7 @@ const Map_Marker = () => {
   return (
     < View style={{ flex: 1, padding: 10 }
     }>
-      <Button title="post my location in background" color="orange" onPress={backgroundHandler} />
+      <Button title="post my location in background" color="orange" onPress={backgroundHandler()} />
       <Button title="stop post my location" color="green" onPress={stopHandler} />
 
       <MapView
