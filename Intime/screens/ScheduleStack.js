@@ -8,12 +8,13 @@ import PlaceinputForm from '../components/PlaceinputForm';
 import SelectPattern from './SelectPattern';
 import GroupScheduleFriend from '../components/GroupScheduleFriend';
 import Invitation from '../components/Invitation';
+import ScheduleandMap from './ScheduleandMap';
 const Stack = createNativeStackNavigator();
 function ScheduleScreen({route}) {
   // console.log(route);
   const [data, setData] = useState({
     name: '',
-    time: '',
+    time: 0,
     sourceName: '',
     destName: '',
     readyPatterns_Ids: [],
@@ -158,6 +159,10 @@ function ScheduleScreen({route}) {
               setfriendtoken={setfriendtoken}
             />
           )}
+        />
+        <Stack.Screen
+          name="ScheduleandMap"
+          children={({navigation}) => <ScheduleandMap />}
         />
       </Stack.Navigator>
     </>

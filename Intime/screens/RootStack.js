@@ -18,6 +18,7 @@ import {Linking} from 'react-native';
 import InvitationScreen from './InvitationScreen';
 import PasswordChangeScreen from './PasswordChangeScreen';
 import {useLogContext} from '../contexts/LogContext';
+import ScheduleandMap from './ScheduleandMap';
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
@@ -64,6 +65,11 @@ function RootStack() {
           <Stack.Screen
             name="InvitationScreen"
             component={InvitationScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ScheduleandMap"
+            component={ScheduleandMap}
             options={{headerShown: false}}
           />
         </>
