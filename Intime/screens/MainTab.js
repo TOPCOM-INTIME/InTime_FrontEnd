@@ -63,7 +63,7 @@ function MainTab({friendInvite}) {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="지도"
         component={ScheduleandMap}
         options={{
@@ -71,7 +71,7 @@ function MainTab({friendInvite}) {
             <Icon name="account-circle" size={24} color={color} />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }
