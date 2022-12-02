@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import {
     StyleSheet,
     View,
@@ -28,23 +29,57 @@ const options = {
         type: 'mipmap',
     },
     color: '#ff00ff',
-    linkingURI: 'Intime://', // See Deep Linking for more info
+    linkingURI: 'Intime://',
     parameters: {
         delay: 1000,
     },
 };
 
-function ScheduleandMap() {
+function ScheduleandMap(id, initdate, enddate) {
     const { user, setUser } = useUserContext();
-    const [location, setLocation] = useState(false);
-    const [position, setPosition] = useState({
+    const [location, setLocation] = useState(false); //do not modify this value
+    const [myid, setmyid] = useState([]);
+
+    const [position, setPosition] = useState({ //default center view
         latitude: 37.266833,
         longitude: 127.000019,
     });
 
-    const userlist = [{ username: "KSJ" }, { username: "김치" }, { username: "가죽" }]
+    const [markerlist, setmarkerlist] = useState([]);
 
-    const markerlist = []
+    //dummy
+    const terminatedate = new Date('2022-12-02 20:54:00');
+
+
+    const getmyid = async () => {
+        try {
+            const res = await axios.get(`${API_URL}/api/my-info`,
+                {
+                    headers: {
+                        Authorization: user,
+                    }
+                }
+            );
+            console.log(res.data);
+            setmyid(res.data.id)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getmyid();
+    }, []);
+
+    const userlist = [
+        { username: "코카콜라", id: '1' },
+        { username: "테슬라", id: '2' },
+        { username: "메타", id: '3' },
+        { username: "스타벅스", id: '4' },
+        { username: "알파벳", id: '5' },
+        { username: "펩시", id: '6' },
+    ]
+
     // const markerlist = [
 
     //     {
@@ -90,9 +125,10 @@ function ScheduleandMap() {
                     getLocation();
                     console.log("Hello postapi!", BackgroundService.isRunning())
                     mylocationpost();
+                    console.log(new Date())
                 }
-                if (i === 100) {
-                    console.log("Bye~")
+                if (terminatedate <= new Date()) {
+                    console.log("Bye~time is over")
                     await BackgroundService.stop();
                 }
                 await sleep(delay);
@@ -103,6 +139,29 @@ function ScheduleandMap() {
     const stopHandler = async () => {
         await BackgroundService.stop();
     };
+
+
+
+    const grouplocationpost = async (myid) => {
+        try {
+            const res = await axios.post(`${API_URL}/api/${myid}/location`,
+                {
+                    gps_x: position.latitude,
+                    gps_y: position.longitude,
+                    id: myid,
+                },
+                {
+                    headers: {
+                        Authorization: user,
+                    }
+                },
+            )
+            console.log(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
 
     const mylocationpost = async () => {
         try {
@@ -117,6 +176,36 @@ function ScheduleandMap() {
                     }
                 }
             );
+            console.log(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const getLocationfromapi = async () => {
+        try {
+            const res = await axios.get(`${API_URL}/api/location`,
+                {
+                    headers: {
+                        Authorization: user,
+                    }
+                }
+            )
+            console.log(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const getgroupLocation = async () => {
+        try {
+            const res = await axios.get(`${API_URL}/api/${id}/location`,
+                {
+                    headers: {
+                        Authorization: user,
+                    }
+                }
+            )
             console.log(res.data);
         } catch (err) {
             console.error(err);
@@ -173,35 +262,40 @@ function ScheduleandMap() {
         console.log(location);
     };
 
+    const pressusername = (username) => {
+        console.log(username, '의 위치 표시하기')
+        console.log('myid', myid)
+        console.log(new Date())
+        console.log(terminatedate)
+    }
+
     return (
         <>
-            <View style={styles.container}>
-                <View >
-                    <View >
-                        <Text style={{ color: 'black' }}>뒤로가기 버튼 만들기</Text>
-                        <View
-                            style={styles.userlistwrapper}>
-                            {userlist.length > 0 ?
-                                <View>
-                                    <ScrollView horizontal={true}>
-                                        {userlist.map(user => <View key={user.username}>
-                                            <View >
-                                                <TouchableOpacity>
-                                                    <Text style={styles.textlist}>{user.username}</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>)}
-                                    </ScrollView>
-                                </View>
-                                : <View><Text style={styles.textlist}>친구 없는 경우</Text></View>}
+
+            <View>
+                <View
+                    style={styles.userlistwrapper}>
+                    {userlist.length > 0 ?
+                        <View>
+                            <ScrollView horizontal={true}>
+                                {userlist.map(user => <View key={user.id}>
+                                    <View>
+                                        <TouchableOpacity onPress={() => pressusername(user.username)}>
+                                            <Text style={styles.textlist}>{user.username}</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>)}
+                            </ScrollView>
                         </View>
-                    </View>
+                        : <View><Text style={styles.textlist}>친구 없는 경우</Text></View>}
                 </View>
             </View>
             <View>
+                {/* 아래 버튼은 자동화 구현 후 삭제 예정 */}
                 <Button title="stopHandler" onPress={stopHandler}></Button>
                 <Button title='backgroundHandler' onPress={backgroundHandler} />
                 <Button title='getLocation' onPress={getLocation} />
+                <Button title='getLocationfromapi' onPress={getLocationfromapi} />
             </View>
             <View style={{ flex: 9 }}>
                 <View style={{ flex: 1, padding: 10 }} >
@@ -249,18 +343,14 @@ function ScheduleandMap() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
     userlistwrapper: {
         borderRadius: 10,
-        borderColor: '#ED3648',
+        borderColor: 'pink',
         borderWidth: 3,
         justifyContent: 'flex-start',
         flexDirection: 'row',
         paddingHorizontal: 10,
-        paddingVertical: 20,
+        paddingVertical: 10,
         margin: 1,
     },
     textlist: {
