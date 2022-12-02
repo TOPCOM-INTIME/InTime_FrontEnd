@@ -287,7 +287,6 @@ const Map_Marker = () => {
         <Marker
           id="0"
           title={"내 위치"}
-          pinColor="red"
           coordinate={{
             latitude: position.latitude,
             longitude: position.longitude,

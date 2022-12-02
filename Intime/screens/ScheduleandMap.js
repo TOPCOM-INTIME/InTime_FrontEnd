@@ -4,6 +4,7 @@ import {
     View,
     Text,
     Alert,
+    Image,
     ScrollView,
     TouchableOpacity,
     Button,
@@ -43,33 +44,34 @@ function ScheduleandMap() {
 
     const userlist = [{ username: "KSJ" }, { username: "김치" }, { username: "가죽" }]
 
-    const markerlist = [
+    const markerlist = []
+    // const markerlist = [
 
-        {
-            id: '1',
-            latitude: position.latitude + 0.001,
-            longitude: position.longitude + 0.001,
-            color: "green",
-        },
-        {
-            id: '2',
-            latitude: position.latitude + 0.001,
-            longitude: position.longitude - 0.001,
-            color: "green",
-        },
-        {
-            id: '3',
-            latitude: position.latitude - 0.001,
-            longitude: position.longitude + 0.001,
-            color: "green",
-        },
-        {
-            id: '4',
-            latitude: position.latitude - 0.001,
-            longitude: position.longitude - 0.001,
-            color: "green",
-        },
-    ];
+    //     {
+    //         id: '1',
+    //         latitude: position.latitude + 0.001,
+    //         longitude: position.longitude + 0.001,
+    //         color: "green",
+    //     },
+    //     {
+    //         id: '2',
+    //         latitude: position.latitude + 0.001,
+    //         longitude: position.longitude - 0.001,
+    //         color: "green",
+    //     },
+    //     {
+    //         id: '3',
+    //         latitude: position.latitude - 0.001,
+    //         longitude: position.longitude + 0.001,
+    //         color: "green",
+    //     },
+    //     {
+    //         id: '4',
+    //         latitude: position.latitude - 0.001,
+    //         longitude: position.longitude - 0.001,
+    //         color: "green",
+    //     },
+    // ];
 
     const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 
@@ -171,17 +173,6 @@ function ScheduleandMap() {
         console.log(location);
     };
 
-    const latlongplus = () => {
-        setPosition(
-            position.latitude + 0.001,
-            position.longitude + 0.001,
-        )
-        console.log(position)
-    };
-
-
-
-
     return (
         <>
             <View style={styles.container}>
@@ -209,8 +200,8 @@ function ScheduleandMap() {
             </View>
             <View>
                 <Button title="stopHandler" onPress={stopHandler}></Button>
-                <Button title='Background' onPress={backgroundHandler} />
-                <Button title='Plus' onPress={getLocation} />
+                <Button title='backgroundHandler' onPress={backgroundHandler} />
+                <Button title='getLocation' onPress={getLocation} />
             </View>
             <View style={{ flex: 9 }}>
                 <View style={{ flex: 1, padding: 10 }} >
@@ -223,6 +214,20 @@ function ScheduleandMap() {
                             latitudeDelta: 0.04,
                             longitudeDelta: 0.04,
                         }}>
+
+                        <Marker
+                            id="0"
+                            title={"내 위치"}
+                            pinColor="red"
+                            coordinate={{
+                                latitude: position.latitude,
+                                longitude: position.longitude,
+                            }}
+                        >
+                            <Image
+                                style={{ width: 26, height: 28 }}
+                                source={require('../img04.gif')} />
+                        </Marker>
 
                         {markerlist.map(marker => (
                             <Marker
