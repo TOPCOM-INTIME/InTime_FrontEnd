@@ -29,6 +29,9 @@ function Placeinput({
   friendList,
   setfriendList,
   INVITE,
+  isCar,
+  setCarTime,
+  CarTime,
 }) {
   const {user, setUser} = useUserContext();
   const [loading, setLoading] = useState(false);
@@ -45,6 +48,9 @@ function Placeinput({
       friendList={friendList}
       setfriendList={setfriendList}
       INVITE={INVITE}
+      isCar={isCar}
+      CarTime={CarTime}
+      setCarTime={setCarTime}
     />
   );
 }

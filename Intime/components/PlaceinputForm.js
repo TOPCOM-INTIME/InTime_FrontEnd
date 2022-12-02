@@ -34,6 +34,9 @@ function PlaceinputForm({
   friendList,
   setfriendList,
   INVITE,
+  isCar,
+  setCarTime,
+  CarTime,
 }) {
   const navigation = useNavigation();
   const name = useRef();
@@ -53,7 +56,7 @@ function PlaceinputForm({
     return setTime;
   };
 
-  console.log(INVITE);
+  console.log('데이터', data.time);
   // 개인이나 단체를 정하는 토글
   const options = [
     {label: '개인', value: false},
@@ -84,15 +87,39 @@ function PlaceinputForm({
     navigation.pop();
   };
 
-  const selectPress = () => {
-    console.log(data);
-    if (data.startTime === 0) {
+  // const setBusStart = () => {
+  //   console.log();
+  //   let BUSTime = new Date(data.endTime);
+  //   BUSTime.setMinutes(BUSTime.getMinutes() - busTime);
+  //   console.log(BUSTime);
+  //   setData('startTime')(BUSTime);
+  //   setData('time')(busTime);
+  // };
+
+  // const setCarStart = () => {
+  //   let carTime = new Date(data.endTime);
+  //   carTime.setSeconds(carTime.getSeconds() - CarTime);
+  //   console.log(carTime);
+  //   setData('startTime')(carTime);
+  //   setData('time')(CarTime);
+  // };
+
+  const setendTime = () => {
+    if (data.time === 0) {
       Alert.alert('출발과 도착을 입력해라');
-    } else if (nowDate > data.endTime) {
-      // console.log(nowDate, data.endTime);
+    } else {
+      let tmpDate = new Date(data.endTime);
+      tmpDate.setSeconds(tmpDate.getSeconds() - data.time);
+      setData('startTime')(tmpDate);
+      navigation.push('SelectPattern');
+    }
+  };
+
+  const selectPress = async () => {
+    if (nowDate > data.endTime) {
       TimeAlert();
     } else {
-      navigation.push('SelectPattern');
+      setendTime();
     }
   };
 
@@ -197,6 +224,7 @@ function PlaceinputForm({
             setBus={setBus}
             OdsayData={OdsayData}
             setOdsayData={setOdsayData}
+            setCarTime={setCarTime}
           />
           {checkGroup && (
             <View style={{marginTop: 10}}>

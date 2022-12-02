@@ -16,6 +16,7 @@ import ScheduleItem from './ScheduleItems';
 import {useUserContext} from '../contexts/UserContext';
 import BackgroundService from 'react-native-background-actions';
 import {useNavigation} from '@react-navigation/native';
+import PushNotification from 'react-native-push-notification';
 import {API_URL} from '@env';
 
 function ScheduleForm() {
@@ -28,9 +29,7 @@ function ScheduleForm() {
       const res = await axios.get(`${API_URL}/api/schedule-invitations`, {
         headers: {Authorization: user},
       });
-      // console.log('GET한 data:', res.data);
-      console.log(res.data);
-      // console.log('GET함');
+      console.log('get한 데이터', res.data);
     } catch (e) {
       console.log(`[CHECK_ERROR]${e}`);
     }
@@ -42,13 +41,19 @@ function ScheduleForm() {
         headers: {Authorization: user},
       });
       setSchedule(res.data);
+      console.log('GET_SCHEDULE', res.data);
     } catch (e) {
       console.log(`[GET_SCHEDULE_ERROR]${e}`);
     }
   };
 
+  const deleteNotification = ID => {
+    PushNotification.cancelLocalNotification(ID);
+  };
+
   const deleteSchedule = async ID => {
     try {
+      deleteNotification(ID);
       axios
         .delete(`${API_URL}/api/schedule/scheduleId=${ID}`, {
           headers: {Authorization: user},
@@ -91,7 +96,7 @@ function ScheduleForm() {
 
   const [sec, setSec] = useState(0);
   useEffect(() => {
-    checkInvitation();
+    // checkInvitation();
     getSchedule();
   }, []);
 

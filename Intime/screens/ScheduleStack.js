@@ -24,6 +24,9 @@ function ScheduleScreen({route}) {
   });
 
   const [busTime, setBus] = useState(0);
+  const [CarTime, setCarTime] = useState(0);
+  const [isCar, setisCar] = useState(false);
+
   const [OdsayData, setOdsayData] = useState([]);
   const [isCreatingGroup, setisCreatingGroup] = useState(false);
   const [isUpdate, setisUPdate] = useState(false);
@@ -33,12 +36,13 @@ function ScheduleScreen({route}) {
   const [UPDATEDATA, SETUPDATEDATA] = useState([]);
   const [INVITE, SETINVITE] = useState(0);
   const [schedulePoolId, setSchedulePool] = useState();
+  const [friendtoken, setfriendtoken] = useState([]);
 
   useEffect(() => {
     if (route.params === undefined) {
-      console.log('when add', route);
+      // console.log('when add', route);
     } else if (route.params.isUpdate) {
-      console.log('when update', route.params);
+      // console.log('when update', route.params);
       setisUPdate(true);
       setTiemID(route.params.id);
       setData({
@@ -54,7 +58,7 @@ function ScheduleScreen({route}) {
       });
     } else {
       SETINVITE(1);
-      console.log('when invite');
+      // console.log('when invite');
       setSchedulePool(route.params.schedulePoolId);
       setData({
         name: route.params.name,
@@ -91,6 +95,9 @@ function ScheduleScreen({route}) {
               friendList={friendList}
               setfriendList={setfriendList}
               INVITE={INVITE}
+              isCar={isCar}
+              setCarTime={setCarTime}
+              CarTime={CarTime}
             />
           )}
           options={{headerShown: false}}
@@ -109,6 +116,7 @@ function ScheduleScreen({route}) {
               setfriendList={setfriendList}
               INVITE={INVITE}
               schedulePoolId={schedulePoolId}
+              friendtoken={friendtoken}
             />
           )}
           options={{headerShown: false}}
@@ -122,6 +130,9 @@ function ScheduleScreen({route}) {
               busTime={busTime}
               OdsayData={OdsayData}
               setBus={setBus}
+              isCar={isCar}
+              setisCar={setisCar}
+              CarTime={CarTime}
             />
           )}
           options={{headerShown: false}}
@@ -132,13 +143,20 @@ function ScheduleScreen({route}) {
             <GroupScheduleFriend
               friendList={friendList}
               setfriendList={setfriendList}
+              friendtoken={friendtoken}
+              setfriendtoken={setfriendtoken}
             />
           )}
         />
         <Stack.Screen
           name="Invitation"
           children={({navigation}) => (
-            <Invitation friendList={friendList} setfriendList={setfriendList} />
+            <Invitation
+              friendList={friendList}
+              setfriendList={setfriendList}
+              friendtoken={friendtoken}
+              setfriendtoken={setfriendtoken}
+            />
           )}
         />
       </Stack.Navigator>

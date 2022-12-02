@@ -35,9 +35,9 @@ const ScheduleItem = props => {
           headers: {Authorization: user},
         },
       );
-      console.log('SUCCESS!', res.data);
+      console.log('SCHEDULEPOOL_SUCCESS!', res.data);
     } catch (e) {
-      console.log(`[GETERROR]${e}`);
+      console.log(`[SCHEDULEPOOL_ERROR]${e}`);
     }
   };
 
@@ -52,7 +52,6 @@ const ScheduleItem = props => {
   }
 
   useEffect(() => {
-    checkGroup();
     const NOW = new Date();
     const timer = date - NOW;
     const ENDTIMER = endTime - NOW;

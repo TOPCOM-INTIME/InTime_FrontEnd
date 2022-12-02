@@ -6,7 +6,7 @@ import ScheduleCustomButton from './ScheduleCustomButton';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
 
-function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
+function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
   const navigation = useNavigation();
   const primaryTitle = '찾기';
   const secondaryTitle = '취소';
@@ -107,7 +107,8 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
       // console.log('계산된 시간', totalTime, '설정된 시간', data.time);
       let tmpTime = new Date(data.endTime);
       tmpTime.setSeconds(tmpTime.getSeconds() - totalTime);
-      setData('startTime')(tmpTime);
+      setCarTime(totalTime);
+      // setData('time')(totalTime);
     } catch (e) {}
 
     const odsayData = {
@@ -132,12 +133,12 @@ function FindButton({data, setData, busTime, setBus, OdsayData, setOdsayData}) {
       setOdsayData(res.data.result.path);
       navigation.push('CarScreen', BusData);
     } catch (e) {
+      console.log(`[ODsay ERROR]${e} SENT${e}`);
       if (e === 3) {
         TimeAlert();
       } else {
         PlaceAlert();
       }
-      console.log(`[ODsay ERROR]${e} SENT${res.data.result.path}`);
     }
   };
 

@@ -16,9 +16,17 @@ import SwitchSelector from 'react-native-switch-selector';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BusTimeItem from '../components/BusTimeItem';
 
-function CarShowTime({data, setData, busTime, setBus, OdsayData}) {
+function CarShowTime({
+  data,
+  setData,
+  busTime,
+  setBus,
+  OdsayData,
+  isCar,
+  setisCar,
+  CarTime,
+}) {
   const {sourceName, destName} = data;
-  const [isCar, setisCar] = useState();
   // console.log('쇼타임', OdsayData);
   // console.log('Find 버튼 누르고 받은 데이터', data);
   const [selectedItem, setselectedItem] = useState();
@@ -42,18 +50,15 @@ function CarShowTime({data, setData, busTime, setBus, OdsayData}) {
   };
 
   function setTime(date) {
-    let totalTime = date / 1000;
+    let totalTime = date;
     showTime.hour = parseInt(totalTime / 3600);
     showTime.leftmin = totalTime % 3600;
     showTime.min = parseInt(showTime.leftmin / 60);
   }
 
   function PrintTime() {
-    if (isCar) {
-      OdsayData.map(item => setTime(item.totalTime));
-    } else {
-      OdsayData.map(item => setTime(item.totalTime));
-      setTime(data.endTime - data.startTime);
+    if (!isCar) {
+      setTime(CarTime);
       if (showTime.hour > 0) {
         return (
           <Text style={styles.text}>
@@ -68,17 +73,18 @@ function CarShowTime({data, setData, busTime, setBus, OdsayData}) {
 
   const selectItem = async item => {
     setselectedItem(OdsayData.indexOf(item));
-    let BUSTime = new Date(data.endTime);
-    BUSTime.setMinutes(BUSTime.getMinutes() - item.info.totalTime);
-    setBus(BUSTime);
+    setBus(item.info.totalTime * 60);
   };
-
+  useEffect(() => {
+    setisCar(false);
+  }, []);
   return (
     <>
       <View style={{backgroundColor: 'white'}}>
         <SwitchSelector
           options={Switchoptions}
           initial={0}
+          value={0}
           selectedColor={'white'}
           selectedIconColor={'white'}
           buttonColor={'#ED3648'}
@@ -117,6 +123,7 @@ function CarShowTime({data, setData, busTime, setBus, OdsayData}) {
           busTime={busTime}
           setBus={setBus}
           isCar={!isCar}
+          CarTime={CarTime}
         />
       </View>
     </>

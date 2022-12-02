@@ -17,14 +17,21 @@ import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
 const list = [{username: 'mike'}, {username: 'john'}, {username: 'john1'}];
 
-function GroupScheduleFriend({friendList, setfriendList}) {
+function GroupScheduleFriend({
+  friendList,
+  setfriendList,
+  friendtoken,
+  setfriendtoken,
+}) {
   const navigation = useNavigation();
   const {user, setUser} = useUserContext();
   const [allFriend, setAllFriend] = useState([]);
-  let inviteList = allFriend;
+  let inviteList = friendList;
+  let tokenList = friendtoken;
 
   const onPrimaryButtonPress = () => {
     setfriendList(inviteList);
+    setfriendtoken(tokenList);
     navigation.pop();
   };
 
@@ -47,10 +54,13 @@ function GroupScheduleFriend({friendList, setfriendList}) {
   onShortPress = item => {
     if (inviteList.includes(item.id)) {
       let tmp = inviteList.indexOf(item.id);
+      tokenList.pop(tmp);
       inviteList.pop(tmp);
     } else {
+      tokenList.push(item.deviceToken);
       inviteList.push(item.id);
     }
+    console.log(tokenList);
     console.log(inviteList);
   };
   useEffect(() => {
