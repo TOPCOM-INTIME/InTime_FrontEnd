@@ -48,7 +48,7 @@ function ScheduleandMap(id, initdate, enddate) {
     const [markerlist, setmarkerlist] = useState([]);
 
     //dummy
-    const terminatedate = new Date('2022-12-02 20:54:00');
+    const terminatedate = new Date('2022-12-02 21:01:30');
 
 
     const getmyid = async () => {
@@ -69,7 +69,7 @@ function ScheduleandMap(id, initdate, enddate) {
 
     useEffect(() => {
         getmyid();
-    }, []);
+    }, [position]);
 
     const userlist = [
         { username: "코카콜라", id: '1' },
@@ -142,9 +142,9 @@ function ScheduleandMap(id, initdate, enddate) {
 
 
 
-    const grouplocationpost = async (myid) => {
+    const grouplocationpost = async () => {
         try {
-            const res = await axios.post(`${API_URL}/api/${myid}/location`,
+            const res = await axios.post(`${API_URL}/api/24/location`,
                 {
                     gps_x: position.latitude,
                     gps_y: position.longitude,
@@ -192,6 +192,12 @@ function ScheduleandMap(id, initdate, enddate) {
                 }
             )
             console.log(res.data);
+            if (res.data) {
+                setPosition({
+                    latitude: parseFloat(res.data.gps_x),
+                    longitude: parseFloat(res.data.gps_y),
+                });
+            }
         } catch (err) {
             console.error(err);
         }
@@ -199,7 +205,8 @@ function ScheduleandMap(id, initdate, enddate) {
 
     const getgroupLocation = async () => {
         try {
-            const res = await axios.get(`${API_URL}/api/${id}/location`,
+            // const res = await axios.get(`${API_URL}/api/${id}/locations`,
+            const res = await axios.get(`${API_URL}/api/24/locations`,
                 {
                     headers: {
                         Authorization: user,
@@ -292,6 +299,8 @@ function ScheduleandMap(id, initdate, enddate) {
             </View>
             <View>
                 {/* 아래 버튼은 자동화 구현 후 삭제 예정 */}
+                <Button title="grouplocationpost" onPress={grouplocationpost}></Button>
+                <Button title="getgroupLocation" onPress={getgroupLocation}></Button>
                 <Button title="stopHandler" onPress={stopHandler}></Button>
                 <Button title='backgroundHandler' onPress={backgroundHandler} />
                 <Button title='getLocation' onPress={getLocation} />
