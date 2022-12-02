@@ -56,7 +56,7 @@ function PlaceinputForm({
     return setTime;
   };
 
-  console.log('데이터', data.time);
+  // console.log('데이터', data.time);
   // 개인이나 단체를 정하는 토글
   const options = [
     {label: '개인', value: false},
@@ -106,6 +106,7 @@ function PlaceinputForm({
 
   const setendTime = () => {
     if (data.time === 0) {
+      console.log(data);
       Alert.alert('출발과 도착을 입력해라');
     } else {
       let tmpDate = new Date(data.endTime);

@@ -25,7 +25,7 @@ function ButtonCarTime({data, setData, busTime, setBus, isCar, CarTime}) {
       if (busTime === 0) {
         Alert.alert('오류', '대중교통을 선택해주세요');
       } else {
-        // setData('time')(totalTime);
+        setData('time')(busTime);
         console.log('버스', busTime);
         // setData('startTime')(setTime(busTime));
         navigation.pop();

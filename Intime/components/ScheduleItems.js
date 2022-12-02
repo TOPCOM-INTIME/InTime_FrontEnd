@@ -10,9 +10,11 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useUserContext} from '../contexts/UserContext';
+import {useNavigation} from '@react-navigation/native';
 import {API_URL} from '@env';
 
 const ScheduleItem = props => {
+  const navigation = useNavigation();
   const {user, setUser} = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
   const [status, setStaus] = useState('PRE');
@@ -25,7 +27,13 @@ const ScheduleItem = props => {
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
   const endTime = new Date(props.data.endTime);
-  // console.log(props.data.schedulePoolId);
+
+  const PUSHDATA = {
+    ID: props.data.id,
+    startTime: new Date(props.data.readyTime),
+    endTime: new Date(props.data.endTime),
+  };
+  // console.log(PUSHDATA);
 
   const checkGroup = async () => {
     try {
@@ -95,7 +103,11 @@ const ScheduleItem = props => {
             <Icon name={'arrow-forward'} size={10} color={'black'} />
             {endplace}
           </Text>
-          <TouchableOpacity style={styles.friendBox}></TouchableOpacity>
+          <TouchableOpacity
+            style={styles.friendBox}
+            onPress={() =>
+              navigation.push('ScheduleandMap', PUSHDATA)
+            }></TouchableOpacity>
         </View>
         <View style={styles.itemDate}>
           {/* <Switch

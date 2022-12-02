@@ -43,7 +43,7 @@ function SelectPattern({
   const secondaryTitle = '취소';
   const navigation = useNavigation();
   let group_data;
-  // console.log('일정 확인', checkGroup, schedulePoolId);
+  // console.log('일정 확인', data);
   // console.log('친구 목록', friendtoken);
 
   const onSecondaryButtonPress = () => {
@@ -135,7 +135,6 @@ function SelectPattern({
               },
             );
             sendNotification(res);
-
             console.log('INVITE_POST_SUCCESS!', group_data, res.data);
             navigation.push('MainTab');
           } catch (e) {
@@ -169,6 +168,7 @@ function SelectPattern({
           }
         } //개인 일정 생성
         else {
+          console.log(data);
           try {
             const res = await axios.post(`${API_URL}/api/schedule`, data, {
               headers: {Authorization: user},
