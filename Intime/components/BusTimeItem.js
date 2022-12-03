@@ -21,7 +21,7 @@ const BusTimeItem = props => {
   } else {
     isSelected = false;
   }
-  const selectedColor = isSelected ? '#ED3648' : 'white';
+  const selectedColor = isSelected ? '#6c757d' : 'white';
   const selectedTextColor = isSelected ? 'white' : 'black';
 
   function printTime(time) {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 15,
     flexDirection: 'column',
-    borderColor: '#ED3648',
+    borderColor: '#6c757d',
     borderWidth: 2,
     justifyContent: 'space-between',
   },

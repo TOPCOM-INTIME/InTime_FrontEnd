@@ -20,6 +20,7 @@ function InvitationScreen() {
   const navigation = useNavigation();
   const {user, setUser} = useUserContext();
   const [allInvitaion, setAllInvitaion] = useState([]);
+
   const getInvitation = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/schedule-invitations`, {
@@ -29,17 +30,6 @@ function InvitationScreen() {
       setAllInvitaion(res.data);
     } catch (e) {
       console.log(`[CHECK_ERROR]${e}`);
-    }
-  };
-
-  const test = item => {
-    console.log(item);
-    return <Text>도착지:{item.destName}</Text>;
-  };
-
-  const PrintInvite = () => {
-    {
-      allInvitaion.map(item => () => test(item));
     }
   };
 

@@ -29,6 +29,7 @@ function GroupScheduleFriend({
   let inviteList = friendList;
   let tokenList = friendtoken;
 
+  console.log(inviteList);
   const onPrimaryButtonPress = () => {
     setfriendList(inviteList);
     setfriendtoken(tokenList);
