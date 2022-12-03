@@ -136,38 +136,27 @@ function SelectPattern({
     } else if (currentDate > data.readyTime) {
       Alert.alert('오류', '준비시간이 너무 길어요!');
     } else {
-
-      try {
-        //초대장으로 온 일정
-        if (!isUpdate) {
-          if (INVITE === 1) {
-            console.log('초대장으로 인한', schedulePoolId);
-            try {
-              group_data = data;
-              group_data.members_Ids = friendList;
-              // console.log(group_data);
-              const res = await axios.post(
-                `${API_URL}/api/group-scehduel-after-invitation/schedulepool=${schedulePoolId}`,
-                group_data,
-                {
-                  headers: {Authorization: user},
-                },
-              );
-              sendNotification(res);
-              const fetchedSchedule = await axios.get(
-                `${API_URL}/api/schedule-invitations`,
-                {
-                  headers: {Authorization: user},
-                },
-              );
-              setScheduleInvite(fetchedSchedule.data);
-              console.log('INVITE_POST_SUCCESS!', group_data, res.data);
-              navigation.push('MainTab');
-            } catch (e) {
-              console.log(group_data);
-              console.log(`[INVITE_POST_ERROR]${e} SENT${schedulePoolId}`);
-            }
-
+      //초대장으로 온 일정
+      if (!isUpdate) {
+        if (INVITE === 1) {
+          console.log('초대장으로 인한', schedulePoolId);
+          try {
+            group_data = data;
+            group_data.members_Ids = friendList;
+            // console.log(group_data);
+            const res = await axios.post(
+              `${API_URL}/api/group-scehduel-after-invitation/schedulepool=${schedulePoolId}`,
+              group_data,
+              {
+                headers: {Authorization: user},
+              },
+            );
+            sendNotification(res);
+            console.log('INVITE_POST_SUCCESS!', group_data, res.data);
+            navigation.push('MainTab');
+          } catch (e) {
+            console.log(group_data);
+            console.log(`[INVITE_POST_ERROR]${e} SENT${schedulePoolId}`);
           }
         }
         // 그룹 일정 생성
