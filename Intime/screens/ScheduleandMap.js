@@ -61,8 +61,6 @@ const ScheduleandMap = route => {
     const [markerlist, setmarkerlist] = useState([]);
 
     //delete all dummy and parse marker
-    //dummy
-    const terminatedate = new Date('2022-12-02 21:01:30');
 
     const getmyid = async () => {
         try {
@@ -139,8 +137,13 @@ const ScheduleandMap = route => {
                     mylocationpost();
                     console.log(new Date());
                 }
-                if (terminatedate <= new Date()) {
+                if (enddate <= new Date()) {
                     console.log('Bye~time is over');
+                    await BackgroundService.stop();
+                }
+                if (i >= 100000) {
+                    Alert.alert('오류', '관리자에게 문의하세요 errorcode timeout_at_backgroundservice')
+                    console.log('crazy time out')
                     await BackgroundService.stop();
                 }
                 await sleep(delay);
@@ -221,6 +224,8 @@ const ScheduleandMap = route => {
                     },
                 });
             console.log(res.data);
+            setmarkerlist(res.data);
+            console.log('markerlist', markerlist)
         } catch (err) {
             console.error(err);
         }
@@ -330,7 +335,7 @@ const ScheduleandMap = route => {
                             latitudeDelta: 0.04,
                             longitudeDelta: 0.04,
                         }}>
-                        <Marker
+                        {/* <Marker
                             id="0"
                             title={'내 위치'}
                             pinColor="red"
@@ -342,18 +347,22 @@ const ScheduleandMap = route => {
                                 style={{ width: 26, height: 28 }}
                                 source={require('../img04.gif')}
                             />
-                        </Marker>
+                        </Marker> */}
 
                         {markerlist.map(marker => (
                             <Marker
-                                key={marker.id}
-                                pinColor={marker.color}
-                                title={marker.id}
+                                key={marker.username}
+                                title={marker.username}
                                 coordinate={{
-                                    latitude: marker.latitude,
-                                    longitude: marker.longitude,
+                                    latitude: marker.gps_x,
+                                    longitude: marker.gps_y,
                                 }}
-                            />
+                            >
+                                <Image
+                                    style={{ width: 26, height: 28 }}
+                                    source={require('../img04.gif')}
+                                />
+                            </Marker>
                         ))}
                     </MapView>
                 </View>
