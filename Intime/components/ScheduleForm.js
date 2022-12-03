@@ -77,25 +77,25 @@ function ScheduleForm() {
   };
 
   const onLongClick = item => {
-    if (item.schedulePoolId) {
-      Alert.alert('', '이미 생성된 단체일정은 삭제할 수 없습니다!');
-    } else {
-      Alert.alert('삭제', '정말로 삭제하시겠습니까?', [
-        {
-          text: '예',
-          onPress: () => {
-            deleteSchedule(item.id);
-            console.log(`${item.id}deleted`);
-          },
+    // if (item.schedulePoolId) {
+    //   Alert.alert('', '이미 생성된 단체일정은 삭제할 수 없습니다!');
+    // } else {
+    Alert.alert('삭제', '정말로 삭제하시겠습니까?', [
+      {
+        text: '예',
+        onPress: () => {
+          deleteSchedule(item.id);
+          console.log(`${item.id}deleted`);
         },
-        {
-          text: '아니오',
-          onPress: () => {
-            console.log(`nothing deleted`);
-          },
+      },
+      {
+        text: '아니오',
+        onPress: () => {
+          console.log(`nothing deleted`);
         },
-      ]);
-    }
+      },
+    ]);
+    // }
   };
 
   const onNoticePress = () => {

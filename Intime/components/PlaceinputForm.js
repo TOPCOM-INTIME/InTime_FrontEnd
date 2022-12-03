@@ -19,6 +19,7 @@ import FindButton from '../components/FindButton';
 import ScheduleSubmitButton from './ScheduleSubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
+import {AppBar, IconButton} from '@react-native-material/core';
 import {API_URL} from '@env';
 function PlaceinputForm({
   data,
@@ -36,6 +37,7 @@ function PlaceinputForm({
   isCar,
   setCarTime,
   CarTime,
+  usernameList,
 }) {
   const navigation = useNavigation();
   const name = useRef();
@@ -53,7 +55,7 @@ function PlaceinputForm({
     setTime.setSeconds(0);
     return setTime;
   };
-
+  console.log('친구리스트', usernameList);
   // console.log('데이터', data.time);
   // 개인이나 단체를 정하는 토글
   const options = [
@@ -117,20 +119,26 @@ function PlaceinputForm({
 
   return (
     <>
+      <AppBar
+        title="일정 생성"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        centerTitle={true}
+        color="#6c757d"
+        tintColor="white"
+      />
+      <SwitchSelector
+        options={options}
+        initial={INVITE}
+        selectedColor={'white'}
+        buttonColor={'#6c757d'}
+        borderColor={'#6c757d'}
+        borderWidth={1}
+        value={INVITE}
+        hasPadding
+        onPress={value => OnSwitchChange(value)}
+        disabled={INVITE ? true : false}
+      />
       <ScrollView style={{backgroundColor: 'white'}}>
-        <SwitchSelector
-          options={options}
-          initial={INVITE}
-          selectedColor={'white'}
-          buttonColor={'#6c757d'}
-          borderColor={'#6c757d'}
-          borderWidth={1}
-          value={INVITE}
-          hasPadding
-          onPress={value => OnSwitchChange(value)}
-          disabled={INVITE ? true : false}
-        />
-
         <View style={styles.tasksWrapper}>
           <VStack spacing={10} mt={15} mh={'5%'}>
             <Text style={styles.sectionTitle}>일정 이름 입력</Text>
@@ -227,24 +235,23 @@ function PlaceinputForm({
             setCarTime={setCarTime}
           />
           {checkGroup && (
-            <View style={{marginTop: 10}}>
-              <Text style={styles.sectionTitle}>친구 추가</Text>
-              <TouchableOpacity
-                style={styles.friendBox}
-                onPress={OnFriendBox}></TouchableOpacity>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-            </View>
+            <VStack spacing={10} mt={15} mh={'5%'}>
+              <Text style={styles.sectionTitle}>친구 초대</Text>
+              <TouchableOpacity style={styles.friendBox} onPress={OnFriendBox}>
+                <Text
+                  style={{
+                    color: 'black',
+                  }}>
+                  친구 추가/삭제하기
+                </Text>
+              </TouchableOpacity>
+              <Text style={styles.sectionTitle}>추가한 친구들</Text>
+              {usernameList.map(item => (
+                <TouchableOpacity style={styles.firendlist} key={item}>
+                  <Text>{item}</Text>
+                </TouchableOpacity>
+              ))}
+            </VStack>
           )}
         </View>
       </ScrollView>
@@ -301,19 +308,21 @@ const styles = StyleSheet.create({
   },
   friendBox: {
     paddingHorizontal: 16,
-    borderRadius: 15,
-    height: 48,
+    borderRadius: 2,
+    height: 40,
     backgroundColor: 'white',
-    borderColor: '#ED3648',
+    borderColor: '#6c757d',
     borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   footer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttons: {
-    height: 30,
-    alignItems: 'baseline',
+    height: 60,
+    alignItems: 'center',
     justifyContent: 'space-around',
     flexDirection: 'row',
     backgroundColor: 'white',
@@ -327,6 +336,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     color: 'black',
     marginBottom: 20,
+  },
+  firendlist: {
+    flexDirection: 'column',
+    paddingHorizontal: 16,
+    borderRadius: 2,
+    height: 40,
+    backgroundColor: 'white',
+    borderColor: '#6c757d',
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

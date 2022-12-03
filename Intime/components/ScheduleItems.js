@@ -51,19 +51,27 @@ const ScheduleItem = props => {
     }
   };
 
-  const checkGroup = async () => {
-    try {
-      const res = await axios.get(
-        `${API_URL}/api/schedulePools=${props.data.schedulePoolId}/members`,
-        {
-          headers: {Authorization: user},
-        },
+  function statusPrint() {
+    if (status === 'ING' || status === 'END') {
+      return (
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
+            <Text style={{marginTop: 10, color: 'black'}}>위치보기</Text>
+          </TouchableOpacity>
+        </View>
       );
-      console.log('SCHEDULEPOOL_SUCCESS!', res.data);
-    } catch (e) {
-      console.log(`[SCHEDULEPOOL_ERROR]${e}`);
+    } else {
+      return (
+        <>
+          <TouchableOpacity
+            onPress={() => navigation.push('ScheduleCurrent', ID)}>
+            <Text style={{marginTop: 10, color: 'black'}}>초대 현황보기</Text>
+          </TouchableOpacity>
+        </>
+      );
     }
-  };
+  }
 
   function print() {
     if (status === 'ING') {
@@ -79,7 +87,6 @@ const ScheduleItem = props => {
   }
 
   useEffect(() => {
-    // checkGroup();
     const NOW = new Date();
     const timer = date - NOW;
     const ENDTIMER = endTime - NOW;
@@ -125,12 +132,7 @@ const ScheduleItem = props => {
             <Icon name={'arrow-forward'} size={10} color={'black'} />
             {endplace}
           </Text>
-          {isGroup && (
-            <TouchableOpacity
-              onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
-              <Text style={{marginTop: 10, color: 'black'}}>위치보기</Text>
-            </TouchableOpacity>
-          )}
+          {isGroup && statusPrint()}
         </View>
         <View style={styles.itemDate}>
           <View
