@@ -13,26 +13,31 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
   const {user, setUser} = useUserContext();
   const [BusData, setBusData] = useState([]);
   const currentDate = new Date();
-  const PlaceAlert = item => {
+  const startKey = [encodeURI(data.sourceName)];
+  const endKey = [encodeURI(data.destName)];
+
+  const startData = {
+    startX: 0,
+    startY: 0,
+  };
+  const endData = {
+    endX: 0,
+    endY: 0,
+  };
+
+  const PlaceAlert = () => {
     Alert.alert('오류', '출발지 혹은 도착지를 찾을 수 없습니다');
   };
 
-  const TimeAlert = item => {
+  const TimeAlert = () => {
     Alert.alert('오류', '지난 날짜는 설정할 수 없습니다');
   };
 
-  const onPrimaryButtonPress = async () => {
-    const startKey = [encodeURI(data.sourceName)];
-    const endKey = [encodeURI(data.destName)];
-    const startData = {
-      startX: 0,
-      startY: 0,
-    };
-    const endData = {
-      endX: 0,
-      endY: 0,
-    };
+  const OdSayAlert = () => {
+    Alert.alert('오류', '700m 이내 입니다.');
+  };
 
+  const onPrimaryButtonPress = async () => {
     const optionsStart = {
       method: 'GET',
       headers: {
@@ -48,6 +53,7 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
         Accept: 'application/json',
       },
     };
+
     try {
       const response = await fetch(
         `https://apis.openapi.sk.com/tmap/pois?version=1&searchKeyword=${startKey}&searchType=all&searchtypCd=A&reqCoordType=WGS84GEO&resCoordType=WGS84GEO&page=1&count=20&multiPoint=N&poiGroupYn=N`,
@@ -120,22 +126,25 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
     try {
       // console.log('설정된 도착시간:', data.endTime);
       // console.log('현재 시간:', currentDate);
-      // console.log(odsayData);
+      console.log(odsayData);
       if (data.endTime < currentDate) {
         throw 3;
       }
       const res = await axios.post(`${API_URL}/api/odsay`, odsayData, {
         headers: {Authorization: user},
       });
+      if (res.data.result === null) {
+        throw 4;
+      }
       console.log('ODsay SUCCESS!', res.data.result.path[0].info.totalTime);
-      // console.log('ODsay path:', res.data.result.path[0].info);
-      // res.data.result.path.map(item => console.log(item));
       setOdsayData(res.data.result.path);
       navigation.push('CarScreen', BusData);
     } catch (e) {
-      console.log(`[ODsay ERROR]${e} SENT${e}`);
+      console.log(`[ODsay ERROR]${e} SENT`);
       if (e === 3) {
         TimeAlert();
+      } else if (e === 4) {
+        OdSayAlert();
       } else {
         PlaceAlert();
       }

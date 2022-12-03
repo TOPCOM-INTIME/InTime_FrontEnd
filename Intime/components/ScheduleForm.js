@@ -17,6 +17,7 @@ import {useUserContext} from '../contexts/UserContext';
 import BackgroundService from 'react-native-background-actions';
 import {useNavigation} from '@react-navigation/native';
 import PushNotification from 'react-native-push-notification';
+import {AppBar, IconButton} from '@react-native-material/core';
 import {API_URL} from '@env';
 
 function ScheduleForm() {
@@ -24,31 +25,25 @@ function ScheduleForm() {
   const [scheduleData, setSchedule] = useState([]);
   const navigation = useNavigation();
 
-  const checkInvitation = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/api/schedule-invitations`, {
-        headers: {Authorization: user},
-      });
-      console.log('get한 데이터', res.data);
-    } catch (e) {
-      console.log(`[CHECK_ERROR]${e}`);
-    }
-  };
-
   const getSchedule = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/user/schedule/all`, {
         headers: {Authorization: user},
       });
       setSchedule(res.data);
-      console.log('GET_SCHEDULE', res.data);
+      // console.log('GET_SCHEDULE', res.data);
     } catch (e) {
       console.log(`[GET_SCHEDULE_ERROR]${e}`);
     }
   };
 
   const deleteNotification = ID => {
-    PushNotification.cancelLocalNotification(ID);
+    try {
+      PushNotification.cancelLocalNotification(ID);
+      console.log(`Notification deleted${ID}`);
+    } catch (e) {
+      console.log('[ERROR_NOTIFICATION]', e);
+    }
   };
 
   const deleteSchedule = async ID => {
@@ -67,27 +62,40 @@ function ScheduleForm() {
   };
 
   const onShortPress = item => {
+    console.log(item);
     let isUpdate = true;
     item.isUpdate = true;
-    navigation.push('ScheduleScreen', item);
+    if (item.schedulePoolId) {
+      Alert.alert('', '이미 생성된 단체일정은 수정할 수 없습니다!');
+    } else {
+      navigation.push('ScheduleScreen', item);
+    }
+  };
+
+  const onSubmit = () => {
+    navigation.push('ScheduleScreen');
   };
 
   const onLongClick = item => {
-    Alert.alert('삭제', '정말로 삭제하시겠습니까?', [
-      {
-        text: '예',
-        onPress: () => {
-          deleteSchedule(item.id);
-          console.log(`${item.id}deleted`);
+    if (item.schedulePoolId) {
+      Alert.alert('', '이미 생성된 단체일정은 삭제할 수 없습니다!');
+    } else {
+      Alert.alert('삭제', '정말로 삭제하시겠습니까?', [
+        {
+          text: '예',
+          onPress: () => {
+            deleteSchedule(item.id);
+            console.log(`${item.id}deleted`);
+          },
         },
-      },
-      {
-        text: '아니오',
-        onPress: () => {
-          console.log(`nothing deleted`);
+        {
+          text: '아니오',
+          onPress: () => {
+            console.log(`nothing deleted`);
+          },
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   const onNoticePress = () => {
@@ -103,17 +111,31 @@ function ScheduleForm() {
   if (scheduleData.length == 0) {
     return (
       <>
+        <AppBar
+          title="일정"
+          titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+          centerTitle={true}
+          color="#6c757d"
+          tintColor="white"
+          leading={<></>}
+          trailing={props => (
+            <View style={{flexDirection: 'row'}}>
+              <IconButton
+                icon={props => <Icon name="notifications" {...props} />}
+                color="white"
+                onPress={onNoticePress}
+              />
+              <IconButton
+                icon={props => <Icon name="add" {...props} />}
+                color="white"
+                onPress={onSubmit}
+              />
+            </View>
+          )}
+        />
+
         <ScrollView style={{width: '100%'}}>
           <View style={styles.tasksWrapper}>
-            <View style={styles.header}>
-              <Text style={styles.sectionTitle}>일정</Text>
-              <View style={styles.rightButton}>
-                <TouchableOpacity onPress={onNoticePress}>
-                  <Icon name={'notifications'} size={30} color={'black'} />
-                </TouchableOpacity>
-                <ScheduleAddButton style={styles.button} />
-              </View>
-            </View>
             <View
               style={{
                 flex: 1,
@@ -131,18 +153,31 @@ function ScheduleForm() {
 
   return (
     <>
+      <AppBar
+        title="일정"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        centerTitle={true}
+        color="#6c757d"
+        tintColor="white"
+        leading={<></>}
+        trailing={props => (
+          <View style={{flexDirection: 'row'}}>
+            <IconButton
+              icon={props => <Icon name="notifications" {...props} />}
+              color="white"
+              onPress={onNoticePress}
+            />
+            <IconButton
+              icon={props => <Icon name="add" {...props} />}
+              color="white"
+              onPress={onSubmit}
+            />
+          </View>
+        )}
+      />
       <ScrollView style={{width: '100%'}}>
         <View style={styles.container}>
           <View style={styles.tasksWrapper}>
-            <View style={styles.header}>
-              <Text style={styles.sectionTitle}>일정</Text>
-              <View style={styles.rightButton}>
-                <TouchableOpacity onPress={onNoticePress}>
-                  <Icon name={'notifications'} size={30} color={'black'} />
-                </TouchableOpacity>
-                <ScheduleAddButton style={styles.button} />
-              </View>
-            </View>
             <View style={styles.items}>
               {scheduleData.map(item => (
                 <TouchableOpacity

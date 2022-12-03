@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
+import {StyleSheet, View, Alert, Text, TouchableOpacity} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
 
@@ -45,29 +45,42 @@ function ButtonCarTime({data, setData, busTime, setBus, isCar, CarTime}) {
   // }
   return (
     <View style={styles.buttons}>
-      <CustomButton
+      <TouchableOpacity
         title={primaryTitle}
-        onPress={onPrimaryButtonPress}
-        hasMarginBottom
-      />
-      <CustomButton
+        onPress={onSecondaryButtonPress}
+        hasMarginBottom>
+        <Text style={styles.text}>취소</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         title={secondaryTitle}
         theme="secondary"
-        onPress={onSecondaryButtonPress}
-      />
+        onPress={onPrimaryButtonPress}>
+        <Text style={styles.text}>저장</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   buttons: {
-    marginTop: 64,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderColor: '#6c757d',
+    borderWidth: 1,
   },
   spinnerWrapper: {
     marginTop: 64,
     height: 104,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  text: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: 'black',
   },
 });
 
