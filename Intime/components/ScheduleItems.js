@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   View,
@@ -9,13 +9,13 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useUserContext} from '../contexts/UserContext';
-import {useNavigation} from '@react-navigation/native';
-import {API_URL} from '@env';
+import { useUserContext } from '../contexts/UserContext';
+import { useNavigation } from '@react-navigation/native';
+import { API_URL } from '@env';
 
 const ScheduleItem = props => {
   const navigation = useNavigation();
-  const {user, setUser} = useUserContext();
+  const { user, setUser } = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
   const [status, setStaus] = useState('PRE');
   const toggleSwitch = () => {
@@ -30,7 +30,7 @@ const ScheduleItem = props => {
   const endTime = new Date(props.data.endTime);
   let isGroup;
   const PUSHDATA = {
-    ID: props.data.id,
+    ID: props.data.schedulePoolId,
     startTime: new Date(props.data.readyTime),
     endTime: new Date(props.data.endTime),
   };
@@ -43,9 +43,13 @@ const ScheduleItem = props => {
 
   const deleteSchedule = async ID => {
     try {
-      axios.delete(`${API_URL}/api/schedule/scheduleId=${ID}`, {
-        headers: {Authorization: user},
-      });
+      const res = await axios.get(
+        `${API_URL}/api/schedulePools=${props.data.schedulePoolId}/members`,
+        {
+          headers: { Authorization: user },
+        },
+      );
+      console.log('SCHEDULEPOOL_SUCCESS!', res.data);
     } catch (e) {
       console.log(`[DELETE_ERROR]${e}`);
     }
@@ -57,7 +61,7 @@ const ScheduleItem = props => {
         <View>
           <TouchableOpacity
             onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
-            <Text style={{marginTop: 10, color: 'black'}}>위치보기</Text>
+            <Text style={{ marginTop: 10, color: 'black' }}>위치보기</Text>
           </TouchableOpacity>
         </View>
       );
@@ -65,8 +69,9 @@ const ScheduleItem = props => {
       return (
         <>
           <TouchableOpacity
-            onPress={() => navigation.push('ScheduleCurrent', ID)}>
-            <Text style={{marginTop: 10, color: 'black'}}>초대 현황보기</Text>
+            // onPress={() => navigation.push('ScheduleCurrent', ID)}>
+            onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
+            <Text style={{ marginTop: 10, color: 'black' }}>초대 현황보기</Text>
           </TouchableOpacity>
         </>
       );
@@ -75,14 +80,11 @@ const ScheduleItem = props => {
 
   function print() {
     if (status === 'ING') {
-      return <Text style={{color: 'black'}}>진행중</Text>;
+      return <Text style={{ color: 'black' }}>진행중</Text>;
     } else if (status === 'PRE') {
-      return <Text style={{color: 'black'}}>예정</Text>;
+      return <Text style={{ color: 'black' }}>예정</Text>;
     } else if (status === 'END') {
-      if (isGroup) {
-        setTimeout(() => deleteSchedule(ID), 1000);
-      }
-      return <Text style={{color: 'black'}}>종료</Text>;
+      return <Text style={{ color: 'black' }}>종료</Text>;
     }
   }
 
@@ -124,7 +126,7 @@ const ScheduleItem = props => {
 
         <View style={styles.itemPlace}>
           {NAME && (
-            <Text style={{fontWeight: 'bold', color: 'black'}}>{NAME}</Text>
+            <Text style={{ fontWeight: 'bold', color: 'black' }}>{NAME}</Text>
           )}
 
           <Text style={styles.itemName}>
