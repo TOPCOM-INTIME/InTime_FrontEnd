@@ -7,7 +7,7 @@ import ScheduleandMap from './ScheduleandMap';
 import ScheduleList from './ScheduleListScreen';
 import ListScreen from './ListScreen';
 import CommunityScreen from './CommunityScreen';
-import {useLogContext} from '../contexts/LogContext';
+import { useLogContext } from '../contexts/LogContext';
 
 const Tab = createBottomTabNavigator();
 

@@ -64,6 +64,7 @@ function NickNameScreen({navigation}) {
               value={nickname}
               color="#6c757d"
               onChangeText={setNickname}
+              disabled
             />
           </Box>
           <Box mh={'35%'} mt={20}>

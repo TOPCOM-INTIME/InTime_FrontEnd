@@ -153,6 +153,7 @@ function ScheduleScreen({route}) {
               setusernameList={setusernameList}
             />
           )}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="Invitation"
@@ -164,16 +165,19 @@ function ScheduleScreen({route}) {
               setfriendtoken={setfriendtoken}
             />
           )}
+          options={{headerShown: false}}
         />
 
         <Stack.Screen
           name="ScheduleandMap"
           children={({navigation}) => <ScheduleandMap />}
+          options={{headerShown: false}}
         />
 
         <Stack.Screen
           name="ScheduleCurrent"
           children={({navigation}) => <ScheduleCurrent />}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </>

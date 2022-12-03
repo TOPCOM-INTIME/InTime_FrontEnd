@@ -151,6 +151,13 @@ function SelectPattern({
                 headers: {Authorization: user},
               },
             );
+            const fetchedSchedule = await axios.get(
+              `${API_URL}/api/schedule-invitations`,
+              {
+                headers: {Authorization: user},
+              },
+            );
+            setScheduleInvite(fetchedSchedule.data);
             sendNotification(res);
             console.log('INVITE_POST_SUCCESS!', group_data, res.data);
             navigation.push('MainTab');
@@ -217,15 +224,12 @@ function SelectPattern({
   return (
     <>
       <AppBar
-        title="패턴 생성"
+        title="패턴 설정"
         titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
         centerTitle={true}
         color="#6c757d"
         tintColor="white"
       />
-      <View>
-        <Text style={styles.sectionTitle}>패턴설정</Text>
-      </View>
 
       <View style={styles.block}>
         <View style={styles.container}>

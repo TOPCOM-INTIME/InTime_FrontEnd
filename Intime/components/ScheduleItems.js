@@ -30,7 +30,7 @@ const ScheduleItem = props => {
   const endTime = new Date(props.data.endTime);
   let isGroup;
   const PUSHDATA = {
-    ID: props.data.id,
+    ID: props.data.schedulePoolId,
     startTime: new Date(props.data.readyTime),
     endTime: new Date(props.data.endTime),
   };
@@ -47,9 +47,13 @@ const ScheduleItem = props => {
 
   const deleteSchedule = async ID => {
     try {
-      axios.delete(`${API_URL}/api/schedule/scheduleId=${ID}`, {
-        headers: {Authorization: user},
-      });
+      const res = await axios.get(
+        `${API_URL}/api/schedulePools=${props.data.schedulePoolId}/members`,
+        {
+          headers: {Authorization: user},
+        },
+      );
+      console.log('SCHEDULEPOOL_SUCCESS!', res.data);
     } catch (e) {
       console.log(`[DELETE_ERROR]${e}`);
     }
@@ -82,9 +86,6 @@ const ScheduleItem = props => {
     } else if (status === 'PRE') {
       return <Text style={{color: 'black'}}>예정</Text>;
     } else if (status === 'END') {
-      if (isGroup) {
-        setTimeout(() => deleteSchedule(ID), 1000);
-      }
       return <Text style={{color: 'black'}}>종료</Text>;
     }
   }
