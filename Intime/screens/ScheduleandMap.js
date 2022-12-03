@@ -92,6 +92,7 @@ const ScheduleandMap = route => {
     // };
 
 
+
     const getmyid = async () => {
         try {
             const res = await axios.get(`${API_URL}/api/my-info`, {
