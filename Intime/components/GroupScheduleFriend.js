@@ -15,7 +15,6 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
-const list = [{username: 'mike'}, {username: 'john'}, {username: 'john1'}];
 
 function GroupScheduleFriend({
   friendList,
