@@ -35,13 +35,14 @@ const options = {
     color: '#ff00ff',
     linkingURI: 'Intime://',
     parameters: {
-        delay: 1000,
+        delay: 12000,
         //1000 for test, 3000 for real service
         //delay : 3000, 
     },
 };
 
 const ScheduleandMap = route => {
+    console.log('back', BackgroundService.isRunning());
     const sid = route.route.params.ID;
     const initdate = route.route.params.startTime;
     const enddate = route.route.params.endTime;
@@ -66,16 +67,31 @@ const ScheduleandMap = route => {
     const checkGroup = async () => {
         try {
             const res = await axios.get(
-                `${API_URL}/api/schedulePools=${sid}/members`,
+                `${API_URL}/api/schedulePools=${sid}/joined-members`,
                 {
                     headers: { Authorization: user },
                 },
             );
+            console.log('이전', res.data)
             setuserlist(res.data);
         } catch (e) {
             console.log(`[SCHEDULEPOOL_ERROR]${e}`);
         }
     };
+
+    // const test = async () => {
+    //     try {
+    //         const res = await axios.get(`${API_URL}/api/schedulePools=${sid}/joined-members`,
+    //             {
+    //                 headers: { Authorization: user },
+    //             },
+    //         );
+    //         console.log('최신', res.data)
+    //     } catch (e) {
+    //         console.log(`[SCHEDULEPOOL_ERROR]${e}`);
+    //     }
+    // };
+
 
     const getmyid = async () => {
         try {
@@ -91,52 +107,17 @@ const ScheduleandMap = route => {
         }
     };
 
+
     useEffect(() => {
         checkGroup();
         getmyid();
         getLocation();
-        getgroupLocation();
+        // getgroupLocation();
+        if (!BackgroundService.isRunning()) {
+            // backgroundHandler();
+            console.log("??????")
+        }
     }, []);
-
-    // useEffect(() => {
-    // }, []);
-
-    // const userlist = [
-    //     { username: '코카콜라', id: '1' },
-    //     { username: '테슬라', id: '2' },
-    //     { username: '메타', id: '3' },
-    //     { username: '스타벅스', id: '4' },
-    //     { username: '알파벳', id: '5' },
-    //     { username: '펩시', id: '6' },
-    // ];
-
-    // const markerlist = [
-
-    //     {
-    //         id: '1',
-    //         latitude: position.latitude + 0.001,
-    //         longitude: position.longitude + 0.001,
-    //         color: "green",
-    //     },
-    //     {
-    //         id: '2',
-    //         latitude: position.latitude + 0.001,
-    //         longitude: position.longitude - 0.001,
-    //         color: "green",
-    //     },
-    //     {
-    //         id: '3',
-    //         latitude: position.latitude - 0.001,
-    //         longitude: position.longitude + 0.001,
-    //         color: "green",
-    //     },
-    //     {
-    //         id: '4',
-    //         latitude: position.latitude - 0.001,
-    //         longitude: position.longitude - 0.001,
-    //         color: "green",
-    //     },
-    // ];
 
     const sleep = time =>
         new Promise(resolve => setTimeout(() => resolve(), time));
@@ -155,15 +136,16 @@ const ScheduleandMap = route => {
                     console.log('Hello locationapi!');
                     getLocation();
                     console.log('position', position);
-                    mylocationpost();
+
                 }
+
                 if (enddate <= new Date()) {
                     console.log('Bye~time is over');
                     await BackgroundService.stop();
                 }
-                if (i >= 100000) {
-                    Alert.alert('오류', '관리자에게 문의하세요 errorcode timeout_at_backgroundservice')
-                    console.log('crazy time out')
+                if (i === 50) {
+                    // Alert.alert('오류', '관리자에게 문의하세요 errorcode timeout_at_backgroundservice')
+                    console.log('time out')
                     await BackgroundService.stop();
                 }
                 await sleep(delay);
@@ -196,13 +178,13 @@ const ScheduleandMap = route => {
         }
     };
 
-    const mylocationpost = async () => {
+    const mylocationpost = async (latlng) => {
         try {
             const res = await axios.post(
                 `${API_URL}/api/location`,
                 {
-                    gps_x: senddata.latitude,
-                    gps_y: senddata.longitude,
+                    gps_x: latlng.latitude,
+                    gps_y: latlng.longitude,
                 },
                 {
                     headers: {
@@ -210,9 +192,9 @@ const ScheduleandMap = route => {
                     },
                 },
             );
-            console.log('res data', res.data)
+            console.log('latlng', latlng)
             console.log('my location', senddata);
-            grouplocationpost(senddata)
+            grouplocationpost(latlng)
         } catch (err) {
             console.error(err);
         }
@@ -246,7 +228,15 @@ const ScheduleandMap = route => {
                     },
                 });
             console.log('res data from get group location', res.data);
+
+            // const newList = res.data;
+            // const newArray = markerlist.map(
+            //     (userObj) => userObj.id === newList.map(user => user.useridx) ? { ...userObj, gps_x: newList.gps_x, gps_y: newList.gps_y } : userObj);
+            // console.log('newList', newList)
+
+            // console.log('나는 새로운 배열이다 뭐가 나올까? ', newArray);
             setmarkerlist(res.data);
+            // setmarkerlist(newList);
             console.log('markerlist', markerlist)
         } catch (err) {
             console.error(err);
@@ -296,6 +286,7 @@ const ScheduleandMap = route => {
                             latitude: position.coords.latitude,
                             longitude: position.coords.longitude,
                         });
+                        setTimeout(() => mylocationpost(senddata), 100)
                     },
                     error => {
                         console.log(error.code, error.message);
@@ -354,7 +345,7 @@ const ScheduleandMap = route => {
                 {/* 아래 버튼은 자동화 구현 후 삭제 예정 */}
                 <Button title="getgroupLocation" onPress={getgroupLocation}></Button>
                 <Button title="stopHandler" onPress={stopHandler}></Button>
-                <Button title="backgroundHandler" onPress={backgroundHandler} />
+                <Button title="backgroundHandler" onPress={backgroundHandler}></Button>
             </View>
             <View style={{ flex: 9 }}>
                 <View style={{ flex: 1, padding: 10 }}>
