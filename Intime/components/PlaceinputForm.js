@@ -55,7 +55,7 @@ function PlaceinputForm({
     setTime.setSeconds(0);
     return setTime;
   };
-  console.log('친구리스트', usernameList);
+  console.log('친구리스트', INVITE);
   // console.log('데이터', data.time);
   // 개인이나 단체를 정하는 토글
   const options = [
@@ -116,6 +116,32 @@ function PlaceinputForm({
       setcheckGroup(value);
     }
   };
+
+  function whenInvite() {
+    if (INVITE) {
+      return (
+        <View style={styles.inviteBox}>
+          <Text>{`${data.destName}`}</Text>
+        </View>
+      );
+    } else {
+      return (
+        <TextInput
+          label="도착지"
+          variant="outlined"
+          returnKeyType="next"
+          onChangeText={setData('destName')}
+          value={data.destName}
+          onSubmitEditing={() => {
+            end.current.focus();
+          }}
+          disabled={INVITE ? true : false}
+          color="#6c757d"
+          backgroundColor="white"
+        />
+      );
+    }
+  }
 
   return (
     <>
@@ -212,18 +238,7 @@ function PlaceinputForm({
               backgroundColor="white"
             />
             <Text style={styles.sectionTitle}>도착지 입력</Text>
-            <TextInput
-              label="도착지"
-              variant="outlined"
-              returnKeyType="next"
-              onChangeText={setData('destName')}
-              value={data.destName}
-              onSubmitEditing={() => {
-                end.current.focus();
-              }}
-              color="#6c757d"
-              backgroundColor="white"
-            />
+            {whenInvite()}
           </VStack>
           <FindButton
             data={data}
@@ -347,6 +362,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  inviteBox: {
+    marginTop: 10,
+    backgroundColor: 'white',
+    padding: 15,
+    paddingVertical: 15,
+    borderRadius: 3,
+    flexDirection: 'row',
+    marginBottom: 10,
+    borderColor: '#6c757d',
+    borderWidth: 1,
   },
 });
 

@@ -41,6 +41,10 @@ const ScheduleItem = props => {
     isGroup = false;
   }
 
+  const findAlert = () => {
+    Alert.alert('', '진행중인 일정만 위치를 확인할 수 있습니다.');
+  };
+
   const deleteSchedule = async ID => {
     try {
       axios.delete(`${API_URL}/api/schedule/scheduleId=${ID}`, {
@@ -57,16 +61,15 @@ const ScheduleItem = props => {
         <View>
           <TouchableOpacity
             onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
-            <Text style={{marginTop: 10, color: 'black'}}>위치보기</Text>
+            <Text style={{marginTop: 10, color: 'black'}}>위치 보기</Text>
           </TouchableOpacity>
         </View>
       );
     } else {
       return (
         <>
-          <TouchableOpacity
-            onPress={() => navigation.push('ScheduleCurrent', ID)}>
-            <Text style={{marginTop: 10, color: 'black'}}>초대 현황보기</Text>
+          <TouchableOpacity onPress={() => findAlert()}>
+            <Text style={{marginTop: 10, color: 'black'}}>위치 보기</Text>
           </TouchableOpacity>
         </>
       );

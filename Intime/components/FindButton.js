@@ -15,6 +15,8 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
   const currentDate = new Date();
   const startKey = [encodeURI(data.sourceName)];
   const endKey = [encodeURI(data.destName)];
+  let isFindError = false;
+  let isTmapError = false;
 
   const startData = {
     startX: 0,
@@ -62,7 +64,9 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
       const dat = await response.json();
       startData.startX = dat.searchPoiInfo.pois.poi[0]['frontLon'];
       startData.startY = dat.searchPoiInfo.pois.poi[0]['frontLat'];
-    } catch (e) {}
+    } catch (e) {
+      isFindError = true;
+    }
 
     try {
       const response2 = await fetch(
@@ -72,7 +76,9 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
       const data2 = await response2.json();
       endData.endX = data2.searchPoiInfo.pois.poi[0]['frontLon'];
       endData.endY = data2.searchPoiInfo.pois.poi[0]['frontLat'];
-    } catch (e) {}
+    } catch (e) {
+      isFindError = true;
+    }
 
     const optionsTime = {
       method: 'POST',
@@ -143,10 +149,10 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
       console.log(`[ODsay ERROR]${e} SENT`);
       if (e === 3) {
         TimeAlert();
+      } else if (isFindError) {
+        PlaceAlert();
       } else if (e === 4) {
         OdSayAlert();
-      } else {
-        PlaceAlert();
       }
     }
   };
