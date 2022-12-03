@@ -116,7 +116,7 @@ const ScheduleandMap = route => {
     useEffect(() => {
         initfunction();
         if (!BackgroundService.isRunning()) {
-            // backgroundHandler();
+            backgroundHandler();
             console.log("??????")
         }
     }, []);
@@ -231,7 +231,6 @@ const ScheduleandMap = route => {
     };
 
     const getgroupLocation = async () => {
-        setmarkerlist([]);
         console.log("값 날려라", markerlist)
         try {
             const res = await axios.get(`${API_URL}/api/${sid}/locations`,
@@ -248,8 +247,17 @@ const ScheduleandMap = route => {
             // console.log('newList', newList)
 
             // console.log('나는 새로운 배열이다 뭐가 나올까? ', newArray);
-            setmarkerlist(res.data);
-            // setmarkerlist(newList);
+            const filteredArr = res.data.reduce((acc, current) => {
+                const x = acc.find(item => item.useridx === current.useridx);
+                if (!x) {
+                    return acc.concat([current]);
+                } else {
+                    return acc;
+                }
+            }, []);
+            console.log('필터링', filteredArr)
+            setmarkerlist(filteredArr);
+
             console.log('markerlist', markerlist)
         } catch (err) {
             console.error(err);
@@ -357,8 +365,8 @@ const ScheduleandMap = route => {
                 </View>
             </View>
             <View>
-                {/* 아래 버튼은 자동화 구현 후 삭제 예정 */}
-                <Button title="backgroundHandler" onPress={backgroundHandler}></Button>
+                {/* 아래 버튼은 자동화 구현 후 삭제 예정
+                <Button title="backgroundHandler" onPress={backgroundHandler}></Button> */}
                 <Button title="stopHandler" onPress={stopHandler}></Button>
             </View>
             <View style={{ flex: 9 }}>

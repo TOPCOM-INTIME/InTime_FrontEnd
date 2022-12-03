@@ -46,7 +46,7 @@ const ScheduleItem = props => {
       const res = await axios.get(
         `${API_URL}/api/schedulePools=${props.data.schedulePoolId}/members`,
         {
-          headers: {Authorization: user},
+          headers: { Authorization: user },
         },
       );
       console.log('SCHEDULEPOOL_SUCCESS!', res.data);
@@ -61,7 +61,7 @@ const ScheduleItem = props => {
         <View>
           <TouchableOpacity
             onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
-            <Text style={{marginTop: 10, color: 'black'}}>위치보기</Text>
+            <Text style={{ marginTop: 10, color: 'black' }}>위치보기</Text>
           </TouchableOpacity>
         </View>
       );
@@ -69,8 +69,9 @@ const ScheduleItem = props => {
       return (
         <>
           <TouchableOpacity
-            onPress={() => navigation.push('ScheduleCurrent', ID)}>
-            <Text style={{marginTop: 10, color: 'black'}}>초대 현황보기</Text>
+            // onPress={() => navigation.push('ScheduleCurrent', ID)}>
+            onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
+            <Text style={{ marginTop: 10, color: 'black' }}>초대 현황보기</Text>
           </TouchableOpacity>
         </>
       );
@@ -83,7 +84,7 @@ const ScheduleItem = props => {
     } else if (status === 'PRE') {
       return <Text style={{ color: 'black' }}>예정</Text>;
     } else if (status === 'END') {
-      return <Text style={{color: 'black'}}>종료</Text>;
+      return <Text style={{ color: 'black' }}>종료</Text>;
     }
   }
 
