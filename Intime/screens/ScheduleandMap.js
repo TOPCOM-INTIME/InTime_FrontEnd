@@ -72,7 +72,6 @@ const ScheduleandMap = route => {
                     headers: { Authorization: user },
                 },
             );
-            console.log('이전', res.data)
             setuserlist(res.data);
         } catch (e) {
             console.log(`[SCHEDULEPOOL_ERROR]${e}`);
@@ -107,13 +106,16 @@ const ScheduleandMap = route => {
         }
     };
 
-
-    useEffect(() => {
+    const initfunction = () => {
         checkGroup();
         getmyid();
         getgroupLocation();
+    }
+
+    useEffect(() => {
+        initfunction();
         if (!BackgroundService.isRunning()) {
-            backgroundHandler();
+            // backgroundHandler();
             console.log("??????")
         }
     }, []);
@@ -228,6 +230,8 @@ const ScheduleandMap = route => {
     };
 
     const getgroupLocation = async () => {
+        setmarkerlist([]);
+        console.log("값 날려라", markerlist)
         try {
             const res = await axios.get(`${API_URL}/api/${sid}/locations`,
                 {
@@ -353,9 +357,8 @@ const ScheduleandMap = route => {
             </View>
             <View>
                 {/* 아래 버튼은 자동화 구현 후 삭제 예정 */}
-                {/* <Button title="getgroupLocation" onPress={getgroupLocation}></Button>
+                <Button title="backgroundHandler" onPress={backgroundHandler}></Button>
                 <Button title="stopHandler" onPress={stopHandler}></Button>
-                <Button title="backgroundHandler" onPress={backgroundHandler}></Button> */}
             </View>
             <View style={{ flex: 9 }}>
                 <View style={{ flex: 1, padding: 10 }}>
