@@ -36,6 +36,8 @@ const options = {
     linkingURI: 'Intime://',
     parameters: {
         delay: 1000,
+        //1000 for test, 3000 for real service
+        //delay : 3000, 
     },
 };
 
@@ -43,7 +45,8 @@ const ScheduleandMap = route => {
     const sid = route.route.params.ID;
     const initdate = route.route.params.startTime;
     const enddate = route.route.params.endTime;
-    console.log(sid, initdate, enddate)
+    console.log('s_id', sid)
+    console.log(initdate, enddate)
     const navigation = useNavigation();
     const { user, setUser } = useUserContext();
     const [location, setLocation] = useState(false); //do not modify this value
@@ -151,7 +154,7 @@ const ScheduleandMap = route => {
     const grouplocationpost = async () => {
         try {
             const res = await axios.post(
-                `${API_URL}/api/24/location`,
+                `${API_URL}/api/${sid}/location`,
                 {
                     gps_x: position.latitude,
                     gps_y: position.longitude,
@@ -210,12 +213,12 @@ const ScheduleandMap = route => {
 
     const getgroupLocation = async () => {
         try {
-            // const res = await axios.get(`${API_URL}/api/${id}/locations`,
-            const res = await axios.get(`${API_URL}/api/24/locations`, {
-                headers: {
-                    Authorization: user,
-                },
-            });
+            const res = await axios.get(`${API_URL}/api/${sid}/locations`,
+                {
+                    headers: {
+                        Authorization: user,
+                    },
+                });
             console.log(res.data);
         } catch (err) {
             console.error(err);
