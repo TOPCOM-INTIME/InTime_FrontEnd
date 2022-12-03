@@ -37,8 +37,13 @@ function SelectPattern({
   schedulePoolId,
   friendtoken,
 }) {
-  const {patterns, setPatterns, patternGroups, setPatternGroups} =
-    useLogContext();
+  const {
+    patterns,
+    setPatterns,
+    patternGroups,
+    setPatternGroups,
+    setScheduleInvite,
+  } = useLogContext();
   const [group, setGroup] = useState([]);
   const {user, setUser} = useUserContext();
   const primaryTitle = '저장';

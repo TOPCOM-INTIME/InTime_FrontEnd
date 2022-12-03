@@ -43,30 +43,11 @@ const linking = {
       CommunityScreenAdd: 'community',
       NickName: 'nickname',
       Password: 'password',
+      InvitationScreen: 'invitation',
     },
   },
 };
 function App() {
-  // Foreground 상태인 경우
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
-
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage,
-          );
-          const link = remoteMessage?.data?.link;
-          link && Linking.openURL(link);
-        }
-      });
-    return unsubscribe;
-  });
   return (
     <>
       <UserContextProvider>

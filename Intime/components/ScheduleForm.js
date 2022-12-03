@@ -17,11 +17,19 @@ import {useUserContext} from '../contexts/UserContext';
 import BackgroundService from 'react-native-background-actions';
 import {useNavigation} from '@react-navigation/native';
 import PushNotification from 'react-native-push-notification';
-import {AppBar, IconButton} from '@react-native-material/core';
+import {
+  AppBar,
+  IconButton,
+  Badge,
+  HStack,
+  Box,
+} from '@react-native-material/core';
 import {API_URL} from '@env';
+import {useLogContext} from '../contexts/LogContext';
 
 function ScheduleForm() {
   const {user, setUser} = useUserContext();
+  const {scheduleInvite} = useLogContext();
   const [scheduleData, setSchedule] = useState([]);
   const navigation = useNavigation();
 
@@ -108,7 +116,7 @@ function ScheduleForm() {
     getSchedule();
   }, []);
 
-  if (scheduleData.length == 0) {
+  if (scheduleData.length === 0) {
     return (
       <>
         <AppBar
@@ -119,18 +127,26 @@ function ScheduleForm() {
           tintColor="white"
           leading={<></>}
           trailing={props => (
-            <View style={{flexDirection: 'row'}}>
+            <HStack>
               <IconButton
                 icon={props => <Icon name="notifications" {...props} />}
                 color="white"
                 onPress={onNoticePress}
               />
+              <Badge
+                label={scheduleInvite.length}
+                showZero={false}
+                tintColor="white"
+                color="red"
+                style={{position: 'absolute', left: 30}}
+              />
+
               <IconButton
                 icon={props => <Icon name="add" {...props} />}
                 color="white"
                 onPress={onSubmit}
               />
-            </View>
+            </HStack>
           )}
         />
 
@@ -161,18 +177,26 @@ function ScheduleForm() {
         tintColor="white"
         leading={<></>}
         trailing={props => (
-          <View style={{flexDirection: 'row'}}>
+          <HStack>
             <IconButton
               icon={props => <Icon name="notifications" {...props} />}
               color="white"
               onPress={onNoticePress}
             />
+            <Badge
+              label={scheduleInvite.length}
+              showZero={false}
+              tintColor="white"
+              color="red"
+              style={{position: 'absolute', left: 30}}
+            />
+
             <IconButton
               icon={props => <Icon name="add" {...props} />}
               color="white"
               onPress={onSubmit}
             />
-          </View>
+          </HStack>
         )}
       />
       <ScrollView style={{width: '100%'}}>
