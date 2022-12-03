@@ -17,28 +17,12 @@ import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
 const list = [{username: 'mike'}, {username: 'john'}, {username: 'john1'}];
 
-function GroupScheduleFriend({
-  friendList,
-  setfriendList,
-  friendtoken,
-  setfriendtoken,
-  usernameList,
-  setusernameList,
-}) {
-  const navigation = useNavigation();
+function ScheduleCurrent({route}) {
+  console.log('ID값', route.params);
   const {user, setUser} = useUserContext();
-  const [allFriend, setAllFriend] = useState([]);
-  let inviteList = friendList;
-  let tokenList = friendtoken;
-  let usernamelist = usernameList;
-  console.log(allFriend);
-
-  const onPrimaryButtonPress = () => {
-    setfriendList(inviteList);
-    setfriendtoken(tokenList);
-    setusernameList(usernamelist);
-    navigation.pop();
-  };
+  const [AllFriend, setAllFriend] = useState([]);
+  const navigation = useNavigation();
+  const onPrimaryButtonPress = () => {};
 
   const onSecondaryButtonPress = () => {
     navigation.pop();
@@ -46,53 +30,47 @@ function GroupScheduleFriend({
 
   const getFriend = async () => {
     try {
-      const res = await axios.get(`${API_URL}/friends`, {
-        headers: {Authorization: user},
-      });
+      const res = await axios.get(
+        `${API_URL}/api/schedulePools=${route.params}/joined-members`,
+        {
+          headers: {Authorization: user},
+        },
+      );
       setAllFriend(res.data);
-      console.log('GET함', res.data);
+      console.log('GET함', res);
     } catch (e) {
       console.log(`[GET_FRIEND_ERROR]${e}`);
     }
   };
 
-  onShortPress = item => {
-    if (inviteList.includes(item.id)) {
-      let tmp = inviteList.indexOf(item.id);
-      tokenList.pop(tmp);
-      inviteList.pop(tmp);
-      usernamelist.pop(tmp);
-    } else {
-      tokenList.push(item.deviceToken);
-      inviteList.push(item.id);
-      usernamelist.push(item.username);
+  const checkGroup = async () => {
+    try {
+      const res = await axios.get(
+        `${API_URL}/api/schedulePools=${route.params}/members`,
+        {
+          headers: {Authorization: user},
+        },
+      );
+      console.log('SCHEDULEPOOL_SUCCESS!', res.data);
+    } catch (e) {
+      console.log(`[SCHEDULEPOOL_ERROR]${e}`);
     }
-    console.log(tokenList);
-    console.log(inviteList);
-    console.log(usernamelist);
   };
+
   useEffect(() => {
     getFriend();
+    checkGroup();
   }, []);
 
   return (
     <>
-      <View>
-        {allFriend.map(item => (
-          <TouchableOpacity
-            key={item.username}
-            onPress={() => onShortPress(item)}>
-            <Text style={{color: 'black'}}>{item.username}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
       <View>
         <TouchableOpacity onPress={onPrimaryButtonPress}>
           <Text>초대</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={onSecondaryButtonPress}>
-          <Text>취소</Text>
+          <Text>뒤로 가기</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -142,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GroupScheduleFriend;
+export default ScheduleCurrent;

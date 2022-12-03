@@ -19,6 +19,7 @@ import {useUserContext} from '../contexts/UserContext';
 import Patterns from '../components/Patterns';
 import PatternGroups from '../components/PatternGroups';
 import PushNotification from 'react-native-push-notification';
+import {AppBar, IconButton} from '@react-native-material/core';
 import {API_URL} from '@env';
 
 // api​/schedule={id}​/update/
@@ -127,7 +128,6 @@ function SelectPattern({
       };
     });
   }, [group]);
-
   const onSaveButtonPress = async () => {
     // console.log('알림 설정한 시간', data.readyTime);
     let currentDate = new Date();
@@ -136,6 +136,7 @@ function SelectPattern({
     } else if (currentDate > data.readyTime) {
       Alert.alert('오류', '준비시간이 너무 길어요!');
     } else {
+
       try {
         //초대장으로 온 일정
         if (!isUpdate) {
@@ -166,68 +167,73 @@ function SelectPattern({
               console.log(group_data);
               console.log(`[INVITE_POST_ERROR]${e} SENT${schedulePoolId}`);
             }
-          }
-          // 그룹 일정 생성
-          else if (checkGroup) {
-            try {
-              group_data = data;
-              group_data.members_Ids = friendList;
 
-              friendtoken.map(item => {
-                sendnotice(item);
-              });
-
-              const res = await axios.post(
-                `${API_URL}/api/group-schedule`,
-                group_data,
-                {
-                  headers: {Authorization: user},
-                },
-              );
-              sendNotification(res);
-              console.log('GROUP_POST_SUCCESS!', group_data, res.data);
-              navigation.push('MainTab');
-            } catch (e) {
-              console.log(group_data);
-              console.log(`[GROUP_POST_ERROR]${e} SENT${group_data}`);
-            }
-          } //개인 일정 생성
-          else {
-            console.log(data);
-            try {
-              const res = await axios.post(`${API_URL}/api/schedule`, data, {
-                headers: {Authorization: user},
-              });
-              sendNotification(res);
-              console.log('[INDIVIDUAL_POST_SUCCESS]', data);
-              navigation.push('MainTab');
-            } catch (e) {
-              console.log(`[INDIVIDUAL_POST_ERROR]${e} SENT${data}`);
-            }
           }
-        } // 기존 일정 수정
-        else {
-          console.log(`UPDATE ${ItemID}`);
-          const res = await axios.put(
-            `${API_URL}/api/schedule=${ItemID}/update/`,
-            data,
-            {
-              headers: {Authorization: user},
-            },
-          );
-          sendNotification(res);
-          console.log('UPDATE_SUCCESS!', data);
-          navigation.push('MainTab');
         }
-      } catch (e) {
-        console.log(data);
-        console.log(`[POST_ERROR]${e} SENT${data}`);
+        // 그룹 일정 생성
+        else if (checkGroup) {
+          try {
+            group_data = data;
+            group_data.members_Ids = friendList;
+
+            friendtoken.map(item => {
+              sendnotice(item);
+            });
+
+            const res = await axios.post(
+              `${API_URL}/api/group-schedule`,
+              group_data,
+              {
+                headers: {Authorization: user},
+              },
+            );
+            sendNotification(res);
+            console.log('GROUP_POST_SUCCESS!', group_data, res.data);
+            navigation.push('MainTab');
+          } catch (e) {
+            console.log(group_data);
+            console.log(`[GROUP_POST_ERROR]${e} SENT${group_data}`);
+          }
+        } //개인 일정 생성
+        else {
+          console.log(data);
+          try {
+            const res = await axios.post(`${API_URL}/api/schedule`, data, {
+              headers: {Authorization: user},
+            });
+            sendNotification(res);
+            console.log('[INDIVIDUAL_POST_SUCCESS]', data);
+            navigation.push('MainTab');
+          } catch (e) {
+            console.log(`[INDIVIDUAL_POST_ERROR]${e} SENT${data}`);
+          }
+        }
+      } // 기존 일정 수정
+      else {
+        console.log(`UPDATE ${ItemID}`);
+        const res = await axios.put(
+          `${API_URL}/api/schedule=${ItemID}/update/`,
+          data,
+          {
+            headers: {Authorization: user},
+          },
+        );
+        sendNotification(res);
+        console.log('UPDATE_SUCCESS!', data);
+        navigation.push('MainTab');
       }
     }
   };
 
   return (
     <>
+      <AppBar
+        title="패턴 생성"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        centerTitle={true}
+        color="#6c757d"
+        tintColor="white"
+      />
       <View>
         <Text style={styles.sectionTitle}>패턴설정</Text>
       </View>
