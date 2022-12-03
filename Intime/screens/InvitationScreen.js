@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Alert,
@@ -12,18 +12,21 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {useUserContext} from '../contexts/UserContext';
-import {API_URL} from '@env';
+import { useNavigation } from '@react-navigation/native';
+import { useUserContext } from '../contexts/UserContext';
+import { API_URL } from '@env';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Non-serializable values were found in the navigation state',]);
 
 function InvitationScreen() {
   const navigation = useNavigation();
-  const {user, setUser} = useUserContext();
+  const { user, setUser } = useUserContext();
   const [allInvitaion, setAllInvitaion] = useState([]);
   const getInvitation = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/schedule-invitations`, {
-        headers: {Authorization: user},
+        headers: { Authorization: user },
       });
       console.log(res.data);
       setAllInvitaion(res.data);
@@ -61,12 +64,12 @@ function InvitationScreen() {
           <TouchableOpacity
             key={item.schedulePoolId}
             onPress={() => OnPrimaryPress(item)}>
-            <Text>보낸 사람:{item.invitorName}</Text>
-            <Text>도착지:{item.destName}</Text>
+            <Text style={{ color: "black" }}>보낸 사람:{item.invitorName}</Text>
+            <Text style={{ color: "black" }}>도착지:{item.destName}</Text>
           </TouchableOpacity>
         ))}
         <TouchableOpacity onPress={onSecondaryButtonPress}>
-          <Text>뒤로가기</Text>
+          <Text style={{ color: "black" }}>뒤로가기</Text>
         </TouchableOpacity>
       </View>
     </>
