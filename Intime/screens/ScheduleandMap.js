@@ -45,20 +45,19 @@ const ScheduleandMap = route => {
     const sid = route.route.params.ID;
     const initdate = route.route.params.startTime;
     const enddate = route.route.params.endTime;
-    console.log('s_id', sid)
-    console.log(initdate, enddate)
+    // console.log('s_id', sid)
+    // console.log(initdate, enddate)
     const navigation = useNavigation();
     const { user, setUser } = useUserContext();
     const [location, setLocation] = useState(false); //do not modify this value
     const [myid, setmyid] = useState([]);
 
     const [position, setPosition] = useState({
-        //default center view
         latitude: 37.266833,
         longitude: 127.000019,
     });
 
-    const [getdata, setgetdata] = useState([]);
+    const [senddata, setsenddata] = useState([]);
 
 
     const [markerlist, setmarkerlist] = useState([]);
@@ -73,7 +72,6 @@ const ScheduleandMap = route => {
                 },
             );
             setuserlist(res.data);
-            console.log('SCHEDULEPOOL_SUCCESS!', res.data);
         } catch (e) {
             console.log(`[SCHEDULEPOOL_ERROR]${e}`);
         }
@@ -86,7 +84,7 @@ const ScheduleandMap = route => {
                     Authorization: user,
                 },
             });
-            console.log(res.data);
+            // console.log(res.data);
             setmyid(res.data.id);
         } catch (error) {
             console.log(error);
@@ -95,11 +93,13 @@ const ScheduleandMap = route => {
 
     useEffect(() => {
         checkGroup();
+        getmyid();
+        getLocation();
+        getgroupLocation();
     }, []);
 
-    useEffect(() => {
-        getmyid();
-    }, [position]);
+    // useEffect(() => {
+    // }, []);
 
     // const userlist = [
     //     { username: '코카콜라', id: '1' },
@@ -154,9 +154,8 @@ const ScheduleandMap = route => {
                 if (i % 5 === 0) {
                     console.log('Hello locationapi!');
                     getLocation();
-                    console.log('Hello postapi!', BackgroundService.isRunning());
+                    console.log('position', position);
                     mylocationpost();
-                    console.log(new Date());
                 }
                 if (enddate <= new Date()) {
                     console.log('Bye~time is over');
@@ -176,13 +175,13 @@ const ScheduleandMap = route => {
         await BackgroundService.stop();
     };
 
-    const grouplocationpost = async () => {
+    const grouplocationpost = async (latlng) => {
         try {
             const res = await axios.post(
                 `${API_URL}/api/${sid}/location`,
                 {
-                    gps_x: position.latitude,
-                    gps_y: position.longitude,
+                    gps_x: latlng.latitude,
+                    gps_y: latlng.longitude,
                     id: myid,
                 },
                 {
@@ -202,8 +201,8 @@ const ScheduleandMap = route => {
             const res = await axios.post(
                 `${API_URL}/api/location`,
                 {
-                    gps_x: position.latitude,
-                    gps_y: position.longitude,
+                    gps_x: senddata.latitude,
+                    gps_y: senddata.longitude,
                 },
                 {
                     headers: {
@@ -211,7 +210,9 @@ const ScheduleandMap = route => {
                     },
                 },
             );
-            console.log(res.data);
+            console.log('res data', res.data)
+            console.log('my location', senddata);
+            grouplocationpost(senddata)
         } catch (err) {
             console.error(err);
         }
@@ -244,7 +245,7 @@ const ScheduleandMap = route => {
                         Authorization: user,
                     },
                 });
-            console.log(res.data);
+            console.log('res data from get group location', res.data);
             setmarkerlist(res.data);
             console.log('markerlist', markerlist)
         } catch (err) {
@@ -286,7 +287,12 @@ const ScheduleandMap = route => {
                     position => {
                         console.log(position);
                         setLocation(position);
-                        setPosition({
+                        // 화면 중심부 변환
+                        // setPosition({
+                        //     latitude: position.coords.latitude,
+                        //     longitude: position.coords.longitude,
+                        // });
+                        setsenddata({
                             latitude: position.coords.latitude,
                             longitude: position.coords.longitude,
                         });
@@ -298,17 +304,29 @@ const ScheduleandMap = route => {
                     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
                 );
             }
+            console.log('senddata', senddata)
         });
-        console.log(location);
     };
 
-    const pressusername = username => {
-        console.log(username, '의 위치 표시하기');
+    const pressuserlog = param => {
+        console.log(param.id, '의 위치 표시하기');
+        getgroupLocation();
+        console.log('개인화면에서 마커 리스트', markerlist)
+        console.log('')
+        const mainview = markerlist.filter(marker => marker.useridx === param.id);
+        if (mainview[0]) {
+            setPosition({
+                latitude: parseFloat(mainview[0].gps_x),
+                longitude: parseFloat(mainview[0].gps_y),
+            });
+        }
     };
 
     return (
         <>
             <View>
+
+                {/* <Button title="뒤로가기" onPress={() => navigation.pop()} /> */}
                 <View style={styles.userlistwrapper}>
                     {userlist.length > 0 ? (
                         <View>
@@ -317,7 +335,7 @@ const ScheduleandMap = route => {
                                     <View key={user.id}>
                                         <View>
                                             <TouchableOpacity
-                                                onPress={() => pressusername(user.email)}>
+                                                onPress={() => pressuserlog(user)}>
                                                 <Text style={styles.textlist}>{user.email}</Text>
                                             </TouchableOpacity>
                                         </View>
@@ -334,13 +352,9 @@ const ScheduleandMap = route => {
             </View>
             <View>
                 {/* 아래 버튼은 자동화 구현 후 삭제 예정 */}
-                <Button title="grouplocationpost" onPress={grouplocationpost}></Button>
                 <Button title="getgroupLocation" onPress={getgroupLocation}></Button>
                 <Button title="stopHandler" onPress={stopHandler}></Button>
                 <Button title="backgroundHandler" onPress={backgroundHandler} />
-                <Button title="getLocation" onPress={getLocation} />
-                <Button title="checkGroup" onPress={checkGroup} />
-                <Button title="뒤로가기" onPress={() => navigation.pop()} />
             </View>
             <View style={{ flex: 9 }}>
                 <View style={{ flex: 1, padding: 10 }}>
@@ -369,11 +383,11 @@ const ScheduleandMap = route => {
 
                         {markerlist.map(marker => (
                             <Marker
-                                key={marker.id}
+                                key={marker.useridx}
                                 title={marker.username}
                                 coordinate={{
-                                    latitude: marker.gps_x,
-                                    longitude: marker.gps_y,
+                                    latitude: parseFloat(marker.gps_x),
+                                    longitude: parseFloat(marker.gps_y),
                                 }}
                             >
                                 <Image
