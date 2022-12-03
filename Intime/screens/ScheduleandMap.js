@@ -60,6 +60,7 @@ const ScheduleandMap = route => {
 
     const [markerlist, setmarkerlist] = useState([]);
 
+    //delete all dummy and parse marker
     //dummy
     const terminatedate = new Date('2022-12-02 21:01:30');
 
