@@ -1,6 +1,7 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {ListItem} from '@react-native-material/core';
 
 function PatternGroupListItem({log, isCreatingGroup, setGroup, data, setData}) {
   const navigation = useNavigation();
@@ -12,18 +13,15 @@ function PatternGroupListItem({log, isCreatingGroup, setGroup, data, setData}) {
   const time = log.patterns.reduce((a, b) => a + b.time, 0);
 
   return (
-    <Pressable
-      style={({pressed}) => [
-        styles.block,
-        Platform.OS === 'ios' && pressed && {backGroundColor: '#efefef'},
-      ]}
+    <ListItem
       onPress={onPress}
-      android_ripple={{color: '#ededed'}}>
-      <Text style={styles.title}>{log.name}</Text>
-      <Text style={styles.body}>
-        {parseInt(time / 60)}분 {time % 60}초
-      </Text>
-    </Pressable>
+      title={log.name}
+      secondaryText={
+        time >= 60
+          ? `${parseInt(time / 60)}분 ${time % 60}초`
+          : `${time % 60}초`
+      }
+    />
   );
 }
 

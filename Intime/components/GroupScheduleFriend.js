@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   View,
   Platform,
-  Text,
   StyleSheet,
   Keyboard,
   ScrollView,
@@ -15,6 +14,18 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
+import {
+  AppBar,
+  Box,
+  Button,
+  HStack,
+  IconButton,
+  ListItem,
+  Pressable,
+  Text,
+  VStack,
+} from '@react-native-material/core';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function GroupScheduleFriend({
   friendList,
@@ -27,73 +38,95 @@ function GroupScheduleFriend({
   const navigation = useNavigation();
   const {user, setUser} = useUserContext();
   const [allFriend, setAllFriend] = useState([]);
-  let inviteList = friendList;
-  let tokenList = friendtoken;
-  let usernamelist = usernameList;
   console.log(allFriend);
 
   const onPrimaryButtonPress = () => {
-    setfriendList(inviteList);
-    setfriendtoken(tokenList);
-    setusernameList(usernamelist);
     navigation.pop();
   };
 
   const onSecondaryButtonPress = () => {
+    setfriendList([]);
+    setfriendtoken([]);
+    setusernameList([]);
     navigation.pop();
   };
 
-  const getFriend = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/friends`, {
-        headers: {Authorization: user},
-      });
-      setAllFriend(res.data);
-      console.log('GET함', res.data);
-    } catch (e) {
-      console.log(`[GET_FRIEND_ERROR]${e}`);
-    }
-  };
-
-  onShortPress = item => {
-    if (inviteList.includes(item.id)) {
-      let tmp = inviteList.indexOf(item.id);
-      tokenList.pop(tmp);
-      inviteList.pop(tmp);
-      usernamelist.pop(tmp);
-    } else {
-      tokenList.push(item.deviceToken);
-      inviteList.push(item.id);
-      usernamelist.push(item.username);
-    }
-    console.log(tokenList);
-    console.log(inviteList);
-    console.log(usernamelist);
+  const onShortPress = item => {
+    setfriendList(friendList => {
+      if (friendList.includes(item.id)) {
+        return friendList.filter(friend => friend !== item.id);
+      } else {
+        return [...friendList, item.id];
+      }
+    });
+    setfriendtoken(tokenList => {
+      if (tokenList.includes(item.deviceToken)) {
+        return tokenList.filter(token => token !== item.deviceToken);
+      } else {
+        return [...tokenList, item.deviceToken];
+      }
+    });
+    setusernameList(nameList => {
+      if (nameList.includes(item.username)) {
+        return nameList.filter(name => name !== item.username);
+      } else {
+        return [...nameList, item.username];
+      }
+    });
   };
   useEffect(() => {
+    const getFriend = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/friends`, {
+          headers: {Authorization: user},
+        });
+        setAllFriend(res.data);
+        console.log('GET함', res.data);
+      } catch (e) {
+        console.log(`[GET_FRIEND_ERROR]${e}`);
+      }
+    };
     getFriend();
-  }, []);
+  }, [user]);
 
   return (
     <>
-      <View>
+      <AppBar
+        title="초대할 친구 선택"
+        centerTitle={true}
+        color="#6c757d"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        leading={props => (
+          <IconButton
+            icon={props => <Icon name="chevron-left" {...props} />}
+            color="white"
+            onPress={onSecondaryButtonPress}
+          />
+        )}
+        trailing={props => (
+          <IconButton
+            icon={props => <Icon name="check" {...props} />}
+            color="green"
+            onPress={onPrimaryButtonPress}
+          />
+        )}
+      />
+      <ScrollView>
         {allFriend.map(item => (
-          <TouchableOpacity
+          <ListItem
             key={item.username}
-            onPress={() => onShortPress(item)}>
-            <Text style={{color: 'black'}}>{item.username}</Text>
-          </TouchableOpacity>
+            onPress={() => onShortPress(item)}
+            title={item.username}
+            leading={
+              friendList.includes(item.id) ? (
+                <Icon name="check-box" size={24} />
+              ) : (
+                <Icon name="check-box-outline-blank" size={24} />
+              )
+            }
+          />
         ))}
-      </View>
-      <View>
-        <TouchableOpacity onPress={onPrimaryButtonPress}>
-          <Text>초대</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={onSecondaryButtonPress}>
-          <Text>취소</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </>
   );
 }
