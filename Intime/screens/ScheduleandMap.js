@@ -58,9 +58,26 @@ const ScheduleandMap = route => {
         longitude: 127.000019,
     });
 
-    const [markerlist, setmarkerlist] = useState([]);
+    const [getdata, setgetdata] = useState([]);
 
-    //delete all dummy and parse marker
+
+    const [markerlist, setmarkerlist] = useState([]);
+    const [userlist, setuserlist] = useState([]);
+
+    const checkGroup = async () => {
+        try {
+            const res = await axios.get(
+                `${API_URL}/api/schedulePools=${sid}/members`,
+                {
+                    headers: { Authorization: user },
+                },
+            );
+            setuserlist(res.data);
+            console.log('SCHEDULEPOOL_SUCCESS!', res.data);
+        } catch (e) {
+            console.log(`[SCHEDULEPOOL_ERROR]${e}`);
+        }
+    };
 
     const getmyid = async () => {
         try {
@@ -77,17 +94,21 @@ const ScheduleandMap = route => {
     };
 
     useEffect(() => {
+        checkGroup();
+    }, []);
+
+    useEffect(() => {
         getmyid();
     }, [position]);
 
-    const userlist = [
-        { username: '코카콜라', id: '1' },
-        { username: '테슬라', id: '2' },
-        { username: '메타', id: '3' },
-        { username: '스타벅스', id: '4' },
-        { username: '알파벳', id: '5' },
-        { username: '펩시', id: '6' },
-    ];
+    // const userlist = [
+    //     { username: '코카콜라', id: '1' },
+    //     { username: '테슬라', id: '2' },
+    //     { username: '메타', id: '3' },
+    //     { username: '스타벅스', id: '4' },
+    //     { username: '알파벳', id: '5' },
+    //     { username: '펩시', id: '6' },
+    // ];
 
     // const markerlist = [
 
@@ -283,9 +304,6 @@ const ScheduleandMap = route => {
 
     const pressusername = username => {
         console.log(username, '의 위치 표시하기');
-        console.log('myid', myid);
-        console.log(new Date());
-        console.log(terminatedate);
     };
 
     return (
@@ -299,8 +317,8 @@ const ScheduleandMap = route => {
                                     <View key={user.id}>
                                         <View>
                                             <TouchableOpacity
-                                                onPress={() => pressusername(user.username)}>
-                                                <Text style={styles.textlist}>{user.username}</Text>
+                                                onPress={() => pressusername(user.email)}>
+                                                <Text style={styles.textlist}>{user.email}</Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
@@ -321,7 +339,7 @@ const ScheduleandMap = route => {
                 <Button title="stopHandler" onPress={stopHandler}></Button>
                 <Button title="backgroundHandler" onPress={backgroundHandler} />
                 <Button title="getLocation" onPress={getLocation} />
-                <Button title="getLocationfromapi" onPress={getLocationfromapi} />
+                <Button title="checkGroup" onPress={checkGroup} />
                 <Button title="뒤로가기" onPress={() => navigation.pop()} />
             </View>
             <View style={{ flex: 9 }}>
@@ -351,7 +369,7 @@ const ScheduleandMap = route => {
 
                         {markerlist.map(marker => (
                             <Marker
-                                key={marker.username}
+                                key={marker.id}
                                 title={marker.username}
                                 coordinate={{
                                     latitude: marker.gps_x,

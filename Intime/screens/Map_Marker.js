@@ -34,6 +34,7 @@ const Map_Marker = () => {
     longitude: 127.000019,
   });
 
+
   const getmyid = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/my-info`,
@@ -247,7 +248,6 @@ const Map_Marker = () => {
     } else {
       getdata.latitude = parseFloat(res.data.gps_x);
       getdata.longitude = parseFloat(res.data.gps_y);
-
     }
 
     console.log('res', res);
