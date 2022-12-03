@@ -87,6 +87,15 @@ function CommunityScreenAdd({setFriendInvite}) {
           },
         },
       );
+      await axios.post(
+        `${API_URL}/api/fcm/friend`,
+        {userName: name},
+        {
+          headers: {
+            Authorization: user,
+          },
+        },
+      );
       console.log('res', res);
       console.log('name :', name);
       Alert.alert('성공!', '상대방에게 친구 신청을 보냈어요.');
