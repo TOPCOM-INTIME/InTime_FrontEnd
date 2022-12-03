@@ -111,10 +111,9 @@ const ScheduleandMap = route => {
     useEffect(() => {
         checkGroup();
         getmyid();
-        getLocation();
-        // getgroupLocation();
+        getgroupLocation();
         if (!BackgroundService.isRunning()) {
-            // backgroundHandler();
+            backgroundHandler();
             console.log("??????")
         }
     }, []);
@@ -134,8 +133,10 @@ const ScheduleandMap = route => {
                 console.log(i);
                 if (i % 5 === 0) {
                     console.log('Hello locationapi!');
-                    getLocation();
                     console.log('position', position);
+                    setTimeout(() => {
+                        getLocation();
+                    }, 100);
 
                 }
 
@@ -158,6 +159,7 @@ const ScheduleandMap = route => {
     };
 
     const grouplocationpost = async (latlng) => {
+        console.log('my location 잘 나오냐3', latlng);
         try {
             const res = await axios.post(
                 `${API_URL}/api/${sid}/location`,
@@ -172,6 +174,8 @@ const ScheduleandMap = route => {
                     },
                 },
             );
+
+            console.log('my location 잘 나오냐4', latlng);
             console.log(res.data);
         } catch (err) {
             console.error(err);
@@ -179,25 +183,29 @@ const ScheduleandMap = route => {
     };
 
     const mylocationpost = async (latlng) => {
-        try {
-            const res = await axios.post(
-                `${API_URL}/api/location`,
-                {
-                    gps_x: latlng.latitude,
-                    gps_y: latlng.longitude,
-                },
-                {
-                    headers: {
-                        Authorization: user,
+
+        console.log('my location 잘 나오냐1', latlng);
+        if (latlng) {
+            try {
+                const res = await axios.post(
+                    `${API_URL}/api/location`,
+                    {
+                        gps_x: latlng.latitude,
+                        gps_y: latlng.longitude,
                     },
-                },
-            );
-            console.log('latlng', latlng)
-            console.log('my location', senddata);
-            grouplocationpost(latlng)
-        } catch (err) {
-            console.error(err);
+                    {
+                        headers: {
+                            Authorization: user,
+                        },
+                    },
+                );
+                console.log('my location 잘 나오냐2', latlng);
+                grouplocationpost(latlng)
+            } catch (err) {
+                console.error(err);
+            }
         }
+
     };
 
     const getLocationfromapi = async () => {
@@ -275,18 +283,20 @@ const ScheduleandMap = route => {
             if (res) {
                 Geolocation.getCurrentPosition(
                     position => {
-                        console.log(position);
+                        console.log('position 123 123', position);
                         setLocation(position);
+                        // console.log(location)
                         // 화면 중심부 변환
                         // setPosition({
                         //     latitude: position.coords.latitude,
                         //     longitude: position.coords.longitude,
                         // });
-                        setsenddata({
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude,
-                        });
-                        setTimeout(() => mylocationpost(senddata), 100)
+                        // setsenddata({
+                        //     latitude: position.coords.latitude,
+                        //     longitude: position.coords.longitude,
+                        // });
+                        mylocationpost(position.coords)
+                        // console.log('getlocation 직후 데이터', senddata)
                     },
                     error => {
                         console.log(error.code, error.message);
@@ -343,9 +353,9 @@ const ScheduleandMap = route => {
             </View>
             <View>
                 {/* 아래 버튼은 자동화 구현 후 삭제 예정 */}
-                <Button title="getgroupLocation" onPress={getgroupLocation}></Button>
+                {/* <Button title="getgroupLocation" onPress={getgroupLocation}></Button>
                 <Button title="stopHandler" onPress={stopHandler}></Button>
-                <Button title="backgroundHandler" onPress={backgroundHandler}></Button>
+                <Button title="backgroundHandler" onPress={backgroundHandler}></Button> */}
             </View>
             <View style={{ flex: 9 }}>
                 <View style={{ flex: 1, padding: 10 }}>
