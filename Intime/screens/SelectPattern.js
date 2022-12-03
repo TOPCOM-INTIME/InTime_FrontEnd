@@ -36,8 +36,13 @@ function SelectPattern({
   schedulePoolId,
   friendtoken,
 }) {
-  const {patterns, setPatterns, patternGroups, setPatternGroups} =
-    useLogContext();
+  const {
+    patterns,
+    setPatterns,
+    patternGroups,
+    setPatternGroups,
+    setScheduleInvite,
+  } = useLogContext();
   const [group, setGroup] = useState([]);
   const {user, setUser} = useUserContext();
   const primaryTitle = '저장';
@@ -148,6 +153,13 @@ function SelectPattern({
                 },
               );
               sendNotification(res);
+              const fetchedSchedule = await axios.get(
+                `${API_URL}/api/schedule-invitations`,
+                {
+                  headers: {Authorization: user},
+                },
+              );
+              setScheduleInvite(fetchedSchedule.data);
               console.log('INVITE_POST_SUCCESS!', group_data, res.data);
               navigation.push('MainTab');
             } catch (e) {

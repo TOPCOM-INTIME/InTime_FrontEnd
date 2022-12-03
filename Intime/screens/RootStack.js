@@ -23,7 +23,7 @@ const Stack = createNativeStackNavigator();
 
 function RootStack() {
   const {user, setUser} = useUserContext();
-  const {setFriendInvite} = useLogContext();
+  const {setFriendInvite, setScheduleInvite} = useLogContext();
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -42,6 +42,10 @@ function RootStack() {
           remoteMessage.notification.title,
           remoteMessage.notification.body,
         );
+        const res = await axios.get(`${API_URL}/api/schedule-invitations`, {
+          headers: {Authorization: user},
+        });
+        setScheduleInvite(res.data);
       }
       // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
