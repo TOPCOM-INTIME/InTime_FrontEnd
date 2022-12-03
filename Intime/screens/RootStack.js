@@ -14,7 +14,7 @@ import {API_URL} from '@env';
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import {Text} from '@react-native-material/core';
-import {Linking} from 'react-native';
+import {Linking, Alert} from 'react-native';
 import InvitationScreen from './InvitationScreen';
 import PasswordChangeScreen from './PasswordChangeScreen';
 import {useLogContext} from '../contexts/LogContext';
@@ -23,6 +23,44 @@ const Stack = createNativeStackNavigator();
 
 function RootStack() {
   const {user, setUser} = useUserContext();
+  const {setFriendInvite} = useLogContext();
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      if (remoteMessage?.data?.link === 'intime://community') {
+        Alert.alert(
+          remoteMessage.notification.title,
+          remoteMessage.notification.body,
+        );
+        const res = await axios.get(`${API_URL}/friends/request`, {
+          headers: {Authorization: user},
+        });
+        setFriendInvite(res.data);
+      }
+      if (remoteMessage?.data?.link === 'intime://invitation') {
+        Alert.alert(
+          remoteMessage.notification.title,
+          remoteMessage.notification.body,
+        );
+      }
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage,
+          );
+          const link = remoteMessage?.data?.link;
+          link && Linking.openURL(link);
+          // link && Linking.openURL('intime://invitation');
+        }
+      });
+    return unsubscribe;
+  });
   return (
     <Stack.Navigator>
       {user ? (

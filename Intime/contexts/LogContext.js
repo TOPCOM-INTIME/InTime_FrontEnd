@@ -35,7 +35,6 @@ export function LogContextProvider({children}) {
           },
         );
         setFriendInvite(fetchedInvitation.data);
-        console.log('컨텍스트:', fetchedInvitation);
       } catch (err) {
         console.error('로그 컨텍스트 에러', err);
         setPatternGroups([]);
