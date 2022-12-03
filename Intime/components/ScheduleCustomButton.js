@@ -12,7 +12,7 @@ function ScheduleCustomButton({onPress, title, hasMarginBottom, theme}) {
           isPrimary && styles.primaryWrapper,
           Platform.OS === 'ios' && pressed && {opacity: 0.5},
         ]}
-        android_ripple={{color: isPrimary ? '#ffffff' : '#ee2f48'}}>
+        android_ripple={{color: isPrimary ? '#ffffff' : '#6c757d'}}>
         <Text
           style={[
             styles.text,
@@ -30,7 +30,7 @@ ScheduleCustomButton.defaultProps = {
 };
 const styles = StyleSheet.create({
   wrapper: {
-    borderColor: '#ED3648',
+    borderColor: '#6c757d',
     borderRadius: 20,
     height: 40,
     width: 90,
@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   primaryWrapper: {
-    backgroundColor: '#ee2f48',
+    backgroundColor: '#6c757d',
   },
   primaryText: {
     color: 'white',
   },
   secondaryText: {
-    color: '#ee2f48',
+    color: '#6c757d',
   },
 });
 

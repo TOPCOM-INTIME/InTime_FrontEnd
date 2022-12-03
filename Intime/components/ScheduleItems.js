@@ -26,28 +26,56 @@ const ScheduleItem = props => {
   const date = new Date(props.data.readyTime);
   const endplace = props.data.destName;
   const startplace = props.data.sourceName;
+  const ID = props.data.id;
   const endTime = new Date(props.data.endTime);
-
+  let isGroup;
   const PUSHDATA = {
     ID: props.data.schedulePoolId,
     startTime: new Date(props.data.readyTime),
     endTime: new Date(props.data.endTime),
   };
-  // console.log(PUSHDATA);
 
-  const checkGroup = async () => {
+  if (props.data.schedulePoolId) {
+    isGroup = true;
+  } else {
+    isGroup = false;
+  }
+
+  const deleteSchedule = async ID => {
     try {
       const res = await axios.get(
         `${API_URL}/api/schedulePools=${props.data.schedulePoolId}/members`,
         {
-          headers: { Authorization: user },
+          headers: {Authorization: user},
         },
       );
       console.log('SCHEDULEPOOL_SUCCESS!', res.data);
     } catch (e) {
-      console.log(`[SCHEDULEPOOL_ERROR]${e}`);
+      console.log(`[DELETE_ERROR]${e}`);
     }
   };
+
+  function statusPrint() {
+    if (status === 'ING' || status === 'END') {
+      return (
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
+            <Text style={{marginTop: 10, color: 'black'}}>위치보기</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <>
+          <TouchableOpacity
+            onPress={() => navigation.push('ScheduleCurrent', ID)}>
+            <Text style={{marginTop: 10, color: 'black'}}>초대 현황보기</Text>
+          </TouchableOpacity>
+        </>
+      );
+    }
+  }
 
   function print() {
     if (status === 'ING') {
@@ -55,7 +83,7 @@ const ScheduleItem = props => {
     } else if (status === 'PRE') {
       return <Text style={{ color: 'black' }}>예정</Text>;
     } else if (status === 'END') {
-      return <Text style={{ color: 'black' }}>종료</Text>;
+      return <Text style={{color: 'black'}}>종료</Text>;
     }
   }
 
@@ -86,10 +114,12 @@ const ScheduleItem = props => {
       <View style={styles.item}>
         <View style={styles.itemDate}>
           <Text style={styles.itemMonthDay}>
-            {date.getMonth() + 1}/{date.getDate()}
+            {String(date.getMonth() + 1).padStart(2, '0')}/
+            {String(date.getDate()).padStart(2, '0')}
           </Text>
           <Text style={styles.itemTime}>
-            {date.getHours()}:{date.getMinutes()}
+            {String(date.getHours()).padStart(2, '0')}:
+            {String(date.getMinutes()).padStart(2, '0')}
           </Text>
         </View>
 
@@ -103,20 +133,9 @@ const ScheduleItem = props => {
             <Icon name={'arrow-forward'} size={10} color={'black'} />
             {endplace}
           </Text>
-          <TouchableOpacity
-            style={styles.friendBox}
-            onPress={() =>
-              navigation.push('ScheduleandMap', PUSHDATA)
-            }></TouchableOpacity>
+          {isGroup && statusPrint()}
         </View>
         <View style={styles.itemDate}>
-          {/* <Switch
-            style={styles.toggleSwitch}
-            trackColor={{false: 'grey', true: '#ED3648'}}
-            thumbColor={isEnabled ? '#f4fef4' : '#f4f3f4'}
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          /> */}
           <View
             style={{
               flex: 1,
@@ -143,8 +162,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 15,
-    borderColor: '#ED3648',
-    borderWidth: 4,
+    borderColor: '#6c757d',
+    borderWidth: 2,
   },
   itemDate: {
     flex: 1,
@@ -165,12 +184,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flewWrap: 'wrap',
     alignItems: 'center',
+    justifyContent: 'center',
     fontWeight: 'bold',
+    // backgroundColor: 'blue',
   },
   itemName: {
     fontWeight: 'bold',
     marginBottom: 5,
     color: 'black',
+    // backgroundColor: 'red',
+    alignItems: 'center',
   },
   friendBox: {
     alignItems: 'center',

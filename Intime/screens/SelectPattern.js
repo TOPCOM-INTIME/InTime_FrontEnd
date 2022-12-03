@@ -9,6 +9,7 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import CarShowTime from './CarShowTime';
 import ScheduleSubmitButton from '../components/ScheduleSubmitButton';
@@ -18,6 +19,7 @@ import {useUserContext} from '../contexts/UserContext';
 import Patterns from '../components/Patterns';
 import PatternGroups from '../components/PatternGroups';
 import PushNotification from 'react-native-push-notification';
+import {AppBar, IconButton} from '@react-native-material/core';
 import {API_URL} from '@env';
 
 // api​/schedule={id}​/update/
@@ -35,8 +37,13 @@ function SelectPattern({
   schedulePoolId,
   friendtoken,
 }) {
-  const {patterns, setPatterns, patternGroups, setPatternGroups} =
-    useLogContext();
+  const {
+    patterns,
+    setPatterns,
+    patternGroups,
+    setPatternGroups,
+    setScheduleInvite,
+  } = useLogContext();
   const [group, setGroup] = useState([]);
   const {user, setUser} = useUserContext();
   const primaryTitle = '저장';
@@ -56,6 +63,7 @@ function SelectPattern({
     setTime.setSeconds(0);
     return setTime;
   };
+
   const calTime = () => {
     let readyTime = new Date(data.startTime);
     let tmpTime = 0;
@@ -82,29 +90,33 @@ function SelectPattern({
   };
 
   const sendNotification = res => {
-    // console.log('알림 데이터', data, res);
-    PushNotification.localNotificationSchedule({
-      channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      title: '준비할 시간입니다.',
-      message: '준비를 시작해 주세요', // (required)
-      date: setTime(data.readyTime),
-      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-      playSound: true, // (optional) default: true
-      soundName: 'alarm',
-      repeatTime: 1,
-      id: res.data,
-    });
-    PushNotification.localNotificationSchedule({
-      channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      title: '출발할 시간입니다.',
-      message: '출발하세요!!', // (required)
-      date: setTime(data.startTime), // in 60 secs
-      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-      playSound: true, // (optional) default: true
-      soundName: 'alarm',
-      repeatTime: 1,
-      id: res.data,
-    });
+    console.log('알림 데이터', res.data.data);
+    try {
+      PushNotification.localNotificationSchedule({
+        channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
+        title: '준비할 시간입니다.',
+        message: `준비를 시작해 주세요 도착지: ${data.destName} 도착예정 시간:${data.endTime}`,
+        date: setTime(data.readyTime),
+        allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+        playSound: true, // (optional) default: true
+        soundName: 'alarm',
+        repeatTime: 1,
+        id: res.data.data,
+      });
+      PushNotification.localNotificationSchedule({
+        channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
+        title: `출발할 시간입니다. 도착지: ${data.destName} 도착예정 시간:${data.endTime}`,
+        message: '출발하세요!!',
+        date: setTime(data.startTime), // in 60 secs
+        allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+        playSound: true, // (optional) default: true
+        soundName: 'alarm',
+        repeatTime: 1,
+        id: res.data.data,
+      });
+    } catch (e) {
+      console.log('[SEND_NOTIFICATION_ERROR]', e);
+    }
   };
 
   useEffect(() => {
@@ -116,10 +128,15 @@ function SelectPattern({
       };
     });
   }, [group]);
-
   const onSaveButtonPress = async () => {
     // console.log('알림 설정한 시간', data.readyTime);
-    try {
+    let currentDate = new Date();
+    if (currentDate > data.startTime) {
+      Alert.alert('오류', '지금 출발해도 지각입니다! 그냥 출발하세요!!');
+    } else if (currentDate > data.readyTime) {
+      Alert.alert('오류', '준비시간이 너무 길어요!');
+    } else {
+      //초대장으로 온 일정
       if (!isUpdate) {
         if (INVITE === 1) {
           console.log('초대장으로 인한', schedulePoolId);
@@ -194,14 +211,18 @@ function SelectPattern({
         console.log('UPDATE_SUCCESS!', data);
         navigation.push('MainTab');
       }
-    } catch (e) {
-      console.log(data);
-      console.log(`[POST_ERROR]${e} SENT${data}`);
     }
   };
 
   return (
     <>
+      <AppBar
+        title="패턴 생성"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        centerTitle={true}
+        color="#6c757d"
+        tintColor="white"
+      />
       <View>
         <Text style={styles.sectionTitle}>패턴설정</Text>
       </View>

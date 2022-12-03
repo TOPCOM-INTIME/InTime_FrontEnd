@@ -15,6 +15,7 @@ import ButtonCarTime from '../components/ButtonCarTime';
 import SwitchSelector from 'react-native-switch-selector';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BusTimeItem from '../components/BusTimeItem';
+import {AppBar, IconButton} from '@react-native-material/core';
 
 function CarShowTime({
   data,
@@ -80,6 +81,13 @@ function CarShowTime({
   }, []);
   return (
     <>
+      <AppBar
+        title="교통수단 선택"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        centerTitle={true}
+        color="#6c757d"
+        tintColor="white"
+      />
       <View style={{backgroundColor: 'white'}}>
         <SwitchSelector
           options={Switchoptions}
@@ -87,15 +95,24 @@ function CarShowTime({
           value={0}
           selectedColor={'white'}
           selectedIconColor={'white'}
-          buttonColor={'#ED3648'}
-          borderColor={'#ED3648'}
+          buttonColor={'#6c757d'}
+          borderColor={'#6c757d'}
           borderWidth={1}
           hasPadding
           onPress={value => setisCar(value)}
         />
-
-        <Text style={styles.text}>출발지: {sourceName}</Text>
-        <Text style={styles.text}>도착지: {destName}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{fontSize: 24, color: 'black'}}>
+            출발지: {sourceName}
+          </Text>
+          <Icon name={'arrow-forward'} size={24} color={'black'} />
+          <Text style={{fontSize: 24, color: 'black'}}>도착지: {destName}</Text>
+        </View>
       </View>
       <View style={{backgroundColor: 'white'}}>{PrintTime()}</View>
       <ScrollView style={{width: '100%'}}>

@@ -9,6 +9,8 @@ import SelectPattern from './SelectPattern';
 import GroupScheduleFriend from '../components/GroupScheduleFriend';
 import Invitation from '../components/Invitation';
 import ScheduleandMap from './ScheduleandMap';
+import ScheduleCurrent from '../components/ScheduleCurrent';
+
 const Stack = createNativeStackNavigator();
 function ScheduleScreen({route}) {
   // console.log(route);
@@ -38,7 +40,7 @@ function ScheduleScreen({route}) {
   const [INVITE, SETINVITE] = useState(0);
   const [schedulePoolId, setSchedulePool] = useState();
   const [friendtoken, setfriendtoken] = useState([]);
-
+  const [usernameList, setusernameList] = useState([]);
   useEffect(() => {
     if (route.params === undefined) {
       // console.log('when add', route);
@@ -99,6 +101,7 @@ function ScheduleScreen({route}) {
               isCar={isCar}
               setCarTime={setCarTime}
               CarTime={CarTime}
+              usernameList={usernameList}
             />
           )}
           options={{headerShown: false}}
@@ -146,6 +149,8 @@ function ScheduleScreen({route}) {
               setfriendList={setfriendList}
               friendtoken={friendtoken}
               setfriendtoken={setfriendtoken}
+              usernameList={usernameList}
+              setusernameList={setusernameList}
             />
           )}
         />
@@ -160,9 +165,15 @@ function ScheduleScreen({route}) {
             />
           )}
         />
+
         <Stack.Screen
           name="ScheduleandMap"
           children={({navigation}) => <ScheduleandMap />}
+        />
+
+        <Stack.Screen
+          name="ScheduleCurrent"
+          children={({navigation}) => <ScheduleCurrent />}
         />
       </Stack.Navigator>
     </>
