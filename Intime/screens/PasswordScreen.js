@@ -45,6 +45,7 @@ function PasswordScreen({navigation}) {
         title="비밀번호 변경"
         centerTitle={true}
         color="#6c757d"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
         leading={props => (
           <IconButton
             icon={props => <Icon name="chevron-left" {...props} />}

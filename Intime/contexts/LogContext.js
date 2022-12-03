@@ -9,11 +9,13 @@ export function LogContextProvider({children}) {
   const [patterns, setPatterns] = useState([]);
   const [patternGroups, setPatternGroups] = useState([]);
   const [friendInvite, setFriendInvite] = useState([]);
+  const [scheduleInvite, setScheduleInvite] = useState([]);
   const {user} = useUserContext();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(1);
         const fetchedPattern = await axios.get(
           `${API_URL}/api/readypatterns/origin`,
           {
@@ -21,6 +23,7 @@ export function LogContextProvider({children}) {
           },
         );
         setPatterns(fetchedPattern.data);
+        console.log(1);
         const fetchedGroup = await axios.get(
           `${API_URL}/api/groups-with-patterns/all`,
           {
@@ -28,6 +31,7 @@ export function LogContextProvider({children}) {
           },
         );
         setPatternGroups(fetchedGroup.data);
+        console.log(1);
         const fetchedInvitation = await axios.get(
           `${API_URL}/friends/request`,
           {
@@ -35,9 +39,17 @@ export function LogContextProvider({children}) {
           },
         );
         setFriendInvite(fetchedInvitation.data);
+        console.log(1);
+        const fetchedSchedule = await axios.get(
+          `${API_URL}/api/schedule-invitations`,
+          {
+            headers: {Authorization: user},
+          },
+        );
+        setScheduleInvite(fetchedSchedule.data);
+        console.log(1);
       } catch (err) {
         console.error('로그 컨텍스트 에러', err);
-        setPatternGroups([]);
       }
     };
     if (user) {
@@ -54,6 +66,8 @@ export function LogContextProvider({children}) {
         setPatternGroups,
         friendInvite,
         setFriendInvite,
+        scheduleInvite,
+        setScheduleInvite,
       }}
     />
   );

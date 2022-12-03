@@ -46,6 +46,7 @@ function NickNameScreen({navigation}) {
         title="닉네임 변경"
         centerTitle={true}
         color="#6c757d"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
         leading={props => (
           <IconButton
             icon={props => <Icon name="chevron-left" {...props} />}
