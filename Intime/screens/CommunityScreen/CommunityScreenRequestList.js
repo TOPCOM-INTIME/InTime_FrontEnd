@@ -76,7 +76,6 @@ function CommunityScreenRequestList() {
             {friendInvite.map(user => (
               <Box
                 key={user.id}
-                title={user.username}
                 style={{
                   width: '100%',
                   flexDirection: 'row',

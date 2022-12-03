@@ -13,13 +13,21 @@ import {
 import axios from 'axios';
 import {API_URL} from '@env';
 import {useUserContext} from '../../contexts/UserContext';
-import {AppBar, ListItem, IconButton} from '@react-native-material/core';
+import {
+  AppBar,
+  ListItem,
+  IconButton,
+  HStack,
+  Badge,
+} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useLogContext} from '../../contexts/LogContext';
 function CommunityScreen() {
   const isFocused = useIsFocused();
   const {user} = useUserContext();
   const navigation = useNavigation();
   const [userList, setUserList] = useState([]);
+  const {friendInvite} = useLogContext();
 
   const onSubmit = () => {
     navigation.push('CommunityScreenAdd');
@@ -93,11 +101,20 @@ function CommunityScreen() {
         tintColor="white"
         leading={<></>}
         trailing={props => (
-          <IconButton
-            icon={props => <Icon name="add" {...props} />}
-            color="white"
-            onPress={onSubmit}
-          />
+          <HStack>
+            <IconButton
+              icon={props => <Icon name="add" {...props} />}
+              color="white"
+              onPress={onSubmit}
+            />
+            <Badge
+              label={friendInvite.length}
+              showZero={false}
+              tintColor="white"
+              color="red"
+              style={{position: 'absolute', left: 30}}
+            />
+          </HStack>
         )}
       />
 
