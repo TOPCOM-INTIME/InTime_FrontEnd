@@ -26,9 +26,10 @@ function CarShowTime({
   isCar,
   setisCar,
   CarTime,
+  CarData,
 }) {
   const {sourceName, destName} = data;
-  // console.log('쇼타임', OdsayData);
+  console.log('쇼타임', CarData);
   // console.log('Find 버튼 누르고 받은 데이터', data);
   const [selectedItem, setselectedItem] = useState();
   const Switchoptions = [
@@ -57,17 +58,71 @@ function CarShowTime({
     showTime.min = parseInt(showTime.leftmin / 60);
   }
 
+  function setDistance(distance) {
+    return (distance / 1000).toFixed(2);
+  }
+
   function PrintTime() {
     if (!isCar) {
       setTime(CarTime);
       if (showTime.hour > 0) {
         return (
-          <Text style={styles.text}>
-            {showTime.hour}시간 {showTime.min}분 걸림
-          </Text>
+          <>
+            <View style={styles.item}>
+              <Icon name={'directions-car'} size={35} color={'black'} />
+              <Text style={styles.text}>총 거리</Text>
+              <Text style={styles.text}>
+                {setDistance(CarData.totalDistance)}km
+              </Text>
+            </View>
+            <View style={styles.item}>
+              <Icon name={'directions-car'} size={35} color={'black'} />
+              <Text style={styles.text}>총 비용</Text>
+              <Text style={styles.text}>{CarData.totalFare}원</Text>
+            </View>
+            <View style={styles.item}>
+              <Icon name={'local-taxi'} size={35} color={'black'} />
+              <Text style={styles.text}>택시 비용</Text>
+              <Text style={styles.text}>{CarData.taxiFare}원</Text>
+            </View>
+
+            <View style={styles.item}>
+              <Icon name={'timer'} size={35} color={'black'} />
+              <Text style={styles.text}>소요 시간</Text>
+              <Text style={styles.text}>
+                {showTime.hour}시간 {showTime.min}분
+              </Text>
+            </View>
+          </>
         );
       } else {
-        return <Text style={styles.text}>{showTime.min}분 걸림</Text>;
+        return (
+          <>
+            <View style={styles.item}>
+              <Icon name={'directions-car'} size={35} color={'black'} />
+              <Text style={styles.text}>총 거리</Text>
+              <Text style={styles.text}>
+                {setDistance(CarData.totalDistance)}km
+              </Text>
+            </View>
+            <View style={styles.item}>
+              <Icon name={'directions-car'} size={35} color={'black'} />
+              <Text style={styles.text}>총 비용</Text>
+              <Text style={styles.text}>{CarData.totalFare}원</Text>
+            </View>
+            <View style={styles.item}>
+              <Icon name={'local-taxi'} size={35} color={'black'} />
+              <Text style={styles.text}>택시 비용</Text>
+              <Text style={styles.text}>{CarData.taxiFare}원</Text>
+            </View>
+
+            <View style={styles.item}>
+              <Icon name={'timer'} size={35} color={'black'} />
+              <Text style={styles.text}>소요 시간</Text>
+              <Text style={styles.text}>{showTime.min}분 </Text>
+            </View>
+          </>
+        );
       }
     }
   }
@@ -95,6 +150,7 @@ function CarShowTime({
           value={0}
           selectedColor={'white'}
           selectedIconColor={'white'}
+          borderRadius={2}
           buttonColor={'#6c757d'}
           borderColor={'#6c757d'}
           borderWidth={1}
@@ -114,10 +170,11 @@ function CarShowTime({
           <Text style={{fontSize: 24, color: 'black'}}>도착지: {destName}</Text>
         </View>
       </View>
-      <View style={{backgroundColor: 'white'}}>{PrintTime()}</View>
-      <ScrollView style={{width: '100%'}}>
-        {isCar &&
-          OdsayData.map(item => (
+
+      <View style={{flex: 1, backgroundColor: 'white'}}>{PrintTime()}</View>
+      {isCar && (
+        <ScrollView>
+          {OdsayData.map(item => (
             <View key={OdsayData.indexOf(item)} style={styles.container}>
               <TouchableOpacity onPress={() => selectItem(item)}>
                 <BusTimeItem
@@ -132,8 +189,10 @@ function CarShowTime({
               </TouchableOpacity>
             </View>
           ))}
-      </ScrollView>
-      <View style={styles.buttons}>
+        </ScrollView>
+      )}
+
+      <View>
         <ButtonCarTime
           data={data}
           setData={setData}
@@ -187,6 +246,27 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row-reverse',
     margin: 15,
+  },
+  item: {
+    marginTop: 30,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: 'white',
+    height: 90,
+    borderRadius: 15,
+    flexDirection: 'row',
+    borderColor: '#6c757d',
+    borderWidth: 2,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  rightitem: {
+    flex: 1,
+    backgroundColor: 'blue',
+  },
+  leftitem: {
+    flex: 1,
+    backgroundColor: 'red',
   },
 });
 
