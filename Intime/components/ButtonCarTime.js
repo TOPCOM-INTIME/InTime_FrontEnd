@@ -3,7 +3,15 @@ import {StyleSheet, View, Alert, Text, TouchableOpacity} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
 
-function ButtonCarTime({data, setData, busTime, setBus, isCar, CarTime}) {
+function ButtonCarTime({
+  data,
+  setData,
+  busTime,
+  setBus,
+  isCar,
+  CarTime,
+  WalkData,
+}) {
   const navigation = useNavigation();
   const primaryTitle = '확인';
   const secondaryTitle = '취소';
@@ -16,12 +24,13 @@ function ButtonCarTime({data, setData, busTime, setBus, isCar, CarTime}) {
   };
 
   const onPrimaryButtonPress = () => {
-    if (isCar) {
+    console.log(isCar);
+    if (isCar === 0) {
       // setData('startTime')(setTime(data.startTime));
       console.log('차', CarTime);
       setData('time')(CarTime);
       navigation.pop();
-    } else {
+    } else if (isCar === 1) {
       if (busTime === 0) {
         Alert.alert('오류', '대중교통을 선택해주세요');
       } else {
@@ -30,6 +39,10 @@ function ButtonCarTime({data, setData, busTime, setBus, isCar, CarTime}) {
         // setData('startTime')(setTime(busTime));
         navigation.pop();
       }
+    } else if (isCar === 2) {
+      console.log('도보', WalkData.totalTime);
+      setData('time')(WalkData.totalTime);
+      navigation.pop();
     }
   };
   const onSecondaryButtonPress = () => {

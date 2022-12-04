@@ -27,25 +27,37 @@ function CarShowTime({
   setisCar,
   CarTime,
   CarData,
+  WalkData,
 }) {
   const {sourceName, destName} = data;
-  console.log('쇼타임', CarData);
+  // console.log('쇼타임', WalkData);
   // console.log('Find 버튼 누르고 받은 데이터', data);
   const [selectedItem, setselectedItem] = useState();
   const Switchoptions = [
     {
-      value: false,
+      value: 0,
       label: '차',
       customIcon: <Icon name={'directions-car'} size={30} color={'black'} />,
     },
     {
-      value: true,
+      value: 1,
       label: '대중 교통',
       customIcon: <Icon name={'directions-bus'} size={30} color={'black'} />,
+    },
+    {
+      value: 2,
+      label: '도보',
+      customIcon: <Icon name={'directions-walk'} size={30} color={'black'} />,
     },
   ];
 
   const showTime = {
+    hour: 0,
+    leftmin: 0,
+    minute: 0,
+  };
+
+  const walkTime = {
     hour: 0,
     leftmin: 0,
     minute: 0,
@@ -58,12 +70,19 @@ function CarShowTime({
     showTime.min = parseInt(showTime.leftmin / 60);
   }
 
+  function setwalkTime(date) {
+    let totalTime = date;
+    walkTime.hour = parseInt(totalTime / 3600);
+    walkTime.leftmin = totalTime % 3600;
+    walkTime.min = parseInt(walkTime.leftmin / 60);
+  }
+
   function setDistance(distance) {
     return (distance / 1000).toFixed(2);
   }
 
   function PrintTime() {
-    if (!isCar) {
+    if (isCar === 0) {
       setTime(CarTime);
       if (showTime.hour > 0) {
         return (
@@ -76,7 +95,7 @@ function CarShowTime({
               </Text>
             </View>
             <View style={styles.item}>
-              <Icon name={'directions-car'} size={35} color={'black'} />
+              <Icon name={'attach-money'} size={35} color={'black'} />
               <Text style={styles.text}>총 비용</Text>
               <Text style={styles.text}>{CarData.totalFare}원</Text>
             </View>
@@ -106,7 +125,7 @@ function CarShowTime({
               </Text>
             </View>
             <View style={styles.item}>
-              <Icon name={'directions-car'} size={35} color={'black'} />
+              <Icon name={'attach-money'} size={35} color={'black'} />
               <Text style={styles.text}>총 비용</Text>
               <Text style={styles.text}>{CarData.totalFare}원</Text>
             </View>
@@ -125,6 +144,92 @@ function CarShowTime({
         );
       }
     }
+    if (isCar === 1) {
+      return (
+        <>
+          <View
+            style={{
+              alignItems: 'center',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+            }}>
+            <Text style={{color: 'black'}}> 대중 교통이 없습니다</Text>
+          </View>
+        </>
+      );
+    }
+    if (isCar === 2) {
+      setwalkTime(WalkData.totalTime);
+      console.log(WalkData.totalTime);
+      if (walkTime.hour > 0) {
+        return (
+          <View style={{justifyContent: 'center'}}>
+            <View style={styles.item}>
+              <Icon name={'directions-walk'} size={35} color={'black'} />
+              <Text style={styles.text}>총 거리</Text>
+              <Text style={styles.text}>
+                {setDistance(WalkData.totalDistance)}km
+              </Text>
+            </View>
+            <View style={styles.item}>
+              <Icon name={'timer'} size={35} color={'black'} />
+              <Text style={styles.text}>소요 시간</Text>
+              <Text style={styles.text}>
+                {walkTime.hour}시간 {walkTime.min}분
+              </Text>
+            </View>
+          </View>
+        );
+      } else {
+        return (
+          <>
+            <View style={{justifyContent: 'center'}}>
+              <View style={styles.item}>
+                <Icon name={'directions-car'} size={35} color={'black'} />
+                <Text style={styles.text}>총 거리</Text>
+                <Text style={styles.text}>
+                  {setDistance(WalkData.totalDistance)}km
+                </Text>
+              </View>
+              <View style={styles.item}>
+                <Icon name={'timer'} size={35} color={'black'} />
+                <Text style={styles.text}>소요 시간</Text>
+                <Text style={styles.text}>{walkTime.min}분 </Text>
+              </View>
+            </View>
+          </>
+        );
+      }
+    }
+  }
+
+  function PrintBusTime() {
+    if (isCar === 1) {
+      if (OdsayData.length === 0) {
+        console.log('비었음');
+      } else {
+        return (
+          <ScrollView>
+            {OdsayData.map(item => (
+              <View key={OdsayData.indexOf(item)} style={styles.container}>
+                <TouchableOpacity onPress={() => selectItem(item)}>
+                  <BusTimeItem
+                    key={OdsayData.indexOf(item)}
+                    id={OdsayData.indexOf(item)}
+                    Busdata={item}
+                    busTime={busTime}
+                    setBus={setBus}
+                    data={data}
+                    selectedItem={selectedItem}
+                  />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
+        );
+      }
+    }
   }
 
   const selectItem = async item => {
@@ -132,7 +237,7 @@ function CarShowTime({
     setBus(item.info.totalTime * 60);
   };
   useEffect(() => {
-    setisCar(false);
+    setisCar(0);
   }, []);
   return (
     <>
@@ -172,34 +277,16 @@ function CarShowTime({
       </View>
 
       <View style={{flex: 1, backgroundColor: 'white'}}>{PrintTime()}</View>
-      {isCar && (
-        <ScrollView>
-          {OdsayData.map(item => (
-            <View key={OdsayData.indexOf(item)} style={styles.container}>
-              <TouchableOpacity onPress={() => selectItem(item)}>
-                <BusTimeItem
-                  key={OdsayData.indexOf(item)}
-                  id={OdsayData.indexOf(item)}
-                  Busdata={item}
-                  busTime={busTime}
-                  setBus={setBus}
-                  data={data}
-                  selectedItem={selectedItem}
-                />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </ScrollView>
-      )}
-
+      {PrintBusTime()}
       <View>
         <ButtonCarTime
           data={data}
           setData={setData}
           busTime={busTime}
           setBus={setBus}
-          isCar={!isCar}
+          isCar={isCar}
           CarTime={CarTime}
+          WalkData={WalkData}
         />
       </View>
     </>

@@ -35,6 +35,8 @@ function Placeinput({
   usernameList,
   setCarData,
   CarData,
+  WalkData,
+  setWalkData,
 }) {
   const {user, setUser} = useUserContext();
   const [loading, setLoading] = useState(false);
@@ -57,6 +59,8 @@ function Placeinput({
       usernameList={usernameList}
       CarData={CarData}
       setCarData={setCarData}
+      WalkData={WalkData}
+      setWalkData={setWalkData}
     />
   );
 }

@@ -14,6 +14,8 @@ function FindButton({
   setBus,
   setCarData,
   CarData,
+  WalkData,
+  setWalkData,
 }) {
   const navigation = useNavigation();
   const primaryTitle = '찾기';
@@ -140,6 +142,46 @@ function FindButton({
       // setData('time')(totalTime);
     } catch (e) {}
 
+    const optionsWalk = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        appKey: 'l7xx846db5f3bc1e48d29b7275a745d501c8',
+      },
+      body: JSON.stringify({
+        startX: startData.startX,
+        startY: startData.startY,
+        speed: 5,
+        endX: endData.endX,
+        endY: endData.endY,
+        reqCoordType: 'WGS84GEO',
+        startName: `${startKey}`,
+        endName: `${endKey}`,
+        searchOption: '0',
+        resCoordType: 'WGS84GEO',
+        sort: 'index',
+      }),
+    };
+
+    try {
+      const response4 = await fetch(
+        'https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&callback=function',
+        optionsWalk,
+      );
+      const data4 = await response4.json();
+      // console.log('걷는 정보', data4.features[0]['properties']);
+      setWalkData(WalkData => {
+        return {
+          ...WalkData,
+          totalTime: data4.features[0]['properties'].totalTime,
+          totalDistance: data4.features[0]['properties'].totalDistance,
+        };
+      });
+    } catch (e) {
+      console.log('[ERROR] Walk api!', e);
+    }
+
     const odsayData = {
       ex: endData.endX,
       ey: endData.endY,
@@ -169,7 +211,9 @@ function FindButton({
       } else if (isFindError) {
         PlaceAlert();
       } else if (e === 4) {
-        OdSayAlert();
+        // OdSayAlert();
+        setOdsayData([]);
+        navigation.push('CarScreen', BusData);
       }
     }
   };
