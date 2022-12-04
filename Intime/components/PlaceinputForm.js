@@ -40,6 +40,8 @@ function PlaceinputForm({
   usernameList,
   CarData,
   setCarData,
+  WalkData,
+  setWalkData,
 }) {
   const navigation = useNavigation();
   const name = useRef();
@@ -59,12 +61,13 @@ function PlaceinputForm({
   };
   // console.log('친구리스트', INVITE);
   // console.log('데이터', data.time);
+
   // 개인이나 단체를 정하는 토글
   const options = [
     {label: '개인', value: false},
     {label: '단체', value: true},
   ];
-  //토글 값 변경
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
@@ -253,6 +256,8 @@ function PlaceinputForm({
             setCarTime={setCarTime}
             setCarData={setCarData}
             CarData={CarData}
+            setWalkData={setWalkData}
+            WalkData={WalkData}
           />
           {checkGroup && (
             <VStack spacing={10} mt={15} mh={'5%'}>

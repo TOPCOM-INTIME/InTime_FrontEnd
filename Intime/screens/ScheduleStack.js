@@ -32,6 +32,11 @@ function ScheduleScreen({route}) {
     taxiFare: 0,
   });
 
+  const [WalkData, setWalkData] = useState({
+    totalDistance: 0,
+    totalTime: 0,
+  });
+
   const [busTime, setBus] = useState(0);
   const [CarTime, setCarTime] = useState(0);
   const [isCar, setisCar] = useState(false);
@@ -115,6 +120,8 @@ function ScheduleScreen({route}) {
               usernameList={usernameList}
               CarData={CarData}
               setCarData={setCarData}
+              WalkData={WalkData}
+              setWalkData={setWalkData}
             />
           )}
           options={{headerShown: false}}
@@ -151,6 +158,7 @@ function ScheduleScreen({route}) {
               setisCar={setisCar}
               CarTime={CarTime}
               CarData={CarData}
+              WalkData={WalkData}
             />
           )}
           options={{headerShown: false}}
