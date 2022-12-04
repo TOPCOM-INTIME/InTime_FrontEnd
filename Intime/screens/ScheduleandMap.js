@@ -347,7 +347,7 @@ const ScheduleandMap = route => {
                             <ScrollView horizontal={true}>
                                 {userlist.map(user => (
                                     <View key={user.id}>
-                                        <View>
+                                        <View style={{ borderWidth: 2.5, borderColor: 'gray', borderRadius: 5, marginRight: 10 }}>
                                             <TouchableOpacity
                                                 onPress={() => pressuserlog(user)}>
                                                 <Text style={styles.textlist}>{user.email}</Text>
@@ -366,8 +366,8 @@ const ScheduleandMap = route => {
             </View>
             <View>
                 {/* 아래 버튼은 자동화 구현 후 삭제 예정
-                <Button title="backgroundHandler" onPress={backgroundHandler}></Button> */}
-                <Button title="stopHandler" onPress={stopHandler}></Button>
+                // <Button title="backgroundHandler" onPress={backgroundHandler}></Button> */}
+                {/* // <Button title="stopHandler" onPress={stopHandler}></Button> */}
             </View>
             <View style={{ flex: 9 }}>
                 <View style={{ flex: 1, padding: 10 }}>
@@ -419,7 +419,7 @@ const ScheduleandMap = route => {
 const styles = StyleSheet.create({
     userlistwrapper: {
         borderRadius: 10,
-        borderColor: 'pink',
+        borderColor: 'darkgray',
         borderWidth: 3,
         justifyContent: 'flex-start',
         flexDirection: 'row',
