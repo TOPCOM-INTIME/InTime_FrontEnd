@@ -47,7 +47,8 @@ function ScheduleForm() {
 
   const deleteNotification = ID => {
     try {
-      PushNotification.cancelLocalNotification(ID);
+      PushNotification.cancelLocalNotification(ID * 2);
+      PushNotification.cancelLocalNotification(ID * 2 + 1);
       console.log(`Notification deleted${ID}`);
     } catch (e) {
       console.log('[ERROR_NOTIFICATION]', e);

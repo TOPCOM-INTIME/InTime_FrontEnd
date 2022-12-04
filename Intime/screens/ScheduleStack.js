@@ -26,6 +26,12 @@ function ScheduleScreen({route}) {
     status: 'PRE',
   });
 
+  const [CarData, setCarData] = useState({
+    totalFare: 0,
+    totalDistance: 0,
+    taxiFare: 0,
+  });
+
   const [busTime, setBus] = useState(0);
   const [CarTime, setCarTime] = useState(0);
   const [isCar, setisCar] = useState(false);
@@ -80,6 +86,11 @@ function ScheduleScreen({route}) {
   const createChangeTextHandler = name => value => {
     setData({...data, [name]: value});
   };
+
+  const createCarDatas = name => value => {
+    setCarData({...CarData, [name]: value});
+  };
+
   return (
     <>
       <Stack.Navigator>
@@ -102,6 +113,8 @@ function ScheduleScreen({route}) {
               setCarTime={setCarTime}
               CarTime={CarTime}
               usernameList={usernameList}
+              CarData={CarData}
+              setCarData={setCarData}
             />
           )}
           options={{headerShown: false}}
@@ -137,6 +150,7 @@ function ScheduleScreen({route}) {
               isCar={isCar}
               setisCar={setisCar}
               CarTime={CarTime}
+              CarData={CarData}
             />
           )}
           options={{headerShown: false}}

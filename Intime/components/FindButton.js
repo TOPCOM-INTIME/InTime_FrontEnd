@@ -6,7 +6,15 @@ import ScheduleCustomButton from './ScheduleCustomButton';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
 
-function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
+function FindButton({
+  data,
+  setData,
+  setOdsayData,
+  setCarTime,
+  setBus,
+  setCarData,
+  CarData,
+}) {
   const navigation = useNavigation();
   const primaryTitle = '찾기';
   const secondaryTitle = '취소';
@@ -115,6 +123,15 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
         optionsTime,
       );
       const data3 = await response3.json();
+      setCarData(CarData => {
+        return {
+          ...CarData,
+          taxiFare: data3.features[0]['properties'].taxiFare,
+          totalDistance: data3.features[0]['properties'].totalDistance,
+          totalFare: data3.features[0]['properties'].totalFare,
+        };
+      });
+      console.log(data3.features[0]['properties']);
       let totalTime = data3.features[0]['properties'].totalTime;
       // console.log('계산된 시간', totalTime, '설정된 시간', data.time);
       let tmpTime = new Date(data.endTime);
@@ -132,7 +149,7 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
     try {
       // console.log('설정된 도착시간:', data.endTime);
       // console.log('현재 시간:', currentDate);
-      console.log(odsayData);
+      // console.log(odsayData);
       if (data.endTime < currentDate) {
         throw 3;
       }

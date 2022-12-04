@@ -38,6 +38,8 @@ function PlaceinputForm({
   setCarTime,
   CarTime,
   usernameList,
+  CarData,
+  setCarData,
 }) {
   const navigation = useNavigation();
   const name = useRef();
@@ -55,7 +57,7 @@ function PlaceinputForm({
     setTime.setSeconds(0);
     return setTime;
   };
-  console.log('친구리스트', INVITE);
+  // console.log('친구리스트', INVITE);
   // console.log('데이터', data.time);
   // 개인이나 단체를 정하는 토글
   const options = [
@@ -158,6 +160,7 @@ function PlaceinputForm({
         selectedColor={'white'}
         buttonColor={'#6c757d'}
         borderColor={'#6c757d'}
+        borderRadius={2}
         borderWidth={1}
         value={INVITE}
         hasPadding
@@ -248,6 +251,8 @@ function PlaceinputForm({
             OdsayData={OdsayData}
             setOdsayData={setOdsayData}
             setCarTime={setCarTime}
+            setCarData={setCarData}
+            CarData={CarData}
           />
           {checkGroup && (
             <VStack spacing={10} mt={15} mh={'5%'}>

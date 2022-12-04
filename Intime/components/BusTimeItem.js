@@ -82,7 +82,13 @@ const BusTimeItem = props => {
         <View style={styles.beforeShow} backgroundColor={selectedColor}>
           {printTime(totalTime)}
           <TouchableOpacity onPress={OnButtonPress}>
-            <View style={styles.button}>{printButton()}</View>
+            <View style={styles.button}>
+              <Text
+                style={{color: isSelected ? 'white' : 'black', fontSize: 14}}>
+                상세 정보
+              </Text>
+              {printButton()}
+            </View>
           </TouchableOpacity>
         </View>
         {show && <BusSubpath data={subPath} />}
@@ -129,6 +135,8 @@ const styles = StyleSheet.create({
   button: {
     marginRight: 10,
     justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 export default BusTimeItem;

@@ -33,6 +33,8 @@ function Placeinput({
   setCarTime,
   CarTime,
   usernameList,
+  setCarData,
+  CarData,
 }) {
   const {user, setUser} = useUserContext();
   const [loading, setLoading] = useState(false);
@@ -53,6 +55,8 @@ function Placeinput({
       CarTime={CarTime}
       setCarTime={setCarTime}
       usernameList={usernameList}
+      CarData={CarData}
+      setCarData={setCarData}
     />
   );
 }
