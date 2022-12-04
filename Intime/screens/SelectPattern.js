@@ -101,7 +101,7 @@ function SelectPattern({
         playSound: true, // (optional) default: true
         soundName: 'alarm',
         repeatTime: 1,
-        id: res.data.data,
+        id: res.data.data + 1,
       });
       PushNotification.localNotificationSchedule({
         channelId: '1', // (required) channelId, if the channel doesn't exist, notification will not trigger.
