@@ -32,8 +32,10 @@ function WriteHeader({
       Alert.alert('실패', '이름을 입력해 주세요.');
       return;
     }
-    if (minute === '') minute = 0;
-    if (second === '') second = 0;
+    if (minute === 0 && second === 0) {
+      Alert.alert('실패', '시간을 입력해 주세요');
+      return;
+    }
     if (!isEditing) {
       const res = await axios.post(
         `${API_URL}/api/readypattern/`,

@@ -76,14 +76,14 @@ function InvitationScreen() {
                   color="#6c757d"
                   onPress={() => OnPrimaryPress(item)}
                 />
-                <Button
+                {/* <Button
                   // style={{marginRight: 15}}
                   title="거절"
                   color="#6c757d"
                   onPress={() => {
                     Alert.alert('실패', '거절은 안 됩니다.');
                   }}
-                />
+                /> */}
               </HStack>
             </Box>
           ))}

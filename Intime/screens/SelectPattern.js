@@ -19,7 +19,7 @@ import {useUserContext} from '../contexts/UserContext';
 import Patterns from '../components/Patterns';
 import PatternGroups from '../components/PatternGroups';
 import PushNotification from 'react-native-push-notification';
-import {AppBar, IconButton} from '@react-native-material/core';
+import {AppBar, Divider, IconButton} from '@react-native-material/core';
 import {API_URL} from '@env';
 
 // api​/schedule={id}​/update/
@@ -121,6 +121,7 @@ function SelectPattern({
 
   useEffect(() => {
     setDatas(data => {
+      console.log('ㅋㅋ', data);
       return {
         ...data,
         readyPatterns_Ids: group.map(item => item.id),
@@ -243,6 +244,12 @@ function SelectPattern({
             setGroup={setGroup}
             isCreatingGroup={2}
           />
+          <Divider
+            color="#6c757d"
+            style={{height: 1.2}}
+            leadingInset={0}
+            trailingInset={0}
+          />
           <View style={styles.text}>
             <Text style={styles.header}>패턴 목록</Text>
           </View>
@@ -280,12 +287,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
   },
-  header: {
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+  // header: {
+  //   paddingTop: 20,
+  //   paddingHorizontal: 20,
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   fontSize: 300,
+  // },
   sectionTitle: {
     fontSize: 24,
     color: 'black',
@@ -298,6 +306,8 @@ const styles = StyleSheet.create({
     // alignItems:'center'
   },
   container: {
+    borderColor: '#6c757d',
+    borderRightWidth: 1,
     width: '50%',
     justifyContent: 'center',
     paddingHorizontal: 5,
@@ -307,7 +317,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'black',
   },
 });

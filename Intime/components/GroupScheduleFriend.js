@@ -117,6 +117,7 @@ function GroupScheduleFriend({
             key={item.username}
             onPress={() => onShortPress(item)}
             title={item.username}
+            style={{width: '100%'}}
             leading={
               friendList.includes(item.id) ? (
                 <Icon name="check-box" size={24} />
