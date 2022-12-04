@@ -1,0 +1,539 @@
+[33mcommit 91e94ded825dd7a6b5afb470953b17338c236362[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/Group_Schedule[m[33m, [m[1;31morigin/feature/Group_Schedule[m[33m)[m
+Author: jaesung4231 <jaesung4231@naver.com>
+Date:   Fri Dec 2 23:52:13 2022 +0900
+
+    오류 해결
+
+[33mcommit ebf36c1d8eab3515906cba13e1fdae1386fb18b4[m
+Merge: ff8fa39 e2aad6b
+Author: jaesung4231 <jaesung4231@naver.com>
+Date:   Fri Dec 2 23:27:20 2022 +0900
+
+    main pull
+
+[33mcommit ff8fa3953e3b7c9c9850e773c0396dc1d29e29b7[m
+Author: jaesung4231 <jaesung4231@naver.com>
+Date:   Fri Dec 2 23:24:03 2022 +0900
+
+    그룹일정 로직변경
+
+[33mcommit e2aad6bf6fd84dc301ebce9a215a7d02a931d9e3[m
+Merge: 7307f29 0ea1c24
+Author: KKanghh <84486674+KKanghh@users.noreply.github.com>
+Date:   Fri Dec 2 22:09:00 2022 +0900
+
+    Merge pull request #56 from TOPCOM-INTIME/feature/CommunityscreenUI
+    
+    CommunityUI
+
+[33mcommit 0ea1c245c0062caf8fe8123f3b88c8b2fae46e91[m[33m ([m[1;31morigin/feature/CommunityscreenUI[m[33m)[m
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Fri Dec 2 22:08:18 2022 +0900
+
+    CommunityUI
+
+[33mcommit 7307f29224300b19907c7d4fbcf6d8e39867a6e4[m
+Merge: 34fb2cc dc5cb40
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Fri Dec 2 21:57:20 2022 +0900
+
+    Merge pull request #55 from TOPCOM-INTIME/feature/newmap
+    
+    .
+
+[33mcommit dc5cb4071c9e5d7cfe72b6bc5743c29f1f94813c[m[33m ([m[1;31morigin/feature/newmap[m[33m)[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Dec 2 21:56:46 2022 +0900
+
+    .
+
+[33mcommit 34fb2cc9443cb1f504c4b293a7ab17dd8febfce7[m
+Merge: 6d4fa22 467f21a
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Fri Dec 2 21:54:10 2022 +0900
+
+    Merge pull request #54 from TOPCOM-INTIME/feature/newmap
+    
+    Feature/newmap
+
+[33mcommit 467f21ad832b22eaec3209c4fe38cbda2389ec56[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Dec 2 21:53:24 2022 +0900
+
+    push
+
+[33mcommit c774f7a3f409683a70b7b58400d247de1a55a440[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Dec 2 20:55:26 2022 +0900
+
+    background end state complete
+
+[33mcommit 533f4a181d81c0f1bbbdde44e9be2c63239993c7[m
+Merge: 1e2a720 6d4fa22
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Dec 2 15:00:29 2022 +0900
+
+    Merge branch 'main' of https://github.com/TOPCOM-INTIME/InTime_FrontEnd into feature/newmap
+
+[33mcommit 1e2a720849f6fb6ed44893227645a05c67cc0a00[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Dec 2 14:56:26 2022 +0900
+
+    moblie test success, log need
+
+[33mcommit 18dce14eae97e53bab72a26c218c6181d6176943[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Dec 2 14:24:40 2022 +0900
+
+    Background location get and api post success, mobile phone test need
+
+[33mcommit 6d4fa22bda17c46023c8cfdf8c3fe6b66817968f[m
+Merge: 18778db 5f42274
+Author: KKanghh <84486674+KKanghh@users.noreply.github.com>
+Date:   Fri Dec 2 03:26:32 2022 +0900
+
+    Merge pull request #53 from TOPCOM-INTIME/feature/SignUpWithUsername
+    
+    SignUP&Passwordchange&UI
+
+[33mcommit 5f4227464aee25a4276abe71c7b30a003df14a5d[m[33m ([m[1;31morigin/feature/SignUpWithUsername[m[33m)[m
+Merge: 3d356fb 18778db
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Fri Dec 2 03:26:01 2022 +0900
+
+    conflict
+
+[33mcommit 3d356fb3ead63f7102b76700e07fdc2f29cc82d3[m
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Fri Dec 2 03:18:27 2022 +0900
+
+    SignUP&Passwordchange&UI
+
+[33mcommit f5cc12484e44b1aeac80b387032c6801a0c52f3e[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Dec 2 00:57:31 2022 +0900
+
+    .
+
+[33mcommit 84940bdbd0a38eb1d1649caa423b116008adc119[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Thu Dec 1 19:52:45 2022 +0900
+
+    map refactoring
+
+[33mcommit e498c3abfb429d5bbcc72c6923580d025df1c58c[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Thu Dec 1 19:45:43 2022 +0900
+
+    MAPgit add .git add .git add .git add .git add .git add .
+
+[33mcommit 8cada84706a3960ba3102cf47f2952ca69c84f0a[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Thu Dec 1 19:20:18 2022 +0900
+
+    make Scheduleandmap
+
+[33mcommit 18778dbac138d0448e0a56cfc56ebddc67112acd[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Thu Dec 1 19:05:54 2022 +0900
+
+    search text color black
+
+[33mcommit 978b0a1351f24135ce617ad8ea031bee6e04f9a9[m
+Author: jaesung4231 <jaesung4231@naver.com>
+Date:   Thu Dec 1 05:27:49 2022 +0900
+
+    feat(그룹일정 생성, 수락)
+
+[33mcommit 2c13ca5fe572429b7bd8290e64f131e64d306d10[m
+Merge: 9304878 c8bbb24
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Thu Dec 1 02:21:58 2022 +0900
+
+    Merge pull request #52 from TOPCOM-INTIME/feature/community
+    
+    Feature/community
+
+[33mcommit c8bbb246dc25581babe0425b860bab6c8a3e1dc0[m[33m ([m[1;31morigin/feature/community[m[33m)[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Thu Dec 1 02:21:20 2022 +0900
+
+    friend add, delete, list Finish
+
+[33mcommit 3a14c3a896a9a3e834c6096d43187f23098ad665[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Thu Dec 1 02:20:10 2022 +0900
+
+    use isFocused to refresh friend list
+
+[33mcommit 9304878356ce5e1ad9df064a03828b75661e7637[m
+Merge: 5e7198c 9bfb5a6
+Author: KKanghh <84486674+KKanghh@users.noreply.github.com>
+Date:   Thu Dec 1 00:28:17 2022 +0900
+
+    Merge pull request #51 from TOPCOM-INTIME/feature/fcm
+    
+    Feature/fcm
+
+[33mcommit 5e7198c24644c2116d88e785eeaf271de02713bd[m
+Merge: 2696622 9e5e172
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Thu Dec 1 00:26:18 2022 +0900
+
+    Merge pull request #50 from TOPCOM-INTIME/revert-46-revert-43-feature/fcm
+    
+    Revert "Revert "Linking & PatternUI""
+
+[33mcommit 9e5e17210a7107c08b9c80c00ee5425f790cf52a[m[33m ([m[1;31morigin/revert-46-revert-43-feature/fcm[m[33m)[m
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Thu Dec 1 00:25:06 2022 +0900
+
+    Revert "Revert "Linking & PatternUI""
+
+[33mcommit 9bfb5a6acc1a5fb8b8e5dcabc3d249f89c7c89ab[m[33m ([m[1;31morigin/feature/fcm[m[33m)[m
+Merge: 205fe0a 4619a20
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Wed Nov 30 23:53:42 2022 +0900
+
+    Merge branch 'feature/fcm' of https://github.com/TOPCOM-INTIME/InTime_FrontEnd into feature/fcm
+
+[33mcommit 205fe0ada1f0c3e66d7748ff7e57ecb40fb10fb9[m
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Wed Nov 30 23:40:29 2022 +0900
+
+    Fix PatternScreen
+
+[33mcommit 26966229d4a5d11b70cf3250c513e540cf160c91[m
+Merge: 4fc583d 98ffb8c
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Wed Nov 30 23:00:42 2022 +0900
+
+    Merge pull request #47 from TOPCOM-INTIME/feature/community
+    
+    Feature/community
+
+[33mcommit 98ffb8cdf735e8f652d5bcd2faa1e8e9c8e9ae86[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Wed Nov 30 22:59:48 2022 +0900
+
+    friendlist and friendrequestlist refresh success
+
+[33mcommit ba5eddfd98c00ea9fce4959af4579284efc7be75[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Wed Nov 30 22:10:35 2022 +0900
+
+    Remove component CommunityScreenList, move function to index.js
+
+[33mcommit 4fc583dd8e4580c178fd7cf9e3fd699e75ad4fd0[m
+Merge: 06a14c2 d4677c0
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Wed Nov 30 21:53:16 2022 +0900
+
+    Merge pull request #46 from TOPCOM-INTIME/revert-43-feature/fcm
+    
+    Revert "Linking & PatternUI"
+
+[33mcommit d4677c0b73eb69c3f5fad1c6be88ce0d219d78b9[m[33m ([m[1;31morigin/revert-43-feature/fcm[m[33m)[m
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Wed Nov 30 21:53:01 2022 +0900
+
+    Revert "Linking & PatternUI"
+
+[33mcommit 06a14c2256565b94eae0dd5404953947ecbe543c[m
+Merge: d89c4e6 69b4581
+Author: jaesung4231 <102843446+jaesung4231@users.noreply.github.com>
+Date:   Wed Nov 30 21:51:58 2022 +0900
+
+    Merge pull request #45 from TOPCOM-INTIME/feature/Group_Schedule
+    
+    그룹일정 만드는 중
+
+[33mcommit 69b45816008d9a11ce117f551a48de20365b478f[m
+Author: jaesung4231 <jaesung4231@naver.com>
+Date:   Wed Nov 30 21:50:39 2022 +0900
+
+    그룹일정 만드는 중
+
+[33mcommit d89c4e6d5d13187086294438cb3283cbc9c73b09[m
+Merge: b09d503 4619a20
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Wed Nov 30 21:47:04 2022 +0900
+
+    Merge pull request #43 from TOPCOM-INTIME/feature/fcm
+    
+    Linking & PatternUI
+
+[33mcommit 4619a20f52bbfaf34451828345ae41989ce17826[m
+Merge: 0baec20 b09d503
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Wed Nov 30 21:46:49 2022 +0900
+
+    Merge branch 'main' into feature/fcm
+
+[33mcommit b09d503aede6c0f373091bedab5e0ccbaa6e341a[m
+Merge: b083663 cf1c0a8
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Wed Nov 30 21:14:51 2022 +0900
+
+    Merge pull request #44 from TOPCOM-INTIME/feature/community
+    
+    Feature/community
+
+[33mcommit cf1c0a8051844b47261ea03a272bb7f949f0add5[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Wed Nov 30 16:10:31 2022 +0900
+
+    move requestdel to upper component and use filter to solve refresh problem
+
+[33mcommit 40445bec4bba69ede8d51a567e8291211f4c3ede[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Wed Nov 30 15:47:46 2022 +0900
+
+    refresh....
+
+[33mcommit a80c62f377d671ef3d8ac4e77145488059329ccd[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Wed Nov 30 15:23:37 2022 +0900
+
+    Init api call Fin, update needed
+
+[33mcommit f9e7d645ca5c0122905e112edceea4bf10ca7184[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Wed Nov 30 15:03:47 2022 +0900
+
+    Delete friends with longpress, refresh button add
+
+[33mcommit 449e64218f2bd9fb1d7f6b0dfa1e516194e13e97[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Wed Nov 30 13:49:44 2022 +0900
+
+    .
+
+[33mcommit 5650e0123b5fecfe58e898620e2d6d1e21377e0f[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Wed Nov 30 01:37:55 2022 +0900
+
+    delete complete
+
+[33mcommit 0baec20bc6c43979242783003a34f6cba1596652[m
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Tue Nov 29 22:53:08 2022 +0900
+
+    Linking & PatternUI
+
+[33mcommit 1315de49410cb5679d0ae877656f746ebd2241de[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Tue Nov 29 21:15:50 2022 +0900
+
+    API connect Fin, error parsing and refresh need
+
+[33mcommit 00ab4dda6a9038c0f7a9148256fa43b8d786e0c1[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Tue Nov 29 17:04:25 2022 +0900
+
+    .
+
+[33mcommit b12865bac74d15eac6356aa7221e92678269af08[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Tue Nov 29 15:58:32 2022 +0900
+
+    api connecting..
+
+[33mcommit 4d12b60541424b1152bd8d83c2e0ef03b4a893fb[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Mon Nov 28 18:55:16 2022 +0900
+
+    env file error
+
+[33mcommit 13c33d3eaa45f49899e41d089f318d7d707578b3[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Mon Nov 28 17:02:46 2022 +0900
+
+    api connected
+
+[33mcommit d860f47983a97b54fa9ff53fc69e3988ed16dc2a[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Mon Nov 28 15:24:02 2022 +0900
+
+    api integration...
+
+[33mcommit 372c7c05111b0c569afcffa98f867e027fcaf184[m
+Merge: 4258a34 b083663
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Mon Nov 28 14:09:24 2022 +0900
+
+    Merge branch 'main' of https://github.com/TOPCOM-INTIME/InTime_FrontEnd into feature/community
+
+[33mcommit b083663c5d844095935bb51bcb0592ef6d5d71cb[m[33m ([m[1;32mfeature/Notification[m[33m)[m
+Merge: e46dd8b 206564c
+Author: jaesung4231 <102843446+jaesung4231@users.noreply.github.com>
+Date:   Sun Nov 27 17:35:48 2022 +0900
+
+    Merge pull request #42 from TOPCOM-INTIME/feature/Notification
+    
+    Feature/notification
+
+[33mcommit e46dd8bc2952f4c616cc6ecf7ca95ac4eb216e2a[m
+Merge: 6b48f4f f07a2ee
+Author: KKanghh <84486674+KKanghh@users.noreply.github.com>
+Date:   Sun Nov 27 16:55:52 2022 +0900
+
+    Merge pull request #41 from TOPCOM-INTIME/feature/InfoPage
+    
+    InfoPage
+
+[33mcommit f07a2ee2bb41f493c1b35fdf3b76d11d2b6bfd4f[m[33m ([m[1;31morigin/feature/InfoPage[m[33m)[m
+Merge: 68c0840 6b48f4f
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Sun Nov 27 16:55:23 2022 +0900
+
+    Conflict
+
+[33mcommit 68c0840036b1de4e610bad9eacf1e5b4229eea03[m
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Sun Nov 27 16:47:57 2022 +0900
+
+    InfoPage
+
+[33mcommit 4258a34427c3b278a5b65623ccefb58f4af6409d[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Sun Nov 27 16:24:16 2022 +0900
+
+    style editing, refactoring
+
+[33mcommit 6b48f4fbc06a05b5180fd007189212706d51079e[m
+Merge: da90ac9 f20e592
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Sun Nov 27 15:44:31 2022 +0900
+
+    Merge pull request #40 from TOPCOM-INTIME/feature/community
+    
+    Feature/community
+
+[33mcommit f20e592040d1bf534b9ff04b9c059ef30d99612c[m
+Merge: 0ebffa8 da90ac9
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Sun Nov 27 15:43:31 2022 +0900
+
+    Merge branch 'main' into feature/community
+
+[33mcommit 0ebffa8fc53fbd417b6bcd0d781a99e2716954b6[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Sun Nov 27 14:18:40 2022 +0900
+
+    community list logic fin, api need
+
+[33mcommit f81bdb7fce64a6532377685e76f3df46bc36ad87[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Sun Nov 27 14:05:40 2022 +0900
+
+    button and textinput in one View
+
+[33mcommit 01780ce613b8c98b063d779b407e228bac1ea636[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Sun Nov 27 13:56:36 2022 +0900
+
+    Make RequestList Component
+
+[33mcommit 3733976ed9f04a09345f9d6971e89775327c12e3[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Sun Nov 27 13:55:26 2022 +0900
+
+    edit styles
+
+[33mcommit da90ac9763c46c00148c1f39115edffc217af6d0[m
+Merge: ab9b75d 0a70e21
+Author: KKanghh <84486674+KKanghh@users.noreply.github.com>
+Date:   Sun Nov 27 13:35:35 2022 +0900
+
+    Merge pull request #38 from TOPCOM-INTIME/feature/noDelete
+    
+    pattern in group no delete
+
+[33mcommit 2a2f49028a5eec461940a485c155479df3d0a661[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Sun Nov 27 01:18:57 2022 +0900
+
+    ScrollView, Request parsing logic added. CSS Edit & more logic needed
+
+[33mcommit 149963d40554729bd33415a0673b5fdb2a89c010[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Sun Nov 27 00:58:35 2022 +0900
+
+    button chang to touchableopacity fail
+
+[33mcommit c8e5825c0fe5294c533ac869a5e529f2daf3cea8[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Sun Nov 27 00:42:09 2022 +0900
+
+    style editing..
+
+[33mcommit 0a70e21af9a3814bb60a6a1b49ccc06a24ee06c5[m[33m ([m[1;31morigin/feature/noDelete[m[33m)[m
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Sat Nov 26 22:51:48 2022 +0900
+
+    pattern in group no delete
+
+[33mcommit ab9b75d746f53439169d8dbb33a728667658793f[m
+Merge: 7a724a8 210de29
+Author: KKanghh <84486674+KKanghh@users.noreply.github.com>
+Date:   Sat Nov 26 22:30:37 2022 +0900
+
+    Merge pull request #37 from TOPCOM-INTIME/feature/Pattern
+    
+    Edit Pattern&Group
+
+[33mcommit 206564caef91c6ebdac3d79d8ee2b398c3a8b535[m[33m ([m[1;31morigin/feature/Notification[m[33m)[m
+Author: jaesung4231 <jaesung4231@naver.com>
+Date:   Sat Nov 26 21:37:52 2022 +0900
+
+    feat(Odsay, 입력 예외 설정)
+
+[33mcommit 210de294c0b1f8d4425dc5557d2b282349b857d6[m[33m ([m[1;31morigin/feature/Pattern[m[33m)[m
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Sat Nov 26 21:21:04 2022 +0900
+
+    Edit Pattern&Group
+
+[33mcommit 7a724a87351daf4d599fb2bae8e59c112121b657[m
+Merge: c258104 48da2e7
+Author: KKanghh <84486674+KKanghh@users.noreply.github.com>
+Date:   Sat Nov 26 21:18:11 2022 +0900
+
+    Merge pull request #36 from TOPCOM-INTIME/alarm
+    
+    SUMI ALARM
+
+[33mcommit 569ac3a7d45bc44d60bc2e5c1b777821daae7209[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Nov 25 15:34:14 2022 +0900
+
+    style added
+
+[33mcommit 9734328df4a759d8780fbb39e78210573d854da9[m
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Fri Nov 25 14:58:54 2022 +0900
+
+    Community Screen logic added
+
+[33mcommit 48da2e72b66818a1b4d51dc364a2074a2694cfda[m[33m ([m[1;31morigin/alarm[m[33m)[m
+Author: kkanghh1014 <attsky2@gmail.com>
+Date:   Thu Nov 24 20:49:09 2022 +0900
+
+    SUMI ALARM
+
+[33mcommit c25810430d724b2615b65607b5d412e80f30c238[m
+Merge: 17cc9db d2617c1
+Author: SeokJu Kim <90549862+SoJuSo@users.noreply.github.com>
+Date:   Thu Nov 24 20:29:56 2022 +0900
+
+    Merge pull request #35 from TOPCOM-INTIME/feature/community
+    
+    Feature/community
+
+[33mcommit d2617c1ccae750fa271f29747f2c66ad82f92d69[m
+Merge: 1a2a1d2 17cc9db
+Author: King-Hot <asdfg7123@gmail.com>
+Date:   Thu Nov 24 20:27:18 2022 +0900
+
+    Merge branch 'main' of https://github.com/TOPCOM-INTIME/InTime_FrontEnd into feature/community
