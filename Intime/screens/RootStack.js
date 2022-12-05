@@ -20,11 +20,12 @@ import PasswordChangeScreen from './PasswordChangeScreen';
 import {useLogContext} from '../contexts/LogContext';
 import ScheduleandMap from './ScheduleandMap';
 import ScheduleCurrent from '../components/ScheduleCurrent';
+import LoadingBar from '../components/LoadingBar';
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
   const {user, setUser} = useUserContext();
-  const {setFriendInvite, setScheduleInvite} = useLogContext();
+  const {setFriendInvite, setScheduleInvite, isLoading} = useLogContext();
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -66,6 +67,7 @@ function RootStack() {
       });
     return unsubscribe;
   });
+
   return (
     <Stack.Navigator>
       {user ? (
