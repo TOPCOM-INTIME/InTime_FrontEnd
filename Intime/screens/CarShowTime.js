@@ -211,7 +211,6 @@ function CarShowTime({
   function PrintBusTime() {
     if (isCar === 1) {
       if (OdsayData.length === 0) {
-        console.log('비었음');
         console.log(OdsayData.length);
       } else {
         return (

@@ -64,11 +64,11 @@ function ScheduleScreen({route}) {
         time: route.params.time,
         sourceName: route.params.sourceName,
         destName: route.params.destName,
-        readyPatterns_Ids: route.params.readyPatterns_Ids,
-        startTime: new Date(route.params.startTime),
-        readyTime: new Date(route.params.readyTime),
+        readyPatterns_Ids: [],
+        startTime: 0,
+        readyTime: 0,
         endTime: new Date(route.params.endTime),
-        status: route.params.status,
+        status: ' ',
       });
     } else {
       SETINVITE(1);
@@ -76,7 +76,7 @@ function ScheduleScreen({route}) {
       setSchedulePool(route.params.schedulePoolId);
       setData({
         name: route.params.name,
-        time: route.params.time,
+        time: 0,
         sourceName: route.params.sourceName,
         destName: route.params.destName,
         readyPatterns_Ids: route.params.readyPatterns_Ids,

@@ -18,6 +18,7 @@ const ScheduleItem = props => {
   const {user, setUser} = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
   const [status, setStaus] = useState('PRE');
+  const [show, setshow] = useState(false);
   const toggleSwitch = () => {
     setisEnabled(previousState => !previousState);
   };
@@ -28,6 +29,9 @@ const ScheduleItem = props => {
   const startplace = props.data.sourceName;
   const ID = props.data.id;
   const endTime = new Date(props.data.endTime);
+  const startTime = new Date(props.data.startTime);
+  let isSelected = false;
+  console.log(false);
   let isGroup;
   const PUSHDATA = {
     ID: props.data.schedulePoolId,
@@ -51,7 +55,7 @@ const ScheduleItem = props => {
         <View>
           <TouchableOpacity
             onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
-            <Text style={{marginTop: 10, color: 'black'}}>위치 보기</Text>
+            <Text style={{color: 'black'}}>위치 보기</Text>
           </TouchableOpacity>
         </View>
       );
@@ -59,7 +63,7 @@ const ScheduleItem = props => {
       return (
         <>
           <TouchableOpacity onPress={() => findAlert()}>
-            <Text style={{marginTop: 10, color: 'black'}}>위치 보기</Text>
+            <Text style={{color: 'black'}}>위치 보기</Text>
           </TouchableOpacity>
         </>
       );
@@ -75,6 +79,30 @@ const ScheduleItem = props => {
       return <Text style={{color: 'black'}}>종료</Text>;
     }
   }
+
+  function printButton() {
+    if (show) {
+      return (
+        <Icon
+          name={'keyboard-arrow-down'}
+          size={24}
+          color={isSelected ? 'white' : 'black'}
+        />
+      );
+    } else {
+      return (
+        <Icon
+          name={'keyboard-arrow-right'}
+          size={24}
+          color={isSelected ? 'white' : 'black'}
+        />
+      );
+    }
+  }
+
+  const OnButtonPress = () => {
+    setshow(!show);
+  };
 
   useEffect(() => {
     const NOW = new Date();
@@ -101,40 +129,62 @@ const ScheduleItem = props => {
   return (
     <>
       <View style={styles.item}>
-        <View style={styles.itemDate}>
-          <Text style={styles.itemMonthDay}>
-            {String(date.getMonth() + 1).padStart(2, '0')}/
-            {String(date.getDate()).padStart(2, '0')}
-          </Text>
-          <Text style={styles.itemTime}>
-            {String(date.getHours()).padStart(2, '0')}:
-            {String(date.getMinutes()).padStart(2, '0')}
-          </Text>
-        </View>
-
-        <View style={styles.itemPlace}>
-          {NAME && (
-            <Text style={{fontWeight: 'bold', color: 'black'}}>{NAME}</Text>
-          )}
-
-          <Text style={styles.itemName}>
-            {startplace}
-            <Icon name={'arrow-forward'} size={10} color={'black'} />
-            {endplace}
-          </Text>
-          {isGroup && statusPrint()}
-        </View>
-        <View style={styles.itemDate}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              marginLeft: 30,
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}>
-            {print()}
+        {NAME && (
+          <View style={styles.itemName}>
+            <Text style={styles.textPlace}>{NAME}</Text>
           </View>
+        )}
+        <View style={styles.itemName}>
+          <Text style={styles.textPlace}>{startplace}</Text>
+          <Icon name={'arrow-forward'} size={10} color={'black'} />
+          <Text style={styles.textPlace}>{endplace}</Text>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View style={styles.itemDate}>
+            <Text style={styles.itemMonthDay}>
+              {String(date.getMonth() + 1).padStart(2, '0')}/
+              {String(date.getDate()).padStart(2, '0')}
+            </Text>
+            <Text style={styles.itemTime}>
+              {String(date.getHours()).padStart(2, '0')}:
+              {String(date.getMinutes()).padStart(2, '0')}
+            </Text>
+            <Text style={styles.itemMonthDay}>준비 시작</Text>
+          </View>
+          <View style={styles.itemDate}>
+            <Text style={styles.itemMonthDay}>
+              {String(startTime.getMonth() + 1).padStart(2, '0')}/
+              {String(startTime.getDate()).padStart(2, '0')}
+            </Text>
+            <Text style={styles.itemTime}>
+              {String(startTime.getHours()).padStart(2, '0')}:
+              {String(startTime.getMinutes()).padStart(2, '0')}
+            </Text>
+            <Text style={styles.itemMonthDay}>출발 시작</Text>
+          </View>
+
+          <View style={styles.itemDate}>
+            <Text style={styles.itemMonthDay}>
+              {String(endTime.getMonth() + 1).padStart(2, '0')}/
+              {String(endTime.getDate()).padStart(2, '0')}
+            </Text>
+            <Text style={styles.itemTime}>
+              {String(endTime.getHours()).padStart(2, '0')}:
+              {String(endTime.getMinutes()).padStart(2, '0')}
+            </Text>
+            <Text style={styles.itemMonthDay}>도착 예정</Text>
+          </View>
+        </View>
+        <View style={styles.itemButtom}>{print()}</View>
+
+        <View style={styles.itemButtom}>
+          <TouchableOpacity style={styles.itemDetail}>
+            <Text style={styles.itemMonthDay} onPress={OnButtonPress}>
+              자세히 보기
+            </Text>
+            {printButton()}
+          </TouchableOpacity>
+          {isGroup && statusPrint()}
         </View>
       </View>
     </>
@@ -148,20 +198,29 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingVertical: 20,
     borderRadius: 15,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     marginBottom: 15,
     borderColor: '#6c757d',
     borderWidth: 2,
+    // backgroundColor: 'red',
   },
   itemDate: {
     flex: 1,
     flexDirection: 'column',
     flewWrap: 'wrap',
+    backgroundColor: 'white',
+    alignItems: 'center',
   },
   itemMonthDay: {
-    marginLeft: 10,
     color: 'black',
+  },
+  itemDetail: {
+    flexDirection: 'row',
+    color: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   itemTime: {
     color: 'black',
@@ -175,14 +234,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     fontWeight: 'bold',
-    // backgroundColor: 'blue',
   },
   itemName: {
+    flexDirection: 'row',
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: 'black',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  itemButtom: {
+    flexDirection: 'row',
+    fontWeight: 'bold',
+    marginTop: 10,
+    color: 'black',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+  },
+  itemTitle: {
+    flexDirection: 'row',
     fontWeight: 'bold',
     marginBottom: 5,
     color: 'black',
-    // backgroundColor: 'red',
+    backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
   },
   friendBox: {
     alignItems: 'center',
@@ -193,6 +274,12 @@ const styles = StyleSheet.create({
     borderColor: '#ED3648',
     borderWidth: 1,
     borderRadius: 15,
+  },
+  textPlace: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 14,
+    flexWrap: 'wrap',
   },
   toggleSwitch: {
     marginTop: 15,
