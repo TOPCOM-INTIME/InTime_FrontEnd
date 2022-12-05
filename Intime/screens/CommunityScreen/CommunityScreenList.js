@@ -12,13 +12,16 @@ import axios from 'axios';
 import {API_URL} from '@env';
 import {useUserContext} from '../../contexts/UserContext';
 import {ListItem} from '@react-native-material/core';
+import {useLogContext} from '../../contexts/LogContext';
 
 function CommunityScreenList(props) {
   const {user} = useUserContext();
   const {userList} = props;
+  const {isLoading, setIsLoading} = useLogContext();
   console.log(userList);
 
   const requestdel = async username => {
+    setIsLoading(true);
     try {
       const res = await axios.delete(`${API_URL}/friends`, {
         data: {
@@ -32,6 +35,7 @@ function CommunityScreenList(props) {
     } catch (err) {
       console.error('err', err);
     }
+    setIsLoading(false);
   };
 
   const isDel = async username => {

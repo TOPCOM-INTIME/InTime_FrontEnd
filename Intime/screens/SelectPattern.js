@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
   TouchableOpacity,
   ScrollView,
   Alert,
@@ -19,8 +18,9 @@ import {useUserContext} from '../contexts/UserContext';
 import Patterns from '../components/Patterns';
 import PatternGroups from '../components/PatternGroups';
 import PushNotification from 'react-native-push-notification';
-import {AppBar, Divider, IconButton} from '@react-native-material/core';
+import {AppBar, Divider, Button, IconButton} from '@react-native-material/core';
 import {API_URL} from '@env';
+import LoadingBar from '../components/LoadingBar';
 
 // api​/schedule={id}​/update/
 function SelectPattern({
@@ -43,6 +43,8 @@ function SelectPattern({
     patternGroups,
     setPatternGroups,
     setScheduleInvite,
+    isLoading,
+    setIsLoading,
   } = useLogContext();
   const [group, setGroup] = useState([]);
   const {user, setUser} = useUserContext();
@@ -62,14 +64,6 @@ function SelectPattern({
     let setTime = new Date(time);
     setTime.setSeconds(0);
     return setTime;
-  };
-
-  const calTime = () => {
-    let readyTime = new Date(data.startTime);
-    let tmpTime = 0;
-    group.map(item => (tmpTime += item.time));
-    readyTime.setSeconds(readyTime.getSeconds() - tmpTime);
-    return setTime(readyTime);
   };
 
   const sendnotice = async item => {
@@ -120,6 +114,14 @@ function SelectPattern({
   };
 
   useEffect(() => {
+    const calTime = () => {
+      let readyTime = new Date(data.startTime);
+      let tmpTime = 0;
+      group.map(item => (tmpTime += item.time));
+      readyTime.setSeconds(readyTime.getSeconds() - tmpTime);
+      return setTime(readyTime);
+    };
+
     setDatas(data => {
       console.log('ㅋㅋ', data);
       return {
@@ -128,7 +130,7 @@ function SelectPattern({
         readyTime: calTime(),
       };
     });
-  }, [group]);
+  }, [group, setDatas, data.startTime]);
   const onSaveButtonPress = async () => {
     // console.log('알림 설정한 시간', data.readyTime);
     let currentDate = new Date();
@@ -138,6 +140,7 @@ function SelectPattern({
       Alert.alert('오류', '준비시간이 너무 길어요!');
     } else {
       //초대장으로 온 일정
+      setIsLoading(true);
       if (!isUpdate) {
         if (INVITE === 1) {
           console.log('초대장으로 인한', schedulePoolId);
@@ -220,6 +223,7 @@ function SelectPattern({
         navigation.push('MainTab');
       }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -231,7 +235,7 @@ function SelectPattern({
         color="#6c757d"
         tintColor="white"
       />
-
+      {isLoading && <LoadingBar />}
       <View style={styles.block}>
         <View style={styles.container}>
           <View style={styles.text}>
@@ -269,13 +273,19 @@ function SelectPattern({
       </View>
 
       <View style={styles.button}>
-        <ScheduleSubmitButton
+        <Button
           title={secondaryTitle}
+          color="#6c757d"
+          variant="text"
           onPress={onSecondaryButtonPress}
+          width="45%"
         />
-        <ScheduleSubmitButton
+        <Button
           title={primaryTitle}
+          color="#6c757d"
+          variant="text"
           onPress={onSaveButtonPress}
+          width="45%"
         />
       </View>
     </>

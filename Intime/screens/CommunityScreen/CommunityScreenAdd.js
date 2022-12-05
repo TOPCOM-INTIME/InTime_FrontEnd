@@ -23,7 +23,10 @@ import {
   Text,
   Box,
   VStack,
+  Badge,
 } from '@react-native-material/core';
+import LoadingBar from '../../components/LoadingBar';
+import {useLogContext} from '../../contexts/LogContext';
 
 function CommunityScreenAdd({setFriendInvite}) {
   const {user} = useUserContext();
@@ -32,6 +35,7 @@ function CommunityScreenAdd({setFriendInvite}) {
   const [list, setList] = useState([]);
   const [phase, setPhase] = useState('init'); // init, loading, done
   const navigation = useNavigation();
+  const {isLoading, setIsLoading, friendInvite} = useLogContext();
 
   const onSubmit = async () => {
     Keyboard.dismiss();
@@ -40,6 +44,7 @@ function CommunityScreenAdd({setFriendInvite}) {
       return;
     }
     setPhase('loading');
+    setIsLoading(true);
     console.log('onsubmit word', word);
     try {
       const res = await axios.post(
@@ -58,6 +63,7 @@ function CommunityScreenAdd({setFriendInvite}) {
     } catch (err) {
       console.err(err);
     }
+    setIsLoading(false);
     setPhase('done');
   };
 
@@ -75,6 +81,7 @@ function CommunityScreenAdd({setFriendInvite}) {
   };
 
   const onPressSend = async name => {
+    setIsLoading(true);
     try {
       const res = await axios.post(
         `${API_URL}/friends/request?username=${name}`,
@@ -104,6 +111,7 @@ function CommunityScreenAdd({setFriendInvite}) {
       Alert.alert('실패', '이미 친구이거나 친구신청을 보냈어요.');
       console.error('err', err);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -121,6 +129,7 @@ function CommunityScreenAdd({setFriendInvite}) {
           />
         )}
       />
+      {isLoading && <LoadingBar />}
       <HStack m={'2%'} spacing={'2%'} justify="center">
         <Button
           title="친구검색"
@@ -133,6 +142,16 @@ function CommunityScreenAdd({setFriendInvite}) {
           color={!isSearch ? '#6c757d' : '#E0E0E0'}
           style={{width: '48%', height: 40, justifyContent: 'center'}}
           onPress={() => setisSearch(false)}
+          leading={<></>}
+          trailing={props => (
+            <Badge
+              style={{position: 'absolute', bottom: -10}}
+              label={friendInvite.length}
+              showZero={false}
+              tintColor="white"
+              color="red"
+            />
+          )}
         />
       </HStack>
       {isSearch ? (

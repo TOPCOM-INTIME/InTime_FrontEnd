@@ -26,14 +26,16 @@ import {
 } from '@react-native-material/core';
 import {API_URL} from '@env';
 import {useLogContext} from '../contexts/LogContext';
+import LoadingBar from './LoadingBar';
 
 function ScheduleForm() {
   const {user, setUser} = useUserContext();
-  const {scheduleInvite} = useLogContext();
+  const {scheduleInvite, isLoading, setIsLoading} = useLogContext();
   const [scheduleData, setSchedule] = useState([]);
   const navigation = useNavigation();
 
   const getSchedule = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${API_URL}/api/user/schedule/all`, {
         headers: {Authorization: user},
@@ -43,6 +45,7 @@ function ScheduleForm() {
     } catch (e) {
       console.log(`[GET_SCHEDULE_ERROR]${e}`);
     }
+    setIsLoading(false);
   };
 
   const deleteNotification = ID => {
@@ -56,6 +59,7 @@ function ScheduleForm() {
   };
 
   const deleteSchedule = async ID => {
+    setIsLoading(true);
     try {
       deleteNotification(ID);
       axios
@@ -68,6 +72,7 @@ function ScheduleForm() {
     } catch (e) {
       console.log(`[DELETE_ERROR]${e}`);
     }
+    setIsLoading(false);
   };
 
   const onShortPress = item => {
@@ -120,6 +125,7 @@ function ScheduleForm() {
   if (scheduleData.length === 0) {
     return (
       <>
+        {isLoading && <LoadingBar />}
         <AppBar
           title="일정"
           titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
@@ -169,6 +175,7 @@ function ScheduleForm() {
 
   return (
     <>
+      {isLoading && <LoadingBar />}
       <AppBar
         title="일정"
         titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
