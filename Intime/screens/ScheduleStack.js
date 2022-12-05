@@ -76,7 +76,7 @@ function ScheduleScreen({route}) {
       setSchedulePool(route.params.schedulePoolId);
       setData({
         name: route.params.name,
-        time: route.params.time,
+        time: 0,
         sourceName: route.params.sourceName,
         destName: route.params.destName,
         readyPatterns_Ids: route.params.readyPatterns_Ids,

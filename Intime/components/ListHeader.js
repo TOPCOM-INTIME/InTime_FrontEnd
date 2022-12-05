@@ -7,12 +7,17 @@ import TransparentCircleButton from './TransparentCircleButton';
 import {useUserContext} from '../contexts/UserContext';
 import {useLogContext} from '../contexts/LogContext';
 import {API_URL} from '@env';
-import {AppBar, HStack, IconButton} from '@react-native-material/core';
+import {
+  ActivityIndicator,
+  AppBar,
+  HStack,
+  IconButton,
+} from '@react-native-material/core';
 
 function ListHeader({group, setGroup, isEmpty}) {
   const navigation = useNavigation();
   const {user, setUser} = useUserContext();
-  const {setPatternGroups} = useLogContext();
+  const {setPatternGroups, isLoading, setIsLoading} = useLogContext();
 
   const onAskRemove = () => {
     Alert.alert(
@@ -23,21 +28,28 @@ function ListHeader({group, setGroup, isEmpty}) {
         {
           text: '삭제',
           onPress: async () => {
-            await axios.delete(
-              `${API_URL}/api/patterngroup/groupId=${group.id}`,
-              {
-                headers: {Authorization: user},
-              },
-            );
-            const fetchedGroup = await axios.get(
-              `${API_URL}/api/groups-with-patterns/all`,
-              {
-                headers: {Authorization: user},
-              },
-            );
-            // console.log(fetchedGroup.data);
-            setPatternGroups(fetchedGroup.data);
-            setGroup(fetchedGroup.data.length > 0 ? fetchedGroup.data[0] : []);
+            try {
+              setIsLoading(true);
+              await axios.delete(
+                `${API_URL}/api/patterngroup/groupId=${group.id}`,
+                {
+                  headers: {Authorization: user},
+                },
+              );
+              const fetchedGroup = await axios.get(
+                `${API_URL}/api/groups-with-patterns/all`,
+                {
+                  headers: {Authorization: user},
+                },
+              );
+              setPatternGroups(fetchedGroup.data);
+              setGroup(
+                fetchedGroup.data.length > 0 ? fetchedGroup.data[0] : [],
+              );
+            } catch (error) {
+              console.log(error);
+            }
+            setIsLoading(false);
           },
           style: 'destructive',
         },
@@ -61,29 +73,33 @@ function ListHeader({group, setGroup, isEmpty}) {
       color="#6c757d"
       titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
       leading={<></>}
-      trailing={props => (
-        <HStack>
-          {!isEmpty && (
+      trailing={props =>
+        isLoading ? (
+          <ActivityIndicator size="large" color="white" />
+        ) : (
+          <HStack>
+            {!isEmpty && (
+              <IconButton
+                icon={props => <Icon name="edit" {...props} />}
+                color="white"
+                onPress={onEdit}
+              />
+            )}
+            {!isEmpty && (
+              <IconButton
+                icon={props => <Icon name="delete" {...props} />}
+                color="white"
+                onPress={onAskRemove}
+              />
+            )}
             <IconButton
-              icon={props => <Icon name="edit" {...props} />}
+              icon={props => <Icon name="add" {...props} />}
               color="white"
-              onPress={onEdit}
+              onPress={() => navigation.navigate('CreateGroup')}
             />
-          )}
-          {!isEmpty && (
-            <IconButton
-              icon={props => <Icon name="delete" {...props} />}
-              color="white"
-              onPress={onAskRemove}
-            />
-          )}
-          <IconButton
-            icon={props => <Icon name="add" {...props} />}
-            color="white"
-            onPress={() => navigation.navigate('CreateGroup')}
-          />
-        </HStack>
-      )}
+          </HStack>
+        )
+      }
     />
   );
 }

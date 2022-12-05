@@ -22,36 +22,41 @@ import {
 } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useLogContext} from '../../contexts/LogContext';
+import LoadingBar from '../../components/LoadingBar';
 function CommunityScreen() {
   const isFocused = useIsFocused();
   const {user} = useUserContext();
   const navigation = useNavigation();
   const [userList, setUserList] = useState([]);
-  const {friendInvite} = useLogContext();
+  const {friendInvite, isLoading, setIsLoading} = useLogContext();
 
   const onSubmit = () => {
     navigation.push('CommunityScreenAdd');
   };
 
-  const listcall = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/friends`, {
-        headers: {Authorization: user},
-      });
-      console.log('res', res.data);
-      setUserList(res.data);
-    } catch (err) {
-      Alert.alert('오류', '오류 입니다.');
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
-    if (isFocused) console.log('화면 리로드');
+    const listcall = async () => {
+      setIsLoading(true);
+      try {
+        const res = await axios.get(`${API_URL}/friends`, {
+          headers: {Authorization: user},
+        });
+        console.log('res', res.data);
+        setUserList(res.data);
+      } catch (err) {
+        Alert.alert('오류', '오류 입니다.');
+        console.error(err);
+      }
+      setIsLoading(false);
+    };
+    if (isFocused) {
+      console.log('화면 리로드');
+    }
     listcall();
-  }, [isFocused]);
+  }, [isFocused, user, setIsLoading]);
 
   const requestdel = async username => {
+    setIsLoading(true);
     try {
       const res = await axios.delete(`${API_URL}/friends`, {
         data: {
@@ -67,6 +72,7 @@ function CommunityScreen() {
     } catch (err) {
       console.error('err', err);
     }
+    setIsLoading(false);
   };
 
   const isDel = async username => {
@@ -117,7 +123,7 @@ function CommunityScreen() {
           </HStack>
         )}
       />
-
+      {isLoading && <LoadingBar />}
       {userList.length === 0 ? (
         <View style={styles.empty}>
           <Text style={styles.emptyText}>등록된 친구가 없습니다.</Text>

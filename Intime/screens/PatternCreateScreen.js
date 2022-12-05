@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 function WriteScreen({navigation, route}) {
   const log = route.params?.log;
   const {user, setUser, edited, setEdited} = useUserContext();
-  const {patterns, setPatterns} = useLogContext();
+  const {patterns, setPatterns, setIsLoading} = useLogContext();
   const [title, setTitle] = useState('');
   const [minute, setMinute] = useState(0);
   const [second, setSecond] = useState(0);
@@ -37,6 +37,7 @@ function WriteScreen({navigation, route}) {
         {
           text: '삭제',
           onPress: async () => {
+            setIsLoading(true);
             try {
               const dres = await axios.delete(
                 `${API_URL}/api/readypattern/patternId=${log?.id}`,
@@ -61,6 +62,7 @@ function WriteScreen({navigation, route}) {
             } catch (err) {
               console.error(err);
             }
+            setIsLoading(false);
             navigation.pop();
           },
           style: 'destructive',

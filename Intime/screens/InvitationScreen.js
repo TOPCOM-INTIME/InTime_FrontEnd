@@ -65,9 +65,11 @@ function InvitationScreen() {
               }}>
               {console.log(new Date(item.endTime).toISOString())}
               <VStack style={{marginLeft: 10}}>
-                <Text>보낸 사람:{item.invitorName}</Text>
-                <Text>도착지:{item.destName}</Text>
-                <Text>약속 시간:{new Date(item.endTime).toLocaleString()}</Text>
+                <Text style={styles.text}>보낸 사람:{item.invitorName}</Text>
+                <Text style={styles.text}>도착지:{item.destName}</Text>
+                <Text style={styles.text}>
+                  약속 시간:{new Date(item.endTime).toLocaleString()}
+                </Text>
               </VStack>
               <HStack spacing={4} style={{marginRight: 15}}>
                 <Button
@@ -123,6 +125,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  text: {
+    fontSize: 12,
   },
 });
 

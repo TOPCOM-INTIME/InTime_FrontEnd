@@ -5,7 +5,11 @@ import {StyleSheet, View} from 'react-native';
 function LoadingBar() {
   return (
     <View style={styles.flex}>
-      <ActivityIndicator style={{zIndex: 2, opacity: 1}} />
+      <ActivityIndicator
+        size="large"
+        color="white"
+        style={{zIndex: 2, opacity: 1}}
+      />
     </View>
   );
 }
