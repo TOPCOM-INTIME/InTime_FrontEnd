@@ -1,6 +1,6 @@
 import TransparentCircleButton from '../../components/TransparentCircleButton';
-import React, {useState, useEffect} from 'react';
-import {useNavigation, useIsFocused} from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import {
   StyleSheet,
   ScrollView,
@@ -11,8 +11,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
-import {API_URL} from '@env';
-import {useUserContext} from '../../contexts/UserContext';
+import { API_URL } from '@env';
+import { useUserContext } from '../../contexts/UserContext';
 import {
   AppBar,
   ListItem,
@@ -21,13 +21,14 @@ import {
   Badge,
 } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useLogContext} from '../../contexts/LogContext';
+import { useLogContext } from '../../contexts/LogContext';
 function CommunityScreen() {
   const isFocused = useIsFocused();
-  const {user} = useUserContext();
+  const { user } = useUserContext();
   const navigation = useNavigation();
   const [userList, setUserList] = useState([]);
-  const {friendInvite} = useLogContext();
+  const { friendInvite } = useLogContext();
+  console.log('토큰', user);
 
   const onSubmit = () => {
     navigation.push('CommunityScreenAdd');
@@ -36,7 +37,7 @@ function CommunityScreen() {
   const listcall = async () => {
     try {
       const res = await axios.get(`${API_URL}/friends`, {
-        headers: {Authorization: user},
+        headers: { Authorization: user },
       });
       console.log('res', res.data);
       setUserList(res.data);
@@ -87,7 +88,7 @@ function CommunityScreen() {
           style: 'cancel',
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -95,7 +96,7 @@ function CommunityScreen() {
     <>
       <AppBar
         title="친구"
-        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        titleStyle={{ fontFamily: 'NanumSquareRoundEB' }}
         centerTitle={true}
         color="#6c757d"
         tintColor="white"
@@ -112,7 +113,7 @@ function CommunityScreen() {
               showZero={false}
               tintColor="white"
               color="red"
-              style={{position: 'absolute', left: 30}}
+              style={{ position: 'absolute', left: 30 }}
             />
           </HStack>
         )}
@@ -123,7 +124,7 @@ function CommunityScreen() {
           <Text style={styles.emptyText}>등록된 친구가 없습니다.</Text>
         </View>
       ) : (
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{ flex: 1 }}>
           {userList.map(user => (
             <ListItem
               key={user.username}
