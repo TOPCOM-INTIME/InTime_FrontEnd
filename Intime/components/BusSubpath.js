@@ -15,6 +15,75 @@ const BusSubpath = props => {
   const subPath = props.data;
 
   function printEachPath(item) {
+    console.log(item);
+    if (item.trafficType === 4) {
+      return (
+        <>
+          <View key={subPath.indexOf(item)} style={styles.airplane}>
+            <View style={styles.airplaneIcon}>
+              <Icon name={'train'} size={27} color={'black'} />
+              <Text style={styles.text}>열차</Text>
+              <Text style={styles.text}>{item.sectionTime}분</Text>
+            </View>
+
+            <Text style={styles.text}>{item.startName}</Text>
+            <Icon name={'arrow-forward'} size={20} color={'black'} />
+            <Text style={styles.text}>{item.endName}</Text>
+          </View>
+        </>
+      );
+    }
+
+    if (item.trafficType === 5) {
+      return (
+        <>
+          <View key={subPath.indexOf(item)} style={styles.airplane}>
+            <View style={styles.airplaneIcon}>
+              <Icon name={'directions-bus'} size={27} color={'black'} />
+              <Text style={styles.text}>고속버스</Text>
+              <Text style={styles.text}>{item.sectionTime}분</Text>
+            </View>
+
+            <Text style={styles.text}>{item.startName}</Text>
+            <Icon name={'arrow-forward'} size={20} color={'black'} />
+            <Text style={styles.text}>{item.endName}</Text>
+          </View>
+        </>
+      );
+    }
+    if (item.trafficType === 6) {
+      return (
+        <>
+          <View key={subPath.indexOf(item)} style={styles.airplane}>
+            <View style={styles.airplaneIcon}>
+              <Icon name={'directions-bus'} size={27} color={'black'} />
+              <Text style={styles.text}>시외버스</Text>
+              <Text style={styles.text}>{item.sectionTime}분</Text>
+            </View>
+
+            <Text style={styles.text}>{item.startName}</Text>
+            <Icon name={'arrow-forward'} size={20} color={'black'} />
+            <Text style={styles.text}>{item.endName}</Text>
+          </View>
+        </>
+      );
+    }
+    if (item.trafficType === 7) {
+      return (
+        <>
+          <View key={subPath.indexOf(item)} style={styles.airplane}>
+            <View style={styles.airplaneIcon}>
+              <Icon name={'local-airport'} size={27} color={'black'} />
+              <Text style={styles.text}>{item.sectionTime}분</Text>
+            </View>
+
+            <Text style={styles.text}>{item.startName}</Text>
+            <Icon name={'arrow-forward'} size={20} color={'black'} />
+            <Text style={styles.text}>{item.endName}</Text>
+          </View>
+        </>
+      );
+    }
     if (item.trafficType === 3) {
       return (
         <>
@@ -92,6 +161,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 10,
   },
+  airplane: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 15,
+    flexDirection: 'row',
+    marginLeft: 10,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
   text: {
     color: 'black',
   },
@@ -118,6 +196,12 @@ const styles = StyleSheet.create({
   walk: {
     marginBottom: 10,
     marginLeft: 10,
+  },
+  airplaneIcon: {
+    marginBottom: 10,
+    marginLeft: 10,
+    alignItems: 'center',
+    marginRight: 15,
   },
 });
 export default BusSubpath;

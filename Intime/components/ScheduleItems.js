@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {
   View,
@@ -9,13 +9,13 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useUserContext } from '../contexts/UserContext';
-import { useNavigation } from '@react-navigation/native';
-import { API_URL } from '@env';
+import {useUserContext} from '../contexts/UserContext';
+import {useNavigation} from '@react-navigation/native';
+import {API_URL} from '@env';
 
 const ScheduleItem = props => {
   const navigation = useNavigation();
-  const { user, setUser } = useUserContext();
+  const {user, setUser} = useUserContext();
   const [isEnabled, setisEnabled] = useState(true);
   const [status, setStaus] = useState('PRE');
   const toggleSwitch = () => {
@@ -45,27 +45,13 @@ const ScheduleItem = props => {
     Alert.alert('', '진행중인 일정만 위치를 확인할 수 있습니다.');
   };
 
-  const deleteSchedule = async ID => {
-    try {
-      const res = await axios.get(
-        `${API_URL}/api/schedulePools=${props.data.schedulePoolId}/members`,
-        {
-          headers: { Authorization: user },
-        },
-      );
-      console.log('SCHEDULEPOOL_SUCCESS!', res.data);
-    } catch (e) {
-      console.log(`[DELETE_ERROR]${e}`);
-    }
-  };
-
   function statusPrint() {
     if (status === 'ING' || status === 'END') {
       return (
         <View>
           <TouchableOpacity
             onPress={() => navigation.push('ScheduleandMap', PUSHDATA)}>
-            <Text style={{ marginTop: 10, color: 'black' }}>위치 보기</Text>
+            <Text style={{marginTop: 10, color: 'black'}}>위치 보기</Text>
           </TouchableOpacity>
         </View>
       );
@@ -73,7 +59,7 @@ const ScheduleItem = props => {
       return (
         <>
           <TouchableOpacity onPress={() => findAlert()}>
-            <Text style={{ marginTop: 10, color: 'black' }}>위치 보기</Text>
+            <Text style={{marginTop: 10, color: 'black'}}>위치 보기</Text>
           </TouchableOpacity>
         </>
       );
@@ -82,11 +68,11 @@ const ScheduleItem = props => {
 
   function print() {
     if (status === 'ING') {
-      return <Text style={{ color: 'black' }}>진행중</Text>;
+      return <Text style={{color: 'black'}}>진행중</Text>;
     } else if (status === 'PRE') {
-      return <Text style={{ color: 'black' }}>예정</Text>;
+      return <Text style={{color: 'black'}}>예정</Text>;
     } else if (status === 'END') {
-      return <Text style={{ color: 'black' }}>종료</Text>;
+      return <Text style={{color: 'black'}}>종료</Text>;
     }
   }
 
@@ -128,7 +114,7 @@ const ScheduleItem = props => {
 
         <View style={styles.itemPlace}>
           {NAME && (
-            <Text style={{ fontWeight: 'bold', color: 'black' }}>{NAME}</Text>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>{NAME}</Text>
           )}
 
           <Text style={styles.itemName}>
