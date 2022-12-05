@@ -34,6 +34,18 @@ function ScheduleForm() {
   const [scheduleData, setSchedule] = useState([]);
   const navigation = useNavigation();
 
+  function checkEnd(item) {
+    let currentDate = new Date();
+    let tmpendtime = new Date(item.endTime);
+    console.log(currentDate, '지금시간');
+    console.log(tmpendtime, '일정 종료 시간');
+    if (tmpendtime < currentDate) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   const getSchedule = async () => {
     setIsLoading(true);
     try {
@@ -76,14 +88,14 @@ function ScheduleForm() {
   };
 
   const onShortPress = item => {
-    console.log(item);
-    let isUpdate = true;
+    setIsLoading(true);
     item.isUpdate = true;
     if (item.schedulePoolId) {
       Alert.alert('', '이미 생성된 단체일정은 수정할 수 없습니다!');
     } else {
       navigation.push('ScheduleScreen', item);
     }
+    setIsLoading(false);
   };
 
   const onSubmit = () => {
@@ -92,7 +104,25 @@ function ScheduleForm() {
 
   const onLongClick = item => {
     if (item.schedulePoolId) {
-      Alert.alert('', '이미 생성된 단체일정은 삭제할 수 없습니다!');
+      if (checkEnd(item)) {
+        Alert.alert('삭제', '정말로 삭제하시겠습니까?', [
+          {
+            text: '예',
+            onPress: () => {
+              deleteSchedule(item.id);
+              console.log(`${item.id}deleted`);
+            },
+          },
+          {
+            text: '아니오',
+            onPress: () => {
+              console.log(`nothing deleted`);
+            },
+          },
+        ]);
+      } else {
+        Alert.alert('', '종료되지 않은 단체일정은 삭제할 수 없습니다!');
+      }
     } else {
       Alert.alert('삭제', '정말로 삭제하시겠습니까?', [
         {
@@ -208,7 +238,7 @@ function ScheduleForm() {
       />
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
         <Text style={{color: 'grey'}}>
-          개인 일정은 길게 누르면 삭제할 수 있습니다
+          개인 일정/종료된 단체 일정은 길게 누르면 삭제할 수 있습니다
         </Text>
       </View>
       <ScrollView style={{width: '100%'}}>

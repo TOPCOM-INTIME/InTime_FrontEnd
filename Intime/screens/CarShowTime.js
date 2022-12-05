@@ -145,19 +145,23 @@ function CarShowTime({
       }
     }
     if (isCar === 1) {
-      return (
-        <>
-          <View
-            style={{
-              alignItems: 'center',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flex: 1,
-            }}>
-            <Text style={{color: 'black'}}> 대중 교통이 없습니다</Text>
-          </View>
-        </>
-      );
+      if (OdsayData.length === 0) {
+        return (
+          <>
+            <View
+              style={{
+                alignItems: 'center',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1,
+              }}>
+              <Text style={{color: 'black'}}> 대중 교통이 없습니다</Text>
+            </View>
+          </>
+        );
+      } else {
+        return <>{PrintBusTime()}</>;
+      }
     }
     if (isCar === 2) {
       setwalkTime(WalkData.totalTime);
@@ -207,10 +211,10 @@ function CarShowTime({
   function PrintBusTime() {
     if (isCar === 1) {
       if (OdsayData.length === 0) {
-        console.log('비었음');
+        console.log(OdsayData.length);
       } else {
         return (
-          <ScrollView>
+          <ScrollView backgroundColor="white">
             {OdsayData.map(item => (
               <View key={OdsayData.indexOf(item)} style={styles.container}>
                 <TouchableOpacity onPress={() => selectItem(item)}>
@@ -264,20 +268,20 @@ function CarShowTime({
         />
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            width: '100%',
           }}>
-          <Text style={{fontSize: 24, color: 'black'}}>
+          <Text style={{fontSize: 20, color: 'black'}}>
             출발지: {sourceName}
           </Text>
-          <Icon name={'arrow-forward'} size={24} color={'black'} />
-          <Text style={{fontSize: 24, color: 'black'}}>도착지: {destName}</Text>
+          <Icon name={'arrow-downward'} size={24} color={'black'} />
+          <Text style={{fontSize: 20, color: 'black'}}>도착지: {destName}</Text>
         </View>
       </View>
 
       <View style={{flex: 1, backgroundColor: 'white'}}>{PrintTime()}</View>
-      {PrintBusTime()}
       <View>
         <ButtonCarTime
           data={data}
