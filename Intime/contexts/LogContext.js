@@ -10,6 +10,7 @@ export function LogContextProvider({children}) {
   const [patternGroups, setPatternGroups] = useState([]);
   const [friendInvite, setFriendInvite] = useState([]);
   const [scheduleInvite, setScheduleInvite] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const {user} = useUserContext();
 
   useEffect(() => {
@@ -63,6 +64,8 @@ export function LogContextProvider({children}) {
         setFriendInvite,
         scheduleInvite,
         setScheduleInvite,
+        isLoading,
+        setIsLoading,
       }}
     />
   );

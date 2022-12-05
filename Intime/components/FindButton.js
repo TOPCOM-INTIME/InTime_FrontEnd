@@ -5,12 +5,14 @@ import {useNavigation} from '@react-navigation/native';
 import ScheduleCustomButton from './ScheduleCustomButton';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
+import {useLogContext} from '../contexts/LogContext';
 
 function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
   const navigation = useNavigation();
   const primaryTitle = '찾기';
   const secondaryTitle = '취소';
   const {user, setUser} = useUserContext();
+  const {isLoading, setIsLoading} = useLogContext();
   const [BusData, setBusData] = useState([]);
   const currentDate = new Date();
   const startKey = [encodeURI(data.sourceName)];
@@ -57,6 +59,7 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
     };
 
     try {
+      setIsLoading(true);
       const response = await fetch(
         `https://apis.openapi.sk.com/tmap/pois?version=1&searchKeyword=${startKey}&searchType=all&searchtypCd=A&reqCoordType=WGS84GEO&resCoordType=WGS84GEO&page=1&count=20&multiPoint=N&poiGroupYn=N`,
         optionsStart,
@@ -155,6 +158,7 @@ function FindButton({data, setData, setOdsayData, setCarTime, setBus}) {
         OdSayAlert();
       }
     }
+    setIsLoading(false);
   };
 
   return (

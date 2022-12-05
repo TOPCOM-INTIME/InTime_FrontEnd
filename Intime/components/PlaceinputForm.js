@@ -21,6 +21,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 import {AppBar, IconButton} from '@react-native-material/core';
 import {API_URL} from '@env';
+import LoadingBar from './LoadingBar';
+import {useLogContext} from '../contexts/LogContext';
 function PlaceinputForm({
   data,
   setData,
@@ -48,6 +50,7 @@ function PlaceinputForm({
   const [isGroup, setGroup] = useState(false);
   const [nowDate, setcurrentDate] = useState(new Date());
   const {user, setUser} = useUserContext();
+  const {isLoading, setIsLoading} = useLogContext();
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
   const setTime = time => {
@@ -145,6 +148,8 @@ function PlaceinputForm({
 
   return (
     <>
+      {isLoading && <LoadingBar />}
+
       <AppBar
         title="일정 생성"
         titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
