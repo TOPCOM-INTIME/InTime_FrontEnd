@@ -22,10 +22,11 @@ import {useLogContext} from '../../contexts/LogContext';
 
 function CommunityScreenRequestList() {
   const {user} = useUserContext();
-  const {friendInvite, setFriendInvite} = useLogContext();
+  const {friendInvite, setFriendInvite, setIsLoading} = useLogContext();
 
   const addPush = async userId => {
     //수락 통신 API
+    setIsLoading(true);
     try {
       const res = await axios.put(
         `${API_URL}/friends/request/${userId}`,
@@ -46,9 +47,11 @@ function CommunityScreenRequestList() {
       console.err(err);
       console.log('userid', userId);
     }
+    setIsLoading(false);
   };
 
   const refusePush = async userId => {
+    setIsLoading(true);
     try {
       const res = await axios.delete(`${API_URL}/friends/request/${userId}`, {
         headers: {Authorization: user},
@@ -62,6 +65,7 @@ function CommunityScreenRequestList() {
       console.err(err);
       console.log('userid', userId);
     }
+    setIsLoading(false);
   };
 
   console.log(friendInvite);

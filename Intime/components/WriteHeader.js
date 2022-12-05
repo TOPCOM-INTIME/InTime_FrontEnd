@@ -7,7 +7,12 @@ import {useLogContext} from '../contexts/LogContext';
 import {useUserContext} from '../contexts/UserContext';
 import TransparentCircleButton from './TransparentCircleButton';
 import {API_URL} from '@env';
-import {AppBar, HStack, IconButton} from '@react-native-material/core';
+import {
+  ActivityIndicator,
+  AppBar,
+  HStack,
+  IconButton,
+} from '@react-native-material/core';
 
 function WriteHeader({
   // onSave,
@@ -20,9 +25,9 @@ function WriteHeader({
 }) {
   const navigation = useNavigation();
   const {user, setUser, edited, setEdited} = useUserContext();
-  const {patterns, setPatterns, setPatternGroups} = useLogContext();
+  const {patterns, setPatterns, setPatternGroups, isLoading, setIsLoading} =
+    useLogContext();
 
-  const [loading, setLoading] = useState(false);
   const onGoBack = () => {
     navigation.pop();
   };
@@ -36,43 +41,57 @@ function WriteHeader({
       Alert.alert('실패', '시간을 입력해 주세요');
       return;
     }
+    setIsLoading(true);
     if (!isEditing) {
-      const res = await axios.post(
-        `${API_URL}/api/readypattern/`,
-        {
-          name: title,
-          time: +minute * 60 + +second,
-        },
-        {
-          headers: {Authorization: user},
-        },
-      );
+      try {
+        const res = await axios.post(
+          `${API_URL}/api/readypattern/`,
+          {
+            name: title,
+            time: +minute * 60 + +second,
+          },
+          {
+            headers: {Authorization: user},
+          },
+        );
+      } catch (err) {
+        console.log(err);
+      }
     } else {
-      const res = await axios.put(
-        `${API_URL}/api/readypattern/update-name-or-time/patternId=${id}`,
-        {
-          name: title,
-          time: +minute * 60 + +second,
-        },
+      try {
+        const res = await axios.put(
+          `${API_URL}/api/readypattern/update-name-or-time/patternId=${id}`,
+          {
+            name: title,
+            time: +minute * 60 + +second,
+          },
+          {
+            headers: {Authorization: user},
+          },
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    try {
+      const fetchedPattern = await axios.get(
+        `${API_URL}/api/readypatterns/origin`,
         {
           headers: {Authorization: user},
         },
       );
+      setPatterns(fetchedPattern.data);
+      const fetchedGroup = await axios.get(
+        `${API_URL}/api/groups-with-patterns/all`,
+        {
+          headers: {Authorization: user},
+        },
+      );
+      setPatternGroups(fetchedGroup.data);
+    } catch (err) {
+      console.log(err);
     }
-    const fetchedPattern = await axios.get(
-      `${API_URL}/api/readypatterns/origin`,
-      {
-        headers: {Authorization: user},
-      },
-    );
-    setPatterns(fetchedPattern.data);
-    const fetchedGroup = await axios.get(
-      `${API_URL}/api/groups-with-patterns/all`,
-      {
-        headers: {Authorization: user},
-      },
-    );
-    setPatternGroups(fetchedGroup.data);
+    setIsLoading(false);
     navigation.pop();
   };
 
@@ -89,22 +108,26 @@ function WriteHeader({
           onPress={onGoBack}
         />
       )}
-      trailing={props => (
-        <HStack>
-          {isEditing && (
+      trailing={props =>
+        isLoading ? (
+          <ActivityIndicator size="large" color="white" />
+        ) : (
+          <HStack>
+            {isEditing && (
+              <IconButton
+                icon={props => <Icon name="delete-forever" {...props} />}
+                color="white"
+                onPress={onAskRemove}
+              />
+            )}
             <IconButton
-              icon={props => <Icon name="delete-forever" {...props} />}
-              color="red"
-              onPress={onAskRemove}
+              icon={props => <Icon name="check" {...props} />}
+              color="white"
+              onPress={onSave}
             />
-          )}
-          <IconButton
-            icon={props => <Icon name="check" {...props} />}
-            color="green"
-            onPress={onSave}
-          />
-        </HStack>
-      )}
+          </HStack>
+        )
+      }
     />
   );
 }

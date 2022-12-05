@@ -17,7 +17,12 @@ import {useLogContext} from '../contexts/LogContext';
 import axios from 'axios';
 import {useUserContext} from '../contexts/UserContext';
 import {API_URL} from '@env';
-import {AppBar, TextInput, IconButton} from '@react-native-material/core';
+import {
+  AppBar,
+  TextInput,
+  IconButton,
+  ActivityIndicator,
+} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function GroupCreateScreen({navigation, route}) {
@@ -26,7 +31,7 @@ function GroupCreateScreen({navigation, route}) {
     useLogContext();
   const [group, setGroup] = useState(route.params?.group.patterns || []);
   const [name, setName] = useState(route.params?.group.name || '');
-  const [loading, setLoading] = useState(false);
+  const {isLoading, setIsLoading} = useLogContext();
 
   const groupCreateHandler = async () => {
     if (group.length === 0) {
@@ -37,7 +42,7 @@ function GroupCreateScreen({navigation, route}) {
       Alert.alert('실패', '이름을 등록해야 합니다.');
       return;
     }
-    setLoading(true);
+    setIsLoading(true);
     const groupPattern = group.map(item => item.id);
     console.log(groupPattern);
     try {
@@ -78,7 +83,7 @@ function GroupCreateScreen({navigation, route}) {
     } catch (err) {
       console.error(err);
     }
-    setLoading(false);
+    setIsLoading(false);
     navigation.pop();
   };
 
@@ -100,12 +105,12 @@ function GroupCreateScreen({navigation, route}) {
           />
         )}
         trailing={props =>
-          loading ? (
-            <></>
+          isLoading ? (
+            <ActivityIndicator color="white" size="large" />
           ) : (
             <IconButton
               icon={props => <Icon name="check" {...props} />}
-              color="green"
+              color="white"
               onPress={groupCreateHandler}
             />
           )
