@@ -67,7 +67,7 @@ function PlaceinputForm({
   ];
   //토글 값 변경
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || nowDate;
     setShow(Platform.OS === 'ios');
     setData('endTime')(setTime(currentDate));
   };
