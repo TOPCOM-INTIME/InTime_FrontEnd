@@ -225,15 +225,15 @@ const ScheduleItem = props => {
         <View style={styles.itemButtom}>{print()}</View>
 
         <View style={styles.itemButtom}>
-          {/* <TouchableOpacity style={styles.itemDetail}>
+          <TouchableOpacity style={styles.itemDetail}>
             <Text style={styles.itemMonthDay} onPress={OnButtonPress}>
               자세히 보기
             </Text>
             {printButton()}
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           {isGroup && statusPrint()}
         </View>
-        {/* {show && showPatterns()} */}
+        {show && showPatterns()}
       </View>
     </>
   );
