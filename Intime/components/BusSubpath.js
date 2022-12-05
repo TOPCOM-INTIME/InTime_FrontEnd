@@ -13,7 +13,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useUserContext} from '../contexts/UserContext';
 const BusSubpath = props => {
   const subPath = props.data;
-
   function printEachPath(item) {
     console.log(item);
     if (item.trafficType === 4) {

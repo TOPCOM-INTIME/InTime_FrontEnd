@@ -30,14 +30,60 @@ const ScheduleItem = props => {
   const ID = props.data.id;
   const endTime = new Date(props.data.endTime);
   const startTime = new Date(props.data.startTime);
+  let tmpDate = new Date(date);
   let isSelected = false;
-  console.log(false);
   let isGroup;
   const PUSHDATA = {
     ID: props.data.schedulePoolId,
     startTime: new Date(props.data.readyTime),
     endTime: new Date(props.data.endTime),
   };
+  const patterns = props.data.patterns;
+  let start = date;
+  function calTime(time) {
+    tmpDate.setSeconds(tmpDate.getSeconds() + time);
+    return tmpDate;
+  }
+
+  function printTime() {
+    console.log(patterns.length);
+    const result = [];
+    for (let i = 0; i < patterns.length; i++) {
+      result.push(
+        <View key={i} style={styles.pattern}>
+          <View style={styles.patternDetail}>
+            <Text style={styles.patternText}>
+              {String(tmpDate.getHours()).padStart(2, '0')}:
+              {String(tmpDate.getMinutes()).padStart(2, '0')}
+            </Text>
+            <Text style={styles.patternText}> {patterns[i].name} 시작</Text>
+          </View>
+        </View>,
+      );
+      calTime(patterns[i].time);
+    }
+    return result;
+  }
+
+  function showPatterns() {
+    console.log(patterns);
+    if (patterns.length === 0) {
+      return <Text style={styles.itemMonthDay}>설정된 패턴이 없습니다</Text>;
+    } else {
+      return (
+        <>
+          {printTime()}
+          <View style={styles.patternDetail}>
+            <Text style={styles.startText}>
+              {String(startTime.getHours()).padStart(2, '0')}:
+              {String(startTime.getMinutes()).padStart(2, '0')}
+            </Text>
+            <Text style={styles.startText}>출발</Text>
+          </View>
+        </>
+      );
+    }
+  }
 
   if (props.data.schedulePoolId) {
     isGroup = true;
@@ -102,6 +148,7 @@ const ScheduleItem = props => {
 
   const OnButtonPress = () => {
     setshow(!show);
+    // console.log(show, '클릭');
   };
 
   useEffect(() => {
@@ -178,14 +225,15 @@ const ScheduleItem = props => {
         <View style={styles.itemButtom}>{print()}</View>
 
         <View style={styles.itemButtom}>
-          <TouchableOpacity style={styles.itemDetail}>
+          {/* <TouchableOpacity style={styles.itemDetail}>
             <Text style={styles.itemMonthDay} onPress={OnButtonPress}>
               자세히 보기
             </Text>
             {printButton()}
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {isGroup && statusPrint()}
         </View>
+        {/* {show && showPatterns()} */}
       </View>
     </>
   );
@@ -283,6 +331,26 @@ const styles = StyleSheet.create({
   },
   toggleSwitch: {
     marginTop: 15,
+  },
+  pattern: {
+    flexDirection: 'row',
+    // backgroundColor: 'blue',
+  },
+  patternDetail: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: 4,
+
+    // backgroundColor: 'red',
+  },
+  patternText: {
+    color: 'black',
+    marginLeft: 10,
+  },
+  startText: {
+    color: 'black',
+    marginLeft: 10,
+    fontWeight: 'bold',
   },
 });
 export default ScheduleItem;

@@ -36,6 +36,7 @@ function SelectPattern({
   INVITE,
   schedulePoolId,
   friendtoken,
+  patternList,
 }) {
   const {
     patterns,
@@ -53,7 +54,7 @@ function SelectPattern({
   const navigation = useNavigation();
   let group_data;
   // console.log('일정 확인', data);
-  // console.log('친구 목록', friendtoken);
+  console.log('친구 목록', patternList);
 
   const onSecondaryButtonPress = () => {
     navigation.pop();
@@ -114,6 +115,13 @@ function SelectPattern({
   };
 
   useEffect(() => {
+    // if (isUpdate) {
+    //   console.log(data);
+    //   for (let i = 0; i < patternList.length; i++) {
+    //     group.push(patternList[i]);
+    //   }
+    // }
+
     const calTime = () => {
       let readyTime = new Date(data.startTime);
       let tmpTime = 0;
@@ -123,7 +131,7 @@ function SelectPattern({
     };
 
     setDatas(data => {
-      console.log('ㅋㅋ', data);
+      console.log('데이터 변화', data);
       return {
         ...data,
         readyPatterns_Ids: group.map(item => item.id),
@@ -131,6 +139,7 @@ function SelectPattern({
       };
     });
   }, [group, setDatas, data.startTime]);
+
   const onSaveButtonPress = async () => {
     // console.log('알림 설정한 시간', data.readyTime);
     let currentDate = new Date();

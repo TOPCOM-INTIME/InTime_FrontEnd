@@ -45,20 +45,22 @@ function ScheduleScreen({route}) {
   const [isCreatingGroup, setisCreatingGroup] = useState(false);
   const [isUpdate, setisUPdate] = useState(false);
   const [checkGroup, setcheckGroup] = useState(false);
-  const [ItemID, setTiemID] = useState('');
+  const [ItemID, setItemID] = useState('');
   const [friendList, setfriendList] = useState([]);
   const [UPDATEDATA, SETUPDATEDATA] = useState([]);
   const [INVITE, SETINVITE] = useState(0);
   const [schedulePoolId, setSchedulePool] = useState();
   const [friendtoken, setfriendtoken] = useState([]);
   const [usernameList, setusernameList] = useState([]);
+  const [patternList, setpatternList] = useState([]);
   useEffect(() => {
     if (route.params === undefined) {
       // console.log('when add', route);
     } else if (route.params.isUpdate) {
       // console.log('when update', route.params);
       setisUPdate(true);
-      setTiemID(route.params.id);
+      setItemID(route.params.id);
+      setpatternList(route.params.patterns);
       setData({
         name: route.params.name,
         time: route.params.time,
@@ -141,6 +143,7 @@ function ScheduleScreen({route}) {
               INVITE={INVITE}
               schedulePoolId={schedulePoolId}
               friendtoken={friendtoken}
+              patternList={patternList}
             />
           )}
           options={{headerShown: false}}
