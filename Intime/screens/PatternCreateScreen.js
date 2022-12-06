@@ -50,6 +50,8 @@ function WriteScreen({navigation, route}) {
                   '실패',
                   '패턴 그룹에 존재하는 패턴은 삭제할 수 없습니다.',
                 );
+                setIsLoading(false);
+                navigation.pop();
                 return;
               }
               const res = await axios.get(
