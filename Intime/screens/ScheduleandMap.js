@@ -357,7 +357,6 @@ const ScheduleandMap = route => {
         ) : (
           <>
             <View>
-              {/* <Button title="뒤로가기" onPress={() => navigation.pop()} /> */}
               <View style={styles.userlistwrapper}>
                 {userlist.length > 0 ? (
                   <View>
@@ -398,20 +397,6 @@ const ScheduleandMap = route => {
                       latitudeDelta: 0.04,
                       longitudeDelta: 0.04,
                     }}>
-                    {/* <Marker
-                            id="0"
-                            title={'내 위치'}
-                            pinColor="red"
-                            coordinate={{
-                                latitude: position.latitude,
-                                longitude: position.longitude,
-                            }}>
-                            <Image
-                                style={{ width: 26, height: 28 }}
-                                source={require('../img04.gif')}
-                            />
-                        </Marker> */}
-
                     {markerlist.map(marker => (
                       <Marker
                         key={marker.useridx}
@@ -431,12 +416,8 @@ const ScheduleandMap = route => {
               </View>
             </View>
           </>
-
         )}
       </View>
-
-
-
     </>
   );
 };
