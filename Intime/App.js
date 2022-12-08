@@ -8,6 +8,7 @@ import messaging from '@react-native-firebase/messaging';
 import {Alert, Linking} from 'react-native';
 import {API_URL} from '@env';
 import PushNotification from 'react-native-push-notification';
+import LoadingBar from './components/LoadingBar';
 
 // PushNotification.configure({
 //   onNotification: function (notification) {
@@ -52,9 +53,7 @@ function App() {
     <>
       <UserContextProvider>
         <LogContextProvider>
-          <NavigationContainer
-            linking={linking}
-            fallback={<Text>Loading...</Text>}>
+          <NavigationContainer linking={linking} fallback={<LoadingBar />}>
             <RootStack />
           </NavigationContainer>
         </LogContextProvider>

@@ -15,6 +15,7 @@ export function LogContextProvider({children}) {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const fetchedPattern = await axios.get(
           `${API_URL}/api/readypatterns/origin`,
@@ -47,6 +48,7 @@ export function LogContextProvider({children}) {
       } catch (err) {
         console.error('로그 컨텍스트 에러', err);
       }
+      setIsLoading(false);
     };
     if (user) {
       fetchData();

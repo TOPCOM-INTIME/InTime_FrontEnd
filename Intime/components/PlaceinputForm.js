@@ -62,10 +62,11 @@ function PlaceinputForm({
     setTime.setSeconds(0);
     return setTime;
   };
+
   // console.log('친구리스트', INVITE);
   // console.log('데이터', data.time);
-
   // 개인이나 단체를 정하는 토글
+
   const options = [
     {label: '개인', value: false},
     {label: '단체', value: true},

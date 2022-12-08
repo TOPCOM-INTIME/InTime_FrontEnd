@@ -106,7 +106,7 @@ function GroupScheduleFriend({
         trailing={props => (
           <IconButton
             icon={props => <Icon name="check" {...props} />}
-            color="green"
+            color="white"
             onPress={onPrimaryButtonPress}
           />
         )}
