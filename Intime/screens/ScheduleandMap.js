@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {useIsFocused} from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import {
   StyleSheet,
   View,
@@ -11,17 +11,17 @@ import {
   Button,
   PermissionsAndroid,
 } from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import MapMarker from './MapMarker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
-import {API_URL} from '@env';
+import { API_URL } from '@env';
 import BackgroundService from 'react-native-background-actions';
-import {useUserContext} from '../contexts/UserContext';
-import {useNavigation} from '@react-navigation/native';
-import {LogBox} from 'react-native';
-import {AppBar, IconButton} from '@react-native-material/core';
+import { useUserContext } from '../contexts/UserContext';
+import { useNavigation } from '@react-navigation/native';
+import { LogBox } from 'react-native';
+import { AppBar, IconButton } from '@react-native-material/core';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -52,7 +52,7 @@ const ScheduleandMap = route => {
   // console.log('s_id', sid)
   // console.log(initdate, enddate)
   const navigation = useNavigation();
-  const {user, setUser} = useUserContext();
+  const { user, setUser } = useUserContext();
   const [location, setLocation] = useState(false); //do not modify this value
   const [myid, setmyid] = useState([]);
 
@@ -71,7 +71,7 @@ const ScheduleandMap = route => {
       const res = await axios.get(
         `${API_URL}/api/schedulePools=${sid}/joined-members`,
         {
-          headers: {Authorization: user},
+          headers: { Authorization: user },
         },
       );
       setuserlist(res.data);
@@ -117,7 +117,7 @@ const ScheduleandMap = route => {
     initfunction();
     if (!BackgroundService.isRunning()) {
       backgroundHandler();
-      console.log('??????');
+      console.log(initdate);
     }
   }, []);
 
@@ -130,7 +130,7 @@ const ScheduleandMap = route => {
   };
 
   const backpostservice = async taskDataArguments => {
-    const {delay} = taskDataArguments;
+    const { delay } = taskDataArguments;
     await new Promise(async resolve => {
       for (let i = 0; BackgroundService.isRunning(); i++) {
         console.log(i);
@@ -146,7 +146,7 @@ const ScheduleandMap = route => {
           console.log('Bye~time is over');
           await BackgroundService.stop();
         }
-        if (i === 50) {
+        if (i === 500) {
           // Alert.alert('오류', '관리자에게 문의하세요 errorcode timeout_at_backgroundservice')
           console.log('time out');
           await BackgroundService.stop();
@@ -311,7 +311,7 @@ const ScheduleandMap = route => {
             console.log(error.code, error.message);
             setLocation(false);
           },
-          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
         );
       }
       console.log('senddata', senddata);
@@ -339,7 +339,7 @@ const ScheduleandMap = route => {
         centerTitle={true}
         color="#6c757d"
         //   style={{flex: 4}}
-        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        titleStyle={{ fontFamily: 'NanumSquareRoundEB' }}
         leading={props => (
           <IconButton
             icon={props => <Icon name="chevron-left" {...props} />}
@@ -384,10 +384,10 @@ const ScheduleandMap = route => {
                 // <Button title="backgroundHandler" onPress={backgroundHandler}></Button> */}
         {/* // <Button title="stopHandler" onPress={stopHandler}></Button> */}
       </View>
-      <View style={{flex: 9}}>
-        <View style={{flex: 1, padding: 10}}>
+      <View style={{ flex: 9 }}>
+        <View style={{ flex: 1, padding: 10 }}>
           <MapView
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             provider={PROVIDER_GOOGLE}
             region={{
               latitude: position.latitude,
@@ -418,7 +418,7 @@ const ScheduleandMap = route => {
                   longitude: parseFloat(marker.gps_y),
                 }}>
                 <Image
-                  style={{width: 26, height: 28}}
+                  style={{ width: 26, height: 28 }}
                   source={require('../img04.gif')}
                 />
               </Marker>
