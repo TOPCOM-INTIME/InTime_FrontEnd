@@ -221,14 +221,14 @@ android {
             keyPassword 'android'
         }
         
-        /*
-        release {
-            storeFile file('Intime.keystore')
-            storePassword 'Intime123'
-            keyAlias 'Intime'
-            keyPassword 'Intime'
-        }
-        */
+        
+        // release {
+        //     storeFile file('my-release-key.keystore')
+        //     storePassword 'password123'
+        //     keyAlias 'my-key-alias'
+        //     keyPassword 'password123'
+        // }
+        
     }
     buildTypes {
         debug {
