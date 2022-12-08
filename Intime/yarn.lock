@@ -1313,19 +1313,19 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/eslint-plugin/-/eslint-plugin-1.2.0.tgz"
   "version" "1.2.0"
 
-"@react-native-firebase/app@^16.4.5":
-  "integrity" "sha512-inpayjXGvPDkkAKCm3Cy5EcFFokCqYusaB4gZ5HeHVjLYbr0ce+/Sr6YvcDNy0ZlH3wPY+wpXy7y1YUTifbCtw=="
-  "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-16.4.5.tgz"
-  "version" "16.4.5"
+"@react-native-firebase/app@16.4.6":
+  "integrity" "sha512-rL/vhylwzj9ziKAqEOI6G3eIGiJRcI9dcM93+gG7pEv1mNBHKmhnuq9VPS8nR01qyI/PYWoKN6XecE0w7A7n4w=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-16.4.6.tgz"
+  "version" "16.4.6"
   dependencies:
     "@expo/config-plugins" "^5.0.4"
     "opencollective-postinstall" "^2.0.1"
     "superstruct" "^0.6.2"
 
 "@react-native-firebase/messaging@^16.4.5":
-  "integrity" "sha512-P8qJklic+AZsRuRXEb5JoSIFDK/fmNgeSS03iTdBP1UY4caOZcH4Xro8PjNrHvX2gAukDzmXAPQcjPecIdJ+hA=="
-  "resolved" "https://registry.npmjs.org/@react-native-firebase/messaging/-/messaging-16.4.5.tgz"
-  "version" "16.4.5"
+  "integrity" "sha512-5XHc++UxK+wEYifyovemr+K5aUpcDuqzGPAqc2tqrVxtsELmGi9pCOFbCuFhkg5DzNGToNT9Z79DTd+XLCVemA=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/messaging/-/messaging-16.4.6.tgz"
+  "version" "16.4.6"
 
 "@react-native-material/core@^1.3.7":
   "integrity" "sha512-N5d/zKrmL3+fVyWsc/jFRxsDl59N5t3tYx9RlxhV04tQlcFKo9UlyBqCWDZFlxrkLrq3JY5zTRCMJAM3yvOz5w=="
@@ -4481,6 +4481,11 @@
     "@jest/core" "^26.6.3"
     "import-local" "^3.0.2"
     "jest-cli" "^26.6.3"
+
+"jetifier@2.0.0":
+  "integrity" "sha512-J4Au9KuT74te+PCCCHKgAjyLlEa+2VyIAEPNCdE5aNkAJ6FAJcAqcdzEkSnzNksIa9NkGmC4tPiClk2e7tCJuQ=="
+  "resolved" "https://registry.npmjs.org/jetifier/-/jetifier-2.0.0.tgz"
+  "version" "2.0.0"
 
 "joi@^17.2.1":
   "integrity" "sha512-YlQsIaS9MHYekzf1Qe11LjTkNzx9qhYluK3172z38RxYoAUf82XMX1p1DG1H4Wtk2ED/vPdSn9OggqtDu+aTow=="
