@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import MapMarker from './MapMarker';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import { API_URL } from '@env';
@@ -169,7 +169,7 @@ const ScheduleandMap = route => {
   };
 
   const grouplocationpost = async latlng => {
-    console.log('my location 잘 나오냐3', latlng);
+    // console.log('my location 잘 나오냐3', latlng);
     try {
       const res = await axios.post(
         `${API_URL}/api/${sid}/location`,
@@ -185,7 +185,7 @@ const ScheduleandMap = route => {
         },
       );
 
-      console.log('my location 잘 나오냐4', latlng);
+      // console.log('my location 잘 나오냐4', latlng);
       console.log(res.data);
     } catch (err) {
       console.error(err);
@@ -193,7 +193,7 @@ const ScheduleandMap = route => {
   };
 
   const mylocationpost = async latlng => {
-    console.log('my location 잘 나오냐1', latlng);
+    // console.log('my location 잘 나오냐1', latlng);
     if (latlng) {
       try {
         const res = await axios.post(
@@ -208,7 +208,7 @@ const ScheduleandMap = route => {
             },
           },
         );
-        console.log('my location 잘 나오냐2', latlng);
+        // console.log('my location 잘 나오냐2', latlng);
         grouplocationpost(latlng);
       } catch (err) {
         console.error(err);
@@ -236,14 +236,14 @@ const ScheduleandMap = route => {
   };
 
   const getgroupLocation = async () => {
-    console.log('값 날려라', markerlist);
+    // console.log('값 날려라', markerlist);
     try {
       const res = await axios.get(`${API_URL}/api/${sid}/locations`, {
         headers: {
           Authorization: user,
         },
       });
-      console.log('res data from get group location', res.data);
+      // console.log('res data from get group location', res.data);
 
       const filteredArr = res.data.reduce((acc, current) => {
         const x = acc.find(item => item.useridx === current.useridx);
@@ -294,7 +294,7 @@ const ScheduleandMap = route => {
       if (res) {
         Geolocation.getCurrentPosition(
           position => {
-            console.log('position 123 123', position);
+            // console.log('position 123 123', position);
             setLocation(position);
             // console.log(location)
             // 화면 중심부 변환
@@ -316,9 +316,12 @@ const ScheduleandMap = route => {
           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
         );
       }
-      console.log('senddata', senddata);
+      // console.log('senddata', senddata);
     });
   };
+
+
+
 
   const pressuserlog = param => {
     console.log(param.id, '의 위치 표시하기');
@@ -332,6 +335,19 @@ const ScheduleandMap = route => {
         longitude: parseFloat(mainview[0].gps_y),
       });
     }
+    getLocation();
+  };
+
+  const AsyncStoragetest = () => {
+    AsyncStorage.setItem('user_information', JSON.stringify({ 'user_id': 'hwije123', 'user_nickname': 'HJ' }), () => {
+      console.log('저장') //json형식을 stringify로 string화 해서 저장해줬다
+    });
+
+    AsyncStorage.getItem('user_information', (err, result) => {
+      const user = Json.parse(result);             //string화 된 result를 parsing
+      console.log('아이디는' + user.user_id);        // user에 담긴 id출력
+      console.log('별명은: ' + user.user_nickname);  // user에 담긴 닉네임 출력
+    });
   };
 
   return (
@@ -368,7 +384,7 @@ const ScheduleandMap = route => {
                     key={user.id}>
                     <Text style={styles.textlist_dup}>{user.email}</Text>
                     <Text style={styles.textlist_dup}>In Time</Text>
-                    <Text style={styles.textlist_dup}>지각!!</Text>
+                    {/* <Text style={styles.textlist_dup}>지각!!</Text> */}
                   </View>
                 ))}
 
