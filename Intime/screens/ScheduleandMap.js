@@ -402,7 +402,7 @@ const ScheduleandMap = route => {
                     key={user.useridx}>
                     <Text style={styles.textlist_dup}>{user.username}</Text>
                     <Text style={styles.textlist_dup}>
-                      {Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))) <= 0.02 ? 'In Time' : '지각!!'}
+                      {Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))) <= 0.02 ? 'In Time!' : '지각!'}
                       {/* 약 600미터 반경 안에 */}
                     </Text>
                     {console.log('무슨일이지?', Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))))}
