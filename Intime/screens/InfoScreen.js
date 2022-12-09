@@ -124,6 +124,16 @@ function InfoScreen({navigation}) {
         onPress={() => navigation.push('Password')}
         trailing={props => <Icon name="chevron-right" {...props} />}
       />
+      <ListItem
+        title="공지 사항"
+        onPress={() => navigation.push('NoticeScreen')}
+        trailing={props => <Icon name="chevron-right" {...props} />}
+      />
+      <ListItem
+        title="문의하기"
+        onPress={() => navigation.push('Password')}
+        trailing={props => <Icon name="chevron-right" {...props} />}
+      />
     </>
   );
 }
