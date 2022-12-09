@@ -111,6 +111,7 @@ function ScheduleForm() {
             text: '예',
             onPress: () => {
               deleteSchedule(item.id);
+              AsyncStorage.removeItem(toString(item.schedulePoolId))
               console.log(`${item.id}deleted`);
             },
           },
@@ -118,7 +119,6 @@ function ScheduleForm() {
             text: '아니오',
             onPress: () => {
               console.log(`nothing deleted`);
-              AsyncStorage.removeItem(toString(item.schedulePoolId))
             },
           },
         ]);
