@@ -49,8 +49,8 @@ const ScheduleandMap = route => {
   const sid = route.route.params.ID;
   const initdate = route.route.params.startTime;
   const enddate = route.route.params.endTime;
-  const endX = route.route.params.endX;
-  const endY = route.route.params.endY;
+  const endX = route.route.params.endY;
+  const endY = route.route.params.endX;
   // console.log('s_id', sid)
   // console.log(initdate, enddate)
   console.log('종료 좌표!!', endX, endY);
@@ -64,12 +64,12 @@ const ScheduleandMap = route => {
     longitude: 127.000019,
   });
 
-  const [senddata, setsenddata] = useState([]);
+  const [localdata, setlocaldata] = useState([]);
 
   const [markerlist, setmarkerlist] = useState([]);
   const [userlist, setuserlist] = useState([]);
 
-  console.log('마커에 정보가 있나', userlist)
+  // console.log('마커에 정보가 있나', userlist)
   const checkGroup = async () => {
     try {
       const res = await axios.get(
@@ -97,6 +97,7 @@ const ScheduleandMap = route => {
   //     }
   // };
 
+
   const getmyid = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/my-info`, {
@@ -115,6 +116,7 @@ const ScheduleandMap = route => {
     checkGroup();
     getmyid();
     getgroupLocation();
+    NotInTimedata();
   };
 
   useEffect(() => {
@@ -339,21 +341,33 @@ const ScheduleandMap = route => {
   };
 
   const AsyncStorageset = () => {
-    AsyncStorage.setItem('user_information', JSON.stringify({ 'user_id': 'hwije123', 'user_nickname': 'HJ' }), () => {
-      console.log('저장') //json형식을 stringify로 string화 해서 저장해줬다
-    });
+    getgroupLocation();
+    if (markerlist[0]) {
+      console.log("난 값이 있다!!!!!!!!!!")
+      AsyncStorage.setItem(toString(sid), JSON.stringify({ markerlist }), () => {
+        console.log('저장')
+      });
+    }
   };
 
-  const AsyncStorageget = () => {
-    AsyncStorage.getItem('user_information', (err, result) => {
-      const user = JSON.parse(result);             //string화 된 result를 parsing
-      console.log(user);
+  // const AsyncStorageget = () => {
+  // }
+
+
+  const NotInTimedata = () => {
+    AsyncStorage.getItem(toString(sid), (err, result) => {
+      const asyncdata = JSON.parse(result);
+      console.log('내장된 데이터 가져옴', asyncdata.markerlist);
+      setlocaldata(asyncdata.markerlist);
     });
+
   }
 
-  const AsyncStoragedel = () => {
-    AsyncStorage.removeItem('user_information')
-  }
+  // console.log(localdata);
+
+  // const AsyncStoragedel = () => {
+  //   AsyncStorage.removeItem(toString(sid))
+  // }
 
   return (
     <>
@@ -376,11 +390,11 @@ const ScheduleandMap = route => {
         {enddate <= new Date() ? (
           <View>
             <Button title="AsyncStoragetest" onPress={AsyncStorageset}></Button>
-            <Button title="AsyncStorageget" onPress={AsyncStorageget}></Button>
-            <Button title="AsyncStoragedel" onPress={AsyncStoragedel}></Button>
+            <Button title="stopHandler" onPress={stopHandler}></Button>
+
             <View style={styles.userlistwrapper_dup}>
               <ScrollView>
-                {userlist.map(user => (
+                {localdata.map(user => (
                   <View style={{
                     borderWidth: 2.5,
                     borderColor: 'gray',
@@ -389,10 +403,22 @@ const ScheduleandMap = route => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                   }}
-                    key={user.id}>
-                    <Text style={styles.textlist_dup}>{user.email}</Text>
-                    <Text style={styles.textlist_dup}>In Time</Text>
-                    {/* <Text style={styles.textlist_dup}>지각!!</Text> */}
+                    key={user.useridx}>
+                    <Text style={styles.textlist_dup}>{user.username}</Text>
+                    <Text style={styles.textlist_dup}>
+                      {Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))) <= 0.02 ? 'In Time' : '지각!!'}
+                      {/* 약 600미터 반경 안에 */}
+                    </Text>
+                    {console.log('무슨일이지?', Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))))}
+                    {/* {localdata.map(function (user) {
+                      const c_gps_x = user.gps_x - endX;
+                      const c_gps_y = user.gps_y - endY;
+                      const dist = Math.sqrt(Math.abs(c_gps_x * c_gps_x) + Math.abs(c_gps_y * c_gps_y));
+                      console.log('거?리', dist)
+
+                    })} */}
+                    {/* <Text style={styles.textlist_dup}>In Time</Text>
+                    <Text style={styles.textlist_dup}>지각!!</Text> */}
                   </View>
                 ))}
 
