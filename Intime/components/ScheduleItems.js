@@ -30,6 +30,7 @@ const ScheduleItem = props => {
   const ID = props.data.id;
   const endTime = new Date(props.data.endTime);
   const startTime = new Date(props.data.startTime);
+  const endKey = [encodeURI(endplace)];
   let tmpDate = new Date(date);
   let isSelected = false;
   let isGroup;
@@ -38,11 +39,46 @@ const ScheduleItem = props => {
     startTime: new Date(props.data.readyTime),
     endTime: new Date(props.data.endTime),
   };
+
+  const END_PUSHDATA = {
+    ID: props.data.schedulePoolId,
+    startTime: new Date(props.data.readyTime),
+    endTime: new Date(props.data.endTime),
+  };
+
+  const endData = {
+    endX: 0,
+    endY: 0,
+  };
+
   const patterns = props.data.patterns;
   let start = date;
   function calTime(time) {
     tmpDate.setSeconds(tmpDate.getSeconds() + time);
     return tmpDate;
+  }
+
+  async function findPlace() {
+    const optionsEnd = {
+      method: 'GET',
+      headers: {
+        appKey: 'l7xx67fb6edf4df64a82a1a889e87430c919',
+        Accept: 'application/json',
+      },
+    };
+    try {
+      const response2 = await fetch(
+        `https://apis.openapi.sk.com/tmap/pois?version=1&searchKeyword=${endKey}&searchType=all&searchtypCd=A&reqCoordType=WGS84GEO&resCoordType=WGS84GEO&page=1&count=20&multiPoint=N&poiGroupYn=N`,
+        optionsEnd,
+      );
+      const data2 = await response2.json();
+      END_PUSHDATA.endX = data2.searchPoiInfo.pois.poi[0]['frontLon'];
+      END_PUSHDATA.endY = data2.searchPoiInfo.pois.poi[0]['frontLat'];
+      console.log(END_PUSHDATA, 'PUSHED');
+      navigation.push('ScheduleandMap', END_PUSHDATA);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   function printTime() {
@@ -96,7 +132,13 @@ const ScheduleItem = props => {
   };
 
   function statusPrint() {
-    if (status === 'ING' || status === 'END') {
+    if (status === 'END') {
+      return (
+        <TouchableOpacity onPress={() => findPlace()}>
+          <Text style={{color: 'black'}}>결과 보기</Text>
+        </TouchableOpacity>
+      );
+    } else if (status === 'ING') {
       return (
         <View>
           <TouchableOpacity
