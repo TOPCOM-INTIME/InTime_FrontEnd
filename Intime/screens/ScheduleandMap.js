@@ -328,6 +328,7 @@ const ScheduleandMap = route => {
   const pressuserlog = param => {
     console.log(param.id, '의 위치 표시하기');
     getgroupLocation();
+    AsyncStorageset();
     console.log('개인화면에서 마커 리스트', markerlist);
     console.log('');
     const mainview = markerlist.filter(marker => marker.useridx === param.id);
