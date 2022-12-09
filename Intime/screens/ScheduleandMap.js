@@ -21,7 +21,7 @@ import BackgroundService from 'react-native-background-actions';
 import { useUserContext } from '../contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { LogBox } from 'react-native';
-import { AppBar, IconButton } from '@react-native-material/core';
+import { AppBar, IconButton, Box, ListItem } from '@react-native-material/core';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -49,8 +49,11 @@ const ScheduleandMap = route => {
   const sid = route.route.params.ID;
   const initdate = route.route.params.startTime;
   const enddate = route.route.params.endTime;
+  const endX = route.route.params.endX;
+  const endY = route.route.params.endY;
   // console.log('s_id', sid)
   // console.log(initdate, enddate)
+  console.log('종료 좌표!!', endX, endY);
   const navigation = useNavigation();
   const { user, setUser } = useUserContext();
   const [location, setLocation] = useState(false); //do not modify this value
@@ -66,6 +69,7 @@ const ScheduleandMap = route => {
   const [markerlist, setmarkerlist] = useState([]);
   const [userlist, setuserlist] = useState([]);
 
+  console.log('마커에 정보가 있나', userlist)
   const checkGroup = async () => {
     try {
       const res = await axios.get(
@@ -117,7 +121,11 @@ const ScheduleandMap = route => {
     initfunction();
     if (!BackgroundService.isRunning()) {
       backgroundHandler();
-      console.log(initdate);
+      console.log('initdate', initdate);
+    }
+    if (enddate >= new Date()) {
+    } else {
+      console.log('종료시간 넘김 결과보기중')
     }
   }, []);
 
@@ -146,7 +154,7 @@ const ScheduleandMap = route => {
           console.log('Bye~time is over');
           await BackgroundService.stop();
         }
-        if (i === 500) {
+        if (i === 5000) {
           // Alert.alert('오류', '관리자에게 문의하세요 errorcode timeout_at_backgroundservice')
           console.log('time out');
           await BackgroundService.stop();
@@ -237,12 +245,6 @@ const ScheduleandMap = route => {
       });
       console.log('res data from get group location', res.data);
 
-      // const newList = res.data;
-      // const newArray = markerlist.map(
-      //     (userObj) => userObj.id === newList.map(user => user.useridx) ? { ...userObj, gps_x: newList.gps_x, gps_y: newList.gps_y } : userObj);
-      // console.log('newList', newList)
-
-      // console.log('나는 새로운 배열이다 뭐가 나올까? ', newArray);
       const filteredArr = res.data.reduce((acc, current) => {
         const x = acc.find(item => item.useridx === current.useridx);
         if (!x) {
@@ -352,7 +354,26 @@ const ScheduleandMap = route => {
       <View style={{ flex: 1 }}>
         {enddate <= new Date() ? (
           <View>
-            <Text style={{ color: 'black' }}>enddate 지남</Text>
+            <View style={styles.userlistwrapper_dup}>
+              <ScrollView>
+                {userlist.map(user => (
+                  <View style={{
+                    borderWidth: 2.5,
+                    borderColor: 'gray',
+                    borderRadius: 5,
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                    key={user.id}>
+                    <Text style={styles.textlist_dup}>{user.email}</Text>
+                    <Text style={styles.textlist_dup}>In Time</Text>
+                    <Text style={styles.textlist_dup}>지각!!</Text>
+                  </View>
+                ))}
+
+              </ScrollView>
+            </View>
           </View>
         ) : (
           <>
@@ -433,11 +454,26 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     margin: 1,
   },
+  userlistwrapper_dup: {
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    margin: 1,
+  },
   textlist: {
     color: 'black',
     fontWeight: 'bold',
     fontSize: 24,
     paddingHorizontal: 10,
+  },
+  textlist_dup: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 24,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    alignItems: 'flex-end'
   },
 });
 
