@@ -335,7 +335,7 @@ const ScheduleandMap = route => {
   return (
     <>
       <AppBar
-        title="위치 확인"
+        title={enddate <= new Date() ? (title = "결과확인") : (title = "위치확인")}
         centerTitle={true}
         color="#6c757d"
         //   style={{flex: 4}}
@@ -349,53 +349,56 @@ const ScheduleandMap = route => {
           />
         )}
       />
-      <View>
-        {/* <Button title="뒤로가기" onPress={() => navigation.pop()} /> */}
-        <View style={styles.userlistwrapper}>
-          {userlist.length > 0 ? (
+      <View style={{ flex: 1 }}>
+        {enddate <= new Date() ? (
+          <View>
+            <Text style={{ color: 'black' }}>enddate 지남</Text>
+          </View>
+        ) : (
+          <>
             <View>
-              <ScrollView horizontal={true}>
-                {userlist.map(user => (
-                  <View key={user.id}>
-                    <View
-                      style={{
-                        borderWidth: 2.5,
-                        borderColor: 'gray',
-                        borderRadius: 5,
-                        marginRight: 10,
-                      }}>
-                      <TouchableOpacity onPress={() => pressuserlog(user)}>
-                        <Text style={styles.textlist}>{user.email}</Text>
-                      </TouchableOpacity>
-                    </View>
+              {/* <Button title="뒤로가기" onPress={() => navigation.pop()} /> */}
+              <View style={styles.userlistwrapper}>
+                {userlist.length > 0 ? (
+                  <View>
+                    <ScrollView horizontal={true}>
+                      {userlist.map(user => (
+                        <View key={user.id}>
+                          <View
+                            style={{
+                              borderWidth: 2.5,
+                              borderColor: 'gray',
+                              borderRadius: 5,
+                              marginRight: 10,
+                            }}>
+                            <TouchableOpacity onPress={() => pressuserlog(user)}>
+                              <Text style={styles.textlist}>{user.email}</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      ))}
+                    </ScrollView>
                   </View>
-                ))}
-              </ScrollView>
+                ) : (
+                  <View>
+                    <Text style={styles.textlist}>친구 없는 경우</Text>
+                  </View>
+                )}
+              </View>
             </View>
-          ) : (
-            <View>
-              <Text style={styles.textlist}>친구 없는 경우</Text>
-            </View>
-          )}
-        </View>
-      </View>
-      <View>
-        {/* 아래 버튼은 자동화 구현 후 삭제 예정
-                // <Button title="backgroundHandler" onPress={backgroundHandler}></Button> */}
-        {/* // <Button title="stopHandler" onPress={stopHandler}></Button> */}
-      </View>
-      <View style={{ flex: 9 }}>
-        <View style={{ flex: 1, padding: 10 }}>
-          <MapView
-            style={{ flex: 1 }}
-            provider={PROVIDER_GOOGLE}
-            region={{
-              latitude: position.latitude,
-              longitude: position.longitude,
-              latitudeDelta: 0.04,
-              longitudeDelta: 0.04,
-            }}>
-            {/* <Marker
+            <View style={{ flex: 1 }}>
+              <View style={{ flex: 9 }}>
+                <View style={{ flex: 1, padding: 10 }}>
+                  <MapView
+                    style={{ flex: 1 }}
+                    provider={PROVIDER_GOOGLE}
+                    region={{
+                      latitude: position.latitude,
+                      longitude: position.longitude,
+                      latitudeDelta: 0.04,
+                      longitudeDelta: 0.04,
+                    }}>
+                    {/* <Marker
                             id="0"
                             title={'내 위치'}
                             pinColor="red"
@@ -409,23 +412,31 @@ const ScheduleandMap = route => {
                             />
                         </Marker> */}
 
-            {markerlist.map(marker => (
-              <Marker
-                key={marker.useridx}
-                title={marker.username}
-                coordinate={{
-                  latitude: parseFloat(marker.gps_x),
-                  longitude: parseFloat(marker.gps_y),
-                }}>
-                <Image
-                  style={{ width: 26, height: 28 }}
-                  source={require('../img04.gif')}
-                />
-              </Marker>
-            ))}
-          </MapView>
-        </View>
+                    {markerlist.map(marker => (
+                      <Marker
+                        key={marker.useridx}
+                        title={marker.username}
+                        coordinate={{
+                          latitude: parseFloat(marker.gps_x),
+                          longitude: parseFloat(marker.gps_y),
+                        }}>
+                        <Image
+                          style={{ width: 26, height: 28 }}
+                          source={require('../img04.gif')}
+                        />
+                      </Marker>
+                    ))}
+                  </MapView>
+                </View>
+              </View>
+            </View>
+          </>
+
+        )}
       </View>
+
+
+
     </>
   );
 };
