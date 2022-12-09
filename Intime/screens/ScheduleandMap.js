@@ -338,17 +338,22 @@ const ScheduleandMap = route => {
     getLocation();
   };
 
-  const AsyncStoragetest = () => {
+  const AsyncStorageset = () => {
     AsyncStorage.setItem('user_information', JSON.stringify({ 'user_id': 'hwije123', 'user_nickname': 'HJ' }), () => {
       console.log('저장') //json형식을 stringify로 string화 해서 저장해줬다
     });
-
-    AsyncStorage.getItem('user_information', (err, result) => {
-      const user = Json.parse(result);             //string화 된 result를 parsing
-      console.log('아이디는' + user.user_id);        // user에 담긴 id출력
-      console.log('별명은: ' + user.user_nickname);  // user에 담긴 닉네임 출력
-    });
   };
+
+  const AsyncStorageget = () => {
+    AsyncStorage.getItem('user_information', (err, result) => {
+      const user = JSON.parse(result);             //string화 된 result를 parsing
+      console.log(user);
+    });
+  }
+
+  const AsyncStoragedel = () => {
+    AsyncStorage.removeItem('user_information')
+  }
 
   return (
     <>
@@ -370,6 +375,9 @@ const ScheduleandMap = route => {
       <View style={{ flex: 1 }}>
         {enddate <= new Date() ? (
           <View>
+            <Button title="AsyncStoragetest" onPress={AsyncStorageset}></Button>
+            <Button title="AsyncStorageget" onPress={AsyncStorageget}></Button>
+            <Button title="AsyncStoragedel" onPress={AsyncStoragedel}></Button>
             <View style={styles.userlistwrapper_dup}>
               <ScrollView>
                 {userlist.map(user => (
