@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Platform,
@@ -13,10 +13,11 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ScheduleAddButton from './ScheduleAddButton';
 import ScheduleItem from './ScheduleItems';
-import {useUserContext} from '../contexts/UserContext';
+import { useUserContext } from '../contexts/UserContext';
 import BackgroundService from 'react-native-background-actions';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import PushNotification from 'react-native-push-notification';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   AppBar,
   IconButton,
@@ -24,13 +25,13 @@ import {
   HStack,
   Box,
 } from '@react-native-material/core';
-import {API_URL} from '@env';
-import {useLogContext} from '../contexts/LogContext';
+import { API_URL } from '@env';
+import { useLogContext } from '../contexts/LogContext';
 import LoadingBar from './LoadingBar';
 
 function ScheduleForm() {
-  const {user, setUser} = useUserContext();
-  const {scheduleInvite, isLoading, setIsLoading} = useLogContext();
+  const { user, setUser } = useUserContext();
+  const { scheduleInvite, isLoading, setIsLoading } = useLogContext();
   const [scheduleData, setSchedule] = useState([]);
   const navigation = useNavigation();
 
@@ -50,7 +51,7 @@ function ScheduleForm() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${API_URL}/api/user/schedule/all`, {
-        headers: {Authorization: user},
+        headers: { Authorization: user },
       });
       setSchedule(res.data);
       // console.log('GET_SCHEDULE', res.data);
@@ -76,7 +77,7 @@ function ScheduleForm() {
       deleteNotification(ID);
       axios
         .delete(`${API_URL}/api/schedule/scheduleId=${ID}`, {
-          headers: {Authorization: user},
+          headers: { Authorization: user },
         })
         .then(res => {
           getSchedule();
@@ -117,6 +118,7 @@ function ScheduleForm() {
             text: '아니오',
             onPress: () => {
               console.log(`nothing deleted`);
+              AsyncStorage.removeItem(toString(item.schedulePoolId))
             },
           },
         ]);
@@ -158,7 +160,7 @@ function ScheduleForm() {
         {isLoading && <LoadingBar />}
         <AppBar
           title="일정"
-          titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+          titleStyle={{ fontFamily: 'NanumSquareRoundEB' }}
           centerTitle={true}
           color="#6c757d"
           tintColor="white"
@@ -175,7 +177,7 @@ function ScheduleForm() {
                 showZero={false}
                 tintColor="white"
                 color="red"
-                style={{position: 'absolute', left: 30}}
+                style={{ position: 'absolute', left: 30 }}
               />
               <IconButton
                 icon={props => <Icon name="add" {...props} />}
@@ -186,7 +188,7 @@ function ScheduleForm() {
           )}
         />
 
-        <ScrollView style={{width: '100%'}}>
+        <ScrollView style={{ width: '100%' }}>
           <View style={styles.tasksWrapper}>
             <View
               style={{
@@ -195,7 +197,7 @@ function ScheduleForm() {
                 alignItems: 'center',
                 marginTop: '80%',
               }}>
-              <Text style={{color: 'black'}}>일정 없습니다</Text>
+              <Text style={{ color: 'black' }}>일정 없습니다</Text>
             </View>
           </View>
         </ScrollView>
@@ -208,7 +210,7 @@ function ScheduleForm() {
       {isLoading && <LoadingBar />}
       <AppBar
         title="일정"
-        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        titleStyle={{ fontFamily: 'NanumSquareRoundEB' }}
         centerTitle={true}
         color="#6c757d"
         tintColor="white"
@@ -225,7 +227,7 @@ function ScheduleForm() {
               showZero={false}
               tintColor="white"
               color="red"
-              style={{position: 'absolute', left: 30}}
+              style={{ position: 'absolute', left: 30 }}
             />
 
             <IconButton
@@ -236,12 +238,12 @@ function ScheduleForm() {
           </HStack>
         )}
       />
-      <View style={{alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{color: 'grey'}}>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ color: 'grey' }}>
           개인 일정/종료된 단체 일정은 길게 누르면 삭제할 수 있습니다
         </Text>
       </View>
-      <ScrollView style={{width: '100%'}}>
+      <ScrollView style={{ width: '100%' }}>
         <View style={styles.container}>
           <View style={styles.tasksWrapper}>
             <View style={styles.items}>
