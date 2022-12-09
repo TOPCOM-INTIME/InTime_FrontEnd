@@ -116,17 +116,17 @@ const ScheduleandMap = route => {
     checkGroup();
     getmyid();
     getgroupLocation();
-    NotInTimedata();
   };
 
   useEffect(() => {
     initfunction();
-    if (!BackgroundService.isRunning()) {
-      backgroundHandler();
-      console.log('initdate', initdate);
-    }
     if (enddate >= new Date()) {
+      if (!BackgroundService.isRunning()) {
+        backgroundHandler();
+        console.log('initdate', initdate);
+      }
     } else {
+      NotInTimedata();
       console.log('종료시간 넘김 결과보기중')
     }
   }, []);
@@ -257,7 +257,7 @@ const ScheduleandMap = route => {
       }, []);
       console.log('필터링', filteredArr);
       setmarkerlist(filteredArr);
-
+      AsyncStorageset();
       console.log('markerlist', markerlist);
     } catch (err) {
       console.error(err);
@@ -341,9 +341,8 @@ const ScheduleandMap = route => {
   };
 
   const AsyncStorageset = () => {
-    getgroupLocation();
     if (markerlist[0]) {
-      console.log("난 값이 있다!!!!!!!!!!")
+      console.log("markerlist에 값이 있으면 데이터 저장")
       AsyncStorage.setItem(toString(sid), JSON.stringify({ markerlist }), () => {
         console.log('저장')
       });
@@ -389,9 +388,6 @@ const ScheduleandMap = route => {
       <View style={{ flex: 1 }}>
         {enddate <= new Date() ? (
           <View>
-            <Button title="AsyncStoragetest" onPress={AsyncStorageset}></Button>
-            <Button title="stopHandler" onPress={stopHandler}></Button>
-
             <View style={styles.userlistwrapper_dup}>
               <ScrollView>
                 {localdata.map(user => (
