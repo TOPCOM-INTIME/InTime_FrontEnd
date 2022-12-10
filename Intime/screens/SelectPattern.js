@@ -21,6 +21,7 @@ import PushNotification from 'react-native-push-notification';
 import {AppBar, Divider, Button, IconButton} from '@react-native-material/core';
 import {API_URL} from '@env';
 import LoadingBar from '../components/LoadingBar';
+import AdBanner from '../components/AdBanner';
 
 // api​/schedule={id}​/update/
 function SelectPattern({
@@ -55,6 +56,10 @@ function SelectPattern({
   let group_data;
   // console.log('일정 확인', data);
   console.log('친구 목록', patternList);
+
+  const move = () => {
+    navigation.replace('MainTab');
+  };
 
   const onSecondaryButtonPress = () => {
     navigation.pop();
@@ -173,7 +178,6 @@ function SelectPattern({
             setScheduleInvite(fetchedSchedule.data);
             sendNotification(res);
             console.log('INVITE_POST_SUCCESS!', group_data, res.data);
-            navigation.push('MainTab');
           } catch (e) {
             console.log(group_data);
             console.log(`[INVITE_POST_ERROR]${e} SENT${schedulePoolId}`);
@@ -198,7 +202,6 @@ function SelectPattern({
             );
             sendNotification(res);
             console.log('GROUP_POST_SUCCESS!', group_data, res.data);
-            navigation.push('MainTab');
           } catch (e) {
             console.log(group_data);
             console.log(`[GROUP_POST_ERROR]${e} SENT${group_data}`);
@@ -212,7 +215,6 @@ function SelectPattern({
             });
             sendNotification(res);
             console.log('[INDIVIDUAL_POST_SUCCESS]', data);
-            navigation.push('MainTab');
           } catch (e) {
             console.log(`[INDIVIDUAL_POST_ERROR]${e} SENT${data}`);
           }
@@ -229,10 +231,8 @@ function SelectPattern({
         );
         sendNotification(res);
         console.log('UPDATE_SUCCESS!', data);
-        navigation.push('MainTab');
       }
     }
-    setIsLoading(false);
   };
 
   return (
@@ -244,7 +244,7 @@ function SelectPattern({
         color="#6c757d"
         tintColor="white"
       />
-      {isLoading && <LoadingBar />}
+      {isLoading && <AdBanner move={move} />}
       <View style={styles.block}>
         <View style={styles.container}>
           <View style={styles.text}>
