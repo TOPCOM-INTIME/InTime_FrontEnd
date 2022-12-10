@@ -21,6 +21,11 @@ import {useLogContext} from '../contexts/LogContext';
 import ScheduleandMap from './ScheduleandMap';
 import ScheduleCurrent from '../components/ScheduleCurrent';
 import LoadingBar from '../components/LoadingBar';
+import NoticeScreen from './NoticeScreen';
+import NoticeDetailScreen from './NoticeDetailScreen';
+import ForumListScreen from './ForumListScreen';
+import ForumWrite from './ForumWrite';
+import ForumcheckScreen from './ForumcheckScreen';
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
@@ -124,6 +129,31 @@ function RootStack() {
           <Stack.Screen
             name="ScheduleCurrent"
             component={ScheduleCurrent}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="NoticeScreen"
+            component={NoticeScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="NoticeDetailScreen"
+            component={NoticeDetailScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ForumListScreen"
+            component={ForumListScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ForumWrite"
+            component={ForumWrite}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ForumcheckScreen"
+            component={ForumcheckScreen}
             options={{headerShown: false}}
           />
         </>
