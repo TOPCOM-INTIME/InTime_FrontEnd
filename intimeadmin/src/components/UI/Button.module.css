@@ -1,0 +1,13 @@
+.button {
+  font-family: "Gowun Dodum", sans-serif;
+  background-color: transparent;
+  font-size: 1rem;
+  padding: 0.38em 0.7em;
+  border-radius: 0.2em;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: black;
+  color: white;
+}
