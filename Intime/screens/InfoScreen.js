@@ -131,7 +131,7 @@ function InfoScreen({navigation}) {
       />
       <ListItem
         title="문의하기"
-        onPress={() => navigation.push('Password')}
+        onPress={() => navigation.push('ForumListScreen')}
         trailing={props => <Icon name="chevron-right" {...props} />}
       />
     </>
