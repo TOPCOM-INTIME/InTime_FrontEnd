@@ -9,15 +9,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
-import {API_URL} from '@env';
-import {useUserContext} from '../../contexts/UserContext';
-import {ListItem} from '@react-native-material/core';
-import {useLogContext} from '../../contexts/LogContext';
+import { API_URL } from '@env';
+import { useUserContext } from '../../contexts/UserContext';
+import { ListItem, ListItemText } from '@react-native-material/core';
+import { useLogContext } from '../../contexts/LogContext';
 
 function CommunityScreenList(props) {
-  const {user} = useUserContext();
-  const {userList} = props;
-  const {isLoading, setIsLoading} = useLogContext();
+  const { user } = useUserContext();
+  const { userList } = props;
+  const { isLoading, setIsLoading } = useLogContext();
   console.log(userList);
 
   const requestdel = async username => {
@@ -56,7 +56,7 @@ function CommunityScreenList(props) {
           },
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -76,15 +76,18 @@ function CommunityScreenList(props) {
             alignItems: 'center',
             marginTop: '65%',
           }}>
-          <Text style={{color: 'black'}}>등록된 친구가 없습니다.</Text>
+          <Text style={{ color: 'black' }}>등록된 친구가 없습니다.</Text>
         </View>
       ) : (
         userList.map(user => (
-          <ListItem
-            key={user.username}
-            onLongPress={() => isDel(user.username)}
-            title={user.username}
-          />
+          <>
+            <ListItem
+              key={user.username}
+              onLongPress={() => isDel(user.username)}
+              title={user.username}
+            >
+            </ListItem>
+          </>
         ))
       )}
     </View>
