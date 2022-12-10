@@ -358,7 +358,9 @@ const ScheduleandMap = route => {
     AsyncStorage.getItem(toString(sid), (err, result) => {
       const asyncdata = JSON.parse(result);
       console.log('내장된 데이터 가져옴', asyncdata.markerlist);
-      setlocaldata(asyncdata.markerlist);
+      if (asyncdata.markerlist) {
+        setlocaldata(asyncdata.markerlist);
+      }
     });
 
   }
