@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import MapMarker from './MapMarker';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import { API_URL } from '@env';
@@ -21,7 +21,7 @@ import BackgroundService from 'react-native-background-actions';
 import { useUserContext } from '../contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { LogBox } from 'react-native';
-import { AppBar, IconButton } from '@react-native-material/core';
+import { AppBar, IconButton, Box, ListItem } from '@react-native-material/core';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -49,8 +49,11 @@ const ScheduleandMap = route => {
   const sid = route.route.params.ID;
   const initdate = route.route.params.startTime;
   const enddate = route.route.params.endTime;
+  const endX = route.route.params.endY;
+  const endY = route.route.params.endX;
   // console.log('s_id', sid)
   // console.log(initdate, enddate)
+  console.log('종료 좌표!!', endX, endY);
   const navigation = useNavigation();
   const { user, setUser } = useUserContext();
   const [location, setLocation] = useState(false); //do not modify this value
@@ -61,11 +64,12 @@ const ScheduleandMap = route => {
     longitude: 127.000019,
   });
 
-  const [senddata, setsenddata] = useState([]);
+  const [localdata, setlocaldata] = useState([]);
 
   const [markerlist, setmarkerlist] = useState([]);
   const [userlist, setuserlist] = useState([]);
 
+  // console.log('마커에 정보가 있나', userlist)
   const checkGroup = async () => {
     try {
       const res = await axios.get(
@@ -93,6 +97,7 @@ const ScheduleandMap = route => {
   //     }
   // };
 
+
   const getmyid = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/my-info`, {
@@ -115,9 +120,14 @@ const ScheduleandMap = route => {
 
   useEffect(() => {
     initfunction();
-    if (!BackgroundService.isRunning()) {
-      backgroundHandler();
-      console.log(initdate);
+    if (enddate >= new Date()) {
+      if (!BackgroundService.isRunning()) {
+        backgroundHandler();
+        console.log('initdate', initdate);
+      }
+    } else {
+      NotInTimedata();
+      console.log('종료시간 넘김 결과보기중')
     }
   }, []);
 
@@ -146,7 +156,7 @@ const ScheduleandMap = route => {
           console.log('Bye~time is over');
           await BackgroundService.stop();
         }
-        if (i === 500) {
+        if (i === 5000) {
           // Alert.alert('오류', '관리자에게 문의하세요 errorcode timeout_at_backgroundservice')
           console.log('time out');
           await BackgroundService.stop();
@@ -161,7 +171,7 @@ const ScheduleandMap = route => {
   };
 
   const grouplocationpost = async latlng => {
-    console.log('my location 잘 나오냐3', latlng);
+    // console.log('my location 잘 나오냐3', latlng);
     try {
       const res = await axios.post(
         `${API_URL}/api/${sid}/location`,
@@ -177,7 +187,7 @@ const ScheduleandMap = route => {
         },
       );
 
-      console.log('my location 잘 나오냐4', latlng);
+      // console.log('my location 잘 나오냐4', latlng);
       console.log(res.data);
     } catch (err) {
       console.error(err);
@@ -185,7 +195,7 @@ const ScheduleandMap = route => {
   };
 
   const mylocationpost = async latlng => {
-    console.log('my location 잘 나오냐1', latlng);
+    // console.log('my location 잘 나오냐1', latlng);
     if (latlng) {
       try {
         const res = await axios.post(
@@ -200,7 +210,7 @@ const ScheduleandMap = route => {
             },
           },
         );
-        console.log('my location 잘 나오냐2', latlng);
+        // console.log('my location 잘 나오냐2', latlng);
         grouplocationpost(latlng);
       } catch (err) {
         console.error(err);
@@ -228,21 +238,15 @@ const ScheduleandMap = route => {
   };
 
   const getgroupLocation = async () => {
-    console.log('값 날려라', markerlist);
+    // console.log('값 날려라', markerlist);
     try {
       const res = await axios.get(`${API_URL}/api/${sid}/locations`, {
         headers: {
           Authorization: user,
         },
       });
-      console.log('res data from get group location', res.data);
+      // console.log('res data from get group location', res.data);
 
-      // const newList = res.data;
-      // const newArray = markerlist.map(
-      //     (userObj) => userObj.id === newList.map(user => user.useridx) ? { ...userObj, gps_x: newList.gps_x, gps_y: newList.gps_y } : userObj);
-      // console.log('newList', newList)
-
-      // console.log('나는 새로운 배열이다 뭐가 나올까? ', newArray);
       const filteredArr = res.data.reduce((acc, current) => {
         const x = acc.find(item => item.useridx === current.useridx);
         if (!x) {
@@ -253,7 +257,7 @@ const ScheduleandMap = route => {
       }, []);
       console.log('필터링', filteredArr);
       setmarkerlist(filteredArr);
-
+      AsyncStorageset();
       console.log('markerlist', markerlist);
     } catch (err) {
       console.error(err);
@@ -292,7 +296,7 @@ const ScheduleandMap = route => {
       if (res) {
         Geolocation.getCurrentPosition(
           position => {
-            console.log('position 123 123', position);
+            // console.log('position 123 123', position);
             setLocation(position);
             // console.log(location)
             // 화면 중심부 변환
@@ -314,9 +318,12 @@ const ScheduleandMap = route => {
           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
         );
       }
-      console.log('senddata', senddata);
+      // console.log('senddata', senddata);
     });
   };
+
+
+
 
   const pressuserlog = param => {
     console.log(param.id, '의 위치 표시하기');
@@ -330,7 +337,36 @@ const ScheduleandMap = route => {
         longitude: parseFloat(mainview[0].gps_y),
       });
     }
+    getLocation();
   };
+
+  const AsyncStorageset = () => {
+    if (markerlist[0]) {
+      console.log("markerlist에 값이 있으면 데이터 저장")
+      AsyncStorage.setItem(toString(sid), JSON.stringify({ markerlist }), () => {
+        console.log('저장')
+      });
+    }
+  };
+
+  // const AsyncStorageget = () => {
+  // }
+
+
+  const NotInTimedata = () => {
+    AsyncStorage.getItem(toString(sid), (err, result) => {
+      const asyncdata = JSON.parse(result);
+      console.log('내장된 데이터 가져옴', asyncdata.markerlist);
+      setlocaldata(asyncdata.markerlist);
+    });
+
+  }
+
+  // console.log(localdata);
+
+  // const AsyncStoragedel = () => {
+  //   AsyncStorage.removeItem(toString(sid))
+  // }
 
   return (
     <>
@@ -352,12 +388,42 @@ const ScheduleandMap = route => {
       <View style={{ flex: 1 }}>
         {enddate <= new Date() ? (
           <View>
-            <Text style={{ color: 'black' }}>enddate 지남</Text>
+            <View style={styles.userlistwrapper_dup}>
+              <ScrollView>
+                {localdata.map(user => (
+                  <View style={{
+                    borderWidth: 2.5,
+                    borderColor: 'gray',
+                    borderRadius: 5,
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                    key={user.useridx}>
+                    <Text style={styles.textlist_dup}>{user.username}</Text>
+                    <Text style={styles.textlist_dup}>
+                      {Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))) <= 0.02 ? 'In Time!' : '지각!'}
+                      {/* 약 600미터 반경 안에 */}
+                    </Text>
+                    {console.log('무슨일이지?', Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))))}
+                    {/* {localdata.map(function (user) {
+                      const c_gps_x = user.gps_x - endX;
+                      const c_gps_y = user.gps_y - endY;
+                      const dist = Math.sqrt(Math.abs(c_gps_x * c_gps_x) + Math.abs(c_gps_y * c_gps_y));
+                      console.log('거?리', dist)
+
+                    })} */}
+                    {/* <Text style={styles.textlist_dup}>In Time</Text>
+                    <Text style={styles.textlist_dup}>지각!!</Text> */}
+                  </View>
+                ))}
+
+              </ScrollView>
+            </View>
           </View>
         ) : (
           <>
             <View>
-              {/* <Button title="뒤로가기" onPress={() => navigation.pop()} /> */}
               <View style={styles.userlistwrapper}>
                 {userlist.length > 0 ? (
                   <View>
@@ -398,20 +464,6 @@ const ScheduleandMap = route => {
                       latitudeDelta: 0.04,
                       longitudeDelta: 0.04,
                     }}>
-                    {/* <Marker
-                            id="0"
-                            title={'내 위치'}
-                            pinColor="red"
-                            coordinate={{
-                                latitude: position.latitude,
-                                longitude: position.longitude,
-                            }}>
-                            <Image
-                                style={{ width: 26, height: 28 }}
-                                source={require('../img04.gif')}
-                            />
-                        </Marker> */}
-
                     {markerlist.map(marker => (
                       <Marker
                         key={marker.useridx}
@@ -431,12 +483,8 @@ const ScheduleandMap = route => {
               </View>
             </View>
           </>
-
         )}
       </View>
-
-
-
     </>
   );
 };
@@ -452,11 +500,26 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     margin: 1,
   },
+  userlistwrapper_dup: {
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    margin: 1,
+  },
   textlist: {
     color: 'black',
     fontWeight: 'bold',
     fontSize: 24,
     paddingHorizontal: 10,
+  },
+  textlist_dup: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 24,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    alignItems: 'flex-end'
   },
 });
 
