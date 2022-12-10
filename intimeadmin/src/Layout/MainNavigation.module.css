@@ -25,18 +25,19 @@
   padding: 0;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   width: 250px;
 }
 
 .header li {
   margin-left: 0rem;
-  min-width: 100px;
+  min-width: 120px;
   text-align: center;
 }
 
 .header a {
   text-decoration: none;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: white;
   font-family: "Gowun Dodum", sans-serif;
 }
