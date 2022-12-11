@@ -84,6 +84,7 @@ const ScheduleandMap = route => {
     }
   };
 
+
   // const test = async () => {
   //     try {
   //         const res = await axios.get(`${API_URL}/api/schedulePools=${sid}/joined-members`,
@@ -98,20 +99,6 @@ const ScheduleandMap = route => {
   // };
 
 
-  const getmyid = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/api/my-info`, {
-        headers: {
-          Authorization: user,
-        },
-      });
-      // console.log(res.data);
-      setmyid(res.data.id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const initfunction = () => {
     checkGroup();
     getmyid();
@@ -119,7 +106,6 @@ const ScheduleandMap = route => {
   };
 
   useEffect(() => {
-    initfunction();
     if (enddate >= new Date()) {
       if (!BackgroundService.isRunning()) {
         backgroundHandler();
@@ -129,13 +115,14 @@ const ScheduleandMap = route => {
       NotInTimedata();
       console.log('종료시간 넘김 결과보기중')
     }
+    initfunction();
   }, []);
 
   const sleep = time =>
     new Promise(resolve => setTimeout(() => resolve(), time));
 
   const backgroundHandler = async () => {
-    console.log('hi');
+    console.log('background start');
     await BackgroundService.start(backpostservice, options);
   };
 
@@ -154,6 +141,7 @@ const ScheduleandMap = route => {
 
         if (enddate <= new Date()) {
           console.log('Bye~time is over');
+          localdataParse();
           await BackgroundService.stop();
         }
         if (i === 5000) {
@@ -188,7 +176,7 @@ const ScheduleandMap = route => {
       );
 
       // console.log('my location 잘 나오냐4', latlng);
-      console.log(res.data);
+      // console.log(res.data);
     } catch (err) {
       console.error(err);
     }
@@ -341,19 +329,20 @@ const ScheduleandMap = route => {
     getLocation();
   };
 
-  const AsyncStorageset = () => {
+  const AsyncStorageset = async () => {
     if (markerlist[1]) {
       console.log("markerlist에 값이 있으면 데이터 저장")
-      AsyncStorage.setItem(toString(sid), JSON.stringify({ markerlist }), () => {
+      await AsyncStorage.setItem(toString(sid), JSON.stringify({ markerlist, myid }), () => {
         console.log('저장')
       });
     }
   };
 
 
-  const lateAddTest = () => {
+  const lateAddTest = async () => {
+    console.log('이거왜 안나옴?')
     try {
-      const res = axios.post(`${API_URL}/api/late`,
+      const res = await axios.post(`${API_URL}/api/late`,
         {
           body: null,
         },
@@ -363,25 +352,65 @@ const ScheduleandMap = route => {
           },
         },
       );
+      console.log('늦음박제 ㅅㄱ')
       console.log('지각 요청 응답', res)
     } catch (e) {
       console.error(e);
     }
   }
 
-
-  const NotInTimedata = () => {
+  const localdataParse = async () => {
+    AsyncStorage.getItem(toString(myid))
     AsyncStorage.getItem(toString(sid), (err, result) => {
+      const mystoragedata = JSON.parse(result);
+      const parseddata = mystoragedata.markerlist
+      const datta = mystoragedata.myid
+      parseddata.map(user => {
+        console.log('작업하냐?')
+        console.log(user.useridx)
+        console.log(datta)
+        if (user.useridx === datta) {
+          if (Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))) <= 0.02) {
+            console.log('안늦음')
+          } else {
+            console.log('늦음ㅋ')
+            lateAddTest();
+          }
+        }
+      }
+      )
+    })
+  };
+
+
+  const NotInTimedata = async () => {
+    await AsyncStorage.getItem(toString(sid), (err, result) => {
       const asyncdata = JSON.parse(result);
-      console.log('내장된 데이터 가져옴', asyncdata.markerlist);
+      console.log('내장된 데이터 가져옴', asyncdata);
       if (asyncdata.markerlist) {
         setlocaldata(asyncdata.markerlist);
+        setmyid(asyncdata.myid);
       } else {
         Alert.alert('오류', '해당 정보가 없습니다. 관리자에게 문의하세요.')
       }
     });
 
   }
+
+  const getmyid = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/my-info`, {
+        headers: {
+          Authorization: user,
+        },
+      });
+      setmyid(res.data.id);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <>
@@ -421,16 +450,6 @@ const ScheduleandMap = route => {
                       {/* 약 600미터 반경 안에 */}
                     </Text>
                     {console.log('무슨일이지?', Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))))}
-                    {/* {localdata.map(function (user) {
-                      const c_gps_x = user.gps_x - endX;
-                      const c_gps_y = user.gps_y - endY;
-                      const dist = Math.sqrt(Math.abs(c_gps_x * c_gps_x) + Math.abs(c_gps_y * c_gps_y));
-                      console.log('거?리', dist)
-
-                    })} */}
-                    {/* <Text style={styles.textlist_dup}>In Time</Text>
-                    <Text style={styles.textlist_dup}>지각!!</Text> */}
-                    {/* <Button title="lateAddTest" onPress={lateAddTest}></Button> */}
                   </View>
                 ))}
 
