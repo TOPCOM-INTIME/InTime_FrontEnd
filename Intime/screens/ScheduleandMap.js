@@ -84,6 +84,7 @@ const ScheduleandMap = route => {
     }
   };
 
+
   // const test = async () => {
   //     try {
   //         const res = await axios.get(`${API_URL}/api/schedulePools=${sid}/joined-members`,
@@ -105,7 +106,6 @@ const ScheduleandMap = route => {
   };
 
   useEffect(() => {
-    initfunction();
     if (enddate >= new Date()) {
       if (!BackgroundService.isRunning()) {
         backgroundHandler();
@@ -115,6 +115,7 @@ const ScheduleandMap = route => {
       NotInTimedata();
       console.log('종료시간 넘김 결과보기중')
     }
+    initfunction();
   }, []);
 
   const sleep = time =>
@@ -331,7 +332,7 @@ const ScheduleandMap = route => {
   const AsyncStorageset = async () => {
     if (markerlist[1]) {
       console.log("markerlist에 값이 있으면 데이터 저장")
-      await AsyncStorage.setItem(toString(sid), JSON.stringify({ markerlist }), () => {
+      await AsyncStorage.setItem(toString(sid), JSON.stringify({ markerlist, myid }), () => {
         console.log('저장')
       });
     }
@@ -359,19 +360,21 @@ const ScheduleandMap = route => {
   }
 
   const localdataParse = async () => {
-    await AsyncStorage.getItem(toString(sid), (err, result) => {
+    AsyncStorage.getItem(toString(myid))
+    AsyncStorage.getItem(toString(sid), (err, result) => {
       const mystoragedata = JSON.parse(result);
       const parseddata = mystoragedata.markerlist
-
+      const datta = mystoragedata.myid
       parseddata.map(user => {
         console.log('작업하냐?')
         console.log(user.useridx)
-        console.log(myid)
-        if (user.useridx === myid) {
+        console.log(datta)
+        if (user.useridx === datta) {
           if (Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))) <= 0.02) {
             console.log('안늦음')
           } else {
             console.log('늦음ㅋ')
+            lateAddTest();
           }
         }
       }
@@ -383,9 +386,10 @@ const ScheduleandMap = route => {
   const NotInTimedata = async () => {
     await AsyncStorage.getItem(toString(sid), (err, result) => {
       const asyncdata = JSON.parse(result);
-      console.log('내장된 데이터 가져옴', asyncdata.markerlist);
+      console.log('내장된 데이터 가져옴', asyncdata);
       if (asyncdata.markerlist) {
         setlocaldata(asyncdata.markerlist);
+        setmyid(asyncdata.myid);
       } else {
         Alert.alert('오류', '해당 정보가 없습니다. 관리자에게 문의하세요.')
       }
@@ -400,14 +404,13 @@ const ScheduleandMap = route => {
           Authorization: user,
         },
       });
-      // console.log(res.data);
       setmyid(res.data.id);
-      console.log('나 왜 안됌?')
-      return res.data.id
+
     } catch (error) {
       console.log(error);
     }
   };
+
 
   return (
     <>
