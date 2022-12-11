@@ -132,23 +132,23 @@ function CommunityScreen() {
       ) : (
         <ScrollView style={{ flex: 1 }}>
           {userList.map(user => (
-              <ListItem
-                key={user.username}
-                onLongPress={() => isDel(user.username)}
-                title={user.username}
-                trailing={
-                  <Text
-                    key={user.username}
-                    style={{
-                      color: 'gray',
-                      flexDirection: 'row',
-                      marginRight: 1,
-                      marginVertical: '-10%',
-                      marginHorizontal: '-310%',
-                      alignItems: 'center',
-                    }}>지각 횟수 : {user.lateCount ? user.lateCount : '없음'}</Text>
-                }
-              />
+            <ListItem
+              key={user.username}
+              onLongPress={() => isDel(user.username)}
+              title={user.username}
+              trailing={
+                <Text
+                  key={user.username}
+                  style={{
+                    color: 'gray',
+                    flexDirection: 'row',
+                    marginRight: 1,
+                    marginVertical: '-10%',
+                    marginHorizontal: '-310%',
+                    alignItems: 'center',
+                  }}>지각 횟수 : {user.lateCount ? user.lateCount : '없음'}</Text>
+              }
+            />
           ))}
         </ScrollView>
       )}

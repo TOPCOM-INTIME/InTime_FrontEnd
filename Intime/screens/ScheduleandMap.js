@@ -119,9 +119,9 @@ const ScheduleandMap = route => {
   };
 
   useEffect(() => {
+    initfunction();
     if (enddate >= new Date()) {
       if (!BackgroundService.isRunning()) {
-        initfunction();
         backgroundHandler();
         console.log('initdate', initdate);
       }
@@ -342,7 +342,7 @@ const ScheduleandMap = route => {
   };
 
   const AsyncStorageset = () => {
-    if (markerlist[0]) {
+    if (markerlist[1]) {
       console.log("markerlist에 값이 있으면 데이터 저장")
       AsyncStorage.setItem(toString(sid), JSON.stringify({ markerlist }), () => {
         console.log('저장')
@@ -350,8 +350,6 @@ const ScheduleandMap = route => {
     }
   };
 
-  // const AsyncStorageget = () => {
-  // }
 
   const lateAddTest = () => {
     try {
@@ -384,12 +382,6 @@ const ScheduleandMap = route => {
     });
 
   }
-
-  // console.log(localdata);
-
-  // const AsyncStoragedel = () => {
-  //   AsyncStorage.removeItem(toString(sid))
-  // }
 
   return (
     <>
@@ -478,7 +470,7 @@ const ScheduleandMap = route => {
             </View>
             <View style={{ flex: 1 }}>
               <View style={{ flex: 9 }}>
-                <View style={{ flex: 1, padding: 10 }}>
+                <View style={{ flex: 1, padding: 2 }}>
                   <MapView
                     style={{ flex: 1 }}
                     provider={PROVIDER_GOOGLE}
