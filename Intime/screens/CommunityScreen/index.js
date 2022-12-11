@@ -142,11 +142,10 @@ function CommunityScreen() {
                   style={{
                     color: 'gray',
                     flexDirection: 'row',
-                    marginRight: 1,
-                    marginVertical: '-10%',
-                    marginHorizontal: '-310%',
+                    marginRight: '10%',
+                    marginHorizontal: '-300%',
                     alignItems: 'center',
-                  }}>지각 횟수 : {user.lateCount ? user.lateCount : '없음'}</Text>
+                  }}>지각 횟수 : {user.lateCount ? user.lateCount : '0'}</Text>
               }
             />
           ))}

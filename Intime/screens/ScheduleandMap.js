@@ -370,13 +370,14 @@ const ScheduleandMap = route => {
         console.log(user.useridx)
         console.log(datta)
         if (user.useridx === datta) {
-          if (Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))) <= 0.02) {
-            console.log('안늦음')
-          } else {
-            console.log('늦음ㅋ')
+          if (Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))) > 0.02) {
+            console.log('늦음!')
             lateAddTest();
+          } else {
+            console.log('안늦음!');
           }
         }
+        console.log(Math.sqrt(Math.abs((user.gps_x - endX) * (user.gps_x - endX)) + Math.abs((user.gps_y - endY) * (user.gps_y - endY))))
       }
       )
     })
@@ -414,6 +415,7 @@ const ScheduleandMap = route => {
 
   return (
     <>
+      {/* <Button title="localdataParse" onPress={localdataParse}></Button> */}
       <AppBar
         title={enddate <= new Date() ? (title = "결과확인") : (title = "위치확인")}
         centerTitle={true}
