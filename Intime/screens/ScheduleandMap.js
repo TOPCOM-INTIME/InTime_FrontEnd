@@ -119,9 +119,9 @@ const ScheduleandMap = route => {
   };
 
   useEffect(() => {
-    initfunction();
     if (enddate >= new Date()) {
       if (!BackgroundService.isRunning()) {
+        initfunction();
         backgroundHandler();
         console.log('initdate', initdate);
       }
@@ -328,6 +328,7 @@ const ScheduleandMap = route => {
   const pressuserlog = param => {
     console.log(param.id, '의 위치 표시하기');
     getgroupLocation();
+    AsyncStorageset();
     console.log('개인화면에서 마커 리스트', markerlist);
     console.log('');
     const mainview = markerlist.filter(marker => marker.useridx === param.id);
@@ -352,12 +353,34 @@ const ScheduleandMap = route => {
   // const AsyncStorageget = () => {
   // }
 
+  const lateAddTest = () => {
+    try {
+      const res = axios.post(`${API_URL}/api/late`,
+        {
+          body: null,
+        },
+        {
+          headers: {
+            Authorization: user,
+          },
+        },
+      );
+      console.log('지각 요청 응답', res)
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
 
   const NotInTimedata = () => {
     AsyncStorage.getItem(toString(sid), (err, result) => {
       const asyncdata = JSON.parse(result);
       console.log('내장된 데이터 가져옴', asyncdata.markerlist);
-      setlocaldata(asyncdata.markerlist);
+      if (asyncdata.markerlist) {
+        setlocaldata(asyncdata.markerlist);
+      } else {
+        Alert.alert('오류', '해당 정보가 없습니다. 관리자에게 문의하세요.')
+      }
     });
 
   }
@@ -415,6 +438,7 @@ const ScheduleandMap = route => {
                     })} */}
                     {/* <Text style={styles.textlist_dup}>In Time</Text>
                     <Text style={styles.textlist_dup}>지각!!</Text> */}
+                    {/* <Button title="lateAddTest" onPress={lateAddTest}></Button> */}
                   </View>
                 ))}
 
