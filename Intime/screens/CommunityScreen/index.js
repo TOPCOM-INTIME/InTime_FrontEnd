@@ -137,9 +137,19 @@ function CommunityScreen() {
                 key={user.username}
                 onLongPress={() => isDel(user.username)}
                 title={user.username}
-                value={user.lateCount}
+                trailing={
+                  <Text
+                    key={user.username}
+                    style={{
+                      color: 'gray',
+                      flexDirection: 'row',
+                      marginRight: 1,
+                      marginVertical: '-10%',
+                      marginHorizontal: '-310%',
+                      alignItems: 'center',
+                    }}>지각 횟수 : {user.lateCount ? user.lateCount : '없음'}</Text>
+                }
               />
-              <Text style={{ color: 'black', alignItems: 'flex-end' }}>지각 횟수 : {user.lateCount ? user.lateCount : '없음'}</Text>
             </>
           ))}
         </ScrollView>

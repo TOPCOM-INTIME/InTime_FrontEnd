@@ -438,7 +438,7 @@ const ScheduleandMap = route => {
                     })} */}
                     {/* <Text style={styles.textlist_dup}>In Time</Text>
                     <Text style={styles.textlist_dup}>지각!!</Text> */}
-                    <Button title="lateAddTest" onPress={lateAddTest}></Button>
+                    {/* <Button title="lateAddTest" onPress={lateAddTest}></Button> */}
                   </View>
                 ))}
 
