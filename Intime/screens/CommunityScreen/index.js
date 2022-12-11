@@ -132,7 +132,6 @@ function CommunityScreen() {
       ) : (
         <ScrollView style={{ flex: 1 }}>
           {userList.map(user => (
-            <>
               <ListItem
                 key={user.username}
                 onLongPress={() => isDel(user.username)}
@@ -150,7 +149,6 @@ function CommunityScreen() {
                     }}>지각 횟수 : {user.lateCount ? user.lateCount : '없음'}</Text>
                 }
               />
-            </>
           ))}
         </ScrollView>
       )}
