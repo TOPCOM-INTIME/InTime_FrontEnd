@@ -63,7 +63,7 @@ function ScheduleScreen({route}) {
       setpatternList(route.params.patterns);
       setData({
         name: route.params.name,
-        time: route.params.time,
+        time: 0,
         sourceName: route.params.sourceName,
         destName: route.params.destName,
         readyPatterns_Ids: [],
@@ -115,6 +115,7 @@ function ScheduleScreen({route}) {
               setcheckGroup={setcheckGroup}
               friendList={friendList}
               setfriendList={setfriendList}
+              isUpdate={isUpdate}
               INVITE={INVITE}
               isCar={isCar}
               setCarTime={setCarTime}

@@ -55,7 +55,7 @@ function SelectPattern({
   const navigation = useNavigation();
   let group_data;
   // console.log('일정 확인', data);
-  console.log('친구 목록', patternList);
+  // console.log('친구 목록', patternList);
 
   const move = () => {
     navigation.replace('MainTab');

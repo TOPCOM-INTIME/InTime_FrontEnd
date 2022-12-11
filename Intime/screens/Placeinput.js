@@ -37,6 +37,7 @@ function Placeinput({
   CarData,
   WalkData,
   setWalkData,
+  isUpdate,
 }) {
   const {user, setUser} = useUserContext();
   const [loading, setLoading] = useState(false);
@@ -53,6 +54,7 @@ function Placeinput({
       friendList={friendList}
       setfriendList={setfriendList}
       INVITE={INVITE}
+      isUpdate={isUpdate}
       isCar={isCar}
       CarTime={CarTime}
       setCarTime={setCarTime}

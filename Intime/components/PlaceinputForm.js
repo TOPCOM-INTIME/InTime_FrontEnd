@@ -44,6 +44,7 @@ function PlaceinputForm({
   setCarData,
   WalkData,
   setWalkData,
+  isUpdate,
 }) {
   const navigation = useNavigation();
   const name = useRef();
@@ -99,7 +100,7 @@ function PlaceinputForm({
   const setendTime = () => {
     if (data.time === 0) {
       console.log(data);
-      Alert.alert('출발과 도착을 입력해라');
+      Alert.alert('교통수단을 선택해주세요');
     } else {
       let tmpDate = new Date(data.endTime);
       tmpDate.setSeconds(tmpDate.getSeconds() - data.time);
@@ -125,6 +126,24 @@ function PlaceinputForm({
       setcheckGroup(value);
     }
   };
+
+  function checkDisableSwitch() {
+    if (INVITE) {
+      return true;
+    }
+
+    if (isUpdate) {
+      return true;
+    }
+    return false;
+  }
+
+  function checkSwitchValue() {
+    if (INVITE) {
+      return 1;
+    }
+    return 0;
+  }
 
   function whenInvite() {
     if (INVITE) {
@@ -174,7 +193,7 @@ function PlaceinputForm({
         value={INVITE}
         hasPadding
         onPress={value => OnSwitchChange(value)}
-        disabled={INVITE ? true : false}
+        disabled={checkDisableSwitch()}
       />
       <ScrollView style={{backgroundColor: 'white'}}>
         <View style={styles.tasksWrapper}>
