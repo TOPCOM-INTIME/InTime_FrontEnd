@@ -53,15 +53,24 @@ const NoticeDetailScreen = props => {
 
   return (
     <>
+      <AppBar
+        title="공지사항"
+        centerTitle={true}
+        color="#6c757d"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        leading={props => (
+          <IconButton
+            icon={props => <Icon name="chevron-left" {...props} />}
+            color="white"
+            onPress={() => navigation.pop()}
+            {...props}
+          />
+        )}
+      />
       <View style={styles.container}>
         {printDate(createDate)}
         <Text style={styles.title}>제목:{title}</Text>
         <Text style={styles.content}>{content}</Text>
-      </View>
-      <View style={styles.bottom}>
-        <TouchableOpacity onPress={() => navigation.pop()}>
-          <Text style={{color: 'white'}}>뒤로가기</Text>
-        </TouchableOpacity>
       </View>
     </>
   );

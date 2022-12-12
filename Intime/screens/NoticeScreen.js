@@ -93,20 +93,22 @@ function NoticeScreen() {
     <>
       {isLoading && <LoadingBar />}
       <AppBar
-        title="공지 사항"
-        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        title="공지사항"
         centerTitle={true}
         color="#6c757d"
-        tintColor="white"
+        titleStyle={{fontFamily: 'NanumSquareRoundEB'}}
+        leading={props => (
+          <IconButton
+            icon={props => <Icon name="chevron-left" {...props} />}
+            color="white"
+            onPress={() => navigation.pop()}
+            {...props}
+          />
+        )}
       />
       <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
         {printNotice()}
       </ScrollView>
-      <View style={styles.bottom}>
-        <TouchableOpacity onPress={() => navigation.pop()}>
-          <Text style={{color: 'white'}}>뒤로가기</Text>
-        </TouchableOpacity>
-      </View>
     </>
   );
 }

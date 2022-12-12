@@ -22,6 +22,12 @@ function SignUpForm({
   const {isLoading, setIsLoading} = useLogContext();
 
   const sendEmail = async () => {
+    const regex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!regex.test(userData.email)) {
+      Alert.alert('실패', '이메일을 확인해 주세요');
+      return;
+    }
     setIsLoading(true);
     try {
       const res = await axios.get(
