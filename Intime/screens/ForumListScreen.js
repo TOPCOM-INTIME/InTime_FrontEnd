@@ -113,7 +113,14 @@ function ForumWrite() {
         centerTitle={true}
         color="#6c757d"
         tintColor="white"
-        leading={<></>}
+        leading={props => (
+          <IconButton
+            icon={props => <Icon name="chevron-left" {...props} />}
+            color="white"
+            onPress={() => navigation.pop()}
+            {...props}
+          />
+        )}
         trailing={props => (
           <HStack>
             <IconButton
@@ -126,15 +133,6 @@ function ForumWrite() {
       />
 
       <View style={{flex: 1}}>{printNotice()}</View>
-
-      <View style={styles.bottom}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('MainTab', {screen: 'InfoScreen'})
-          }>
-          <Text style={{color: 'white'}}>뒤로가기</Text>
-        </TouchableOpacity>
-      </View>
     </>
   );
 }
