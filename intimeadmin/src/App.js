@@ -10,6 +10,7 @@ import NoticeWritePage from "./pages/NoticeWritePage";
 import UserPage from "./pages/UserPage";
 import AdPage from "./pages/AdPage";
 import AdRegisterPage from "./pages/AdRegisterPage";
+import ForumPage from "./pages/ForumPage";
 function App() {
   const ctx = useContext(authContext);
   return (
@@ -47,6 +48,10 @@ function App() {
           element={
             ctx.type === "advertise" ? <AdRegisterPage /> : <Navigate to="/" />
           }
+        />
+        <Route
+          path="/forum"
+          element={ctx.type === "admin" ? <ForumPage /> : <Navigate to="/" />}
         />
         <Route path="*" element={<h1>Page Not Found.</h1>} />
       </Routes>

@@ -13,6 +13,7 @@ function AdRegisterPage() {
     isEdit ? `http://175.45.204.122:8000${data.state.ad.fileUrl}` : ""
   );
   const [image, setImage] = useState(null);
+  const [url, setUrl] = useState("");
   const imgRef = useRef();
 
   console.log(isEdit);
@@ -36,6 +37,7 @@ function AdRegisterPage() {
 
     const img = new FormData();
     img.append("banner", image);
+    img.append("url", url);
     if (isEdit) {
       try {
         await axios.put(
@@ -72,6 +74,18 @@ function AdRegisterPage() {
 
   return (
     <form onSubmit={submitHandler}>
+      <div>
+        <label htmlFor="url">이동 url</label>
+        <br />
+        <input
+          type="text"
+          id="url"
+          value={url}
+          onChange={(e) => {
+            setUrl(e.target.value);
+          }}
+        />
+      </div>
       <div>
         <label htmlFor="image">광고 이미지</label> <br />
         <input

@@ -10,10 +10,11 @@ function Ad({ ad, setAds }) {
 
   const deleteHandler = async () => {
     try {
-      await axios.delete(
+      const d = await axios.delete(
         `http://175.45.204.122:8000/advertiser/adBanner=${ad.id}`,
         { headers: { Authorization: ctx.token } }
       );
+      console.log(d);
 
       const res = await axios.get(
         "http://175.45.204.122:8000/advertiser/myAdBanner/all",
@@ -31,11 +32,14 @@ function Ad({ ad, setAds }) {
 
   return (
     <div>
-      <img
-        src={`http://175.45.204.122:8000${ad.fileUrl}`}
-        alt="ad-img"
-        style={{ width: "320px" }}
-      />
+      <div>
+        <img
+          src={`http://175.45.204.122:8000${ad.fileUrl}`}
+          alt="ad-img"
+          style={{ width: "320px" }}
+        />
+      </div>
+      <div>노출 횟수: {ad.impression}회</div>
       <Button
         onClick={() =>
           navigate("/ad/write", {

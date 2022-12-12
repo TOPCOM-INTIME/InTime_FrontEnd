@@ -1,28 +1,110 @@
-import React, {useRef} from 'react';
-import {TextInput, StyleSheet} from 'react-native';
+import {Button, HStack} from '@react-native-material/core';
+import axios from 'axios';
+import React, {useRef, useState} from 'react';
+import {TextInput, StyleSheet, Alert} from 'react-native';
+import {useLogContext} from '../contexts/LogContext';
 
-function SignUpForm({onSubmit, createChangeTextHandler, isSignUp}) {
+function SignUpForm({
+  onSubmit,
+  createChangeTextHandler,
+  isSignUp,
+  setIsVerified,
+  isVerified,
+  userData,
+}) {
   const emailRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
+  const [code, setCode] = useState('');
+  const [enteredCode, setEnteredCode] = useState('');
+  const [isVeryfying, setIsVerifying] = useState(false);
+  const {isLoading, setIsLoading} = useLogContext();
+
+  const sendEmail = async () => {
+    setIsLoading(true);
+    try {
+      const res = await axios.get(
+        `http://175.45.204.122:8000/verify?email=${userData.email}`,
+      );
+      setCode(res.data);
+      setIsVerifying(true);
+      console.log(res.data);
+      Alert.alert('인증번호 전송', '인증번호가 전송되었습니다.');
+    } catch (err) {
+      console.log(err);
+      Alert.alert('실패', '이메일을 확인해주세요.');
+    }
+  };
+
+  const verify = () => {
+    console.log(code, enteredCode);
+    if (code === enteredCode) {
+      Alert.alert('성공', '인증되었습니다.');
+      setIsVerified(true);
+      setIsVerifying(false);
+      setIsLoading(false);
+      return;
+    } else {
+      Alert.alert('실패', '인증번호가 일치하지 않습니다.');
+      return;
+    }
+  };
 
   return (
     <>
-      <TextInput
-        placeholder="이메일"
-        placeholderTextColor="gray"
-        ref={emailRef}
-        keyboardType="email-address"
-        returnKeyType="next"
-        onChangeText={createChangeTextHandler('email')}
-        onSubmitEditing={
-          isSignUp
-            ? () => usernameRef.current.focus()
-            : () => passwordRef.current.focus()
-        }
-        style={[styles.input, styles.margin]}
-      />
+      {isSignUp ? (
+        <HStack spacing={5}>
+          <TextInput
+            placeholder="이메일"
+            placeholderTextColor="gray"
+            ref={emailRef}
+            keyboardType="email-address"
+            returnKeyType="next"
+            onChangeText={createChangeTextHandler('email')}
+            onSubmitEditing={() => sendEmail()}
+            style={[styles.input, styles.margin, styles.emailInput]}
+          />
+          <Button
+            color="#6c757d"
+            tintColor="white"
+            title="인증번호 전송"
+            disabled={isLoading}
+            style={[styles.margin, styles.center]}
+            onPress={sendEmail}
+          />
+        </HStack>
+      ) : (
+        <TextInput
+          placeholder="이메일"
+          placeholderTextColor="gray"
+          ref={emailRef}
+          keyboardType="email-address"
+          returnKeyType="next"
+          onChangeText={createChangeTextHandler('email')}
+          onSubmitEditing={() => passwordRef.current.focus()}
+          style={[styles.input, styles.margin]}
+        />
+      )}
+
+      {isVeryfying && (
+        <HStack spacing={5}>
+          <TextInput
+            placeholder="인증번호"
+            placeholderTextColor="gray"
+            onChangeText={setEnteredCode}
+            value={enteredCode}
+            style={[styles.input, styles.margin, styles.codeInput]}
+          />
+          <Button
+            color="#6c757d"
+            tintColor="white"
+            title="인증"
+            style={[styles.margin, styles.center]}
+            onPress={verify}
+          />
+        </HStack>
+      )}
       {isSignUp && (
         <TextInput
           placeholder="닉네임"
@@ -74,6 +156,17 @@ const styles = StyleSheet.create({
   },
   margin: {
     marginBottom: 16,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  codeInput: {
+    width: '80%',
+  },
+  emailInput: {
+    width: '65%',
   },
 });
 

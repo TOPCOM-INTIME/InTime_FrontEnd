@@ -50,6 +50,7 @@ function SelectPattern({
   } = useLogContext();
   const [group, setGroup] = useState([]);
   const {user, setUser} = useUserContext();
+
   const primaryTitle = '저장';
   const secondaryTitle = '취소';
   const navigation = useNavigation();
