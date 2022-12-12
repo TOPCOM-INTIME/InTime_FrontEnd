@@ -2,7 +2,6 @@ import {Button, HStack} from '@react-native-material/core';
 import axios from 'axios';
 import React, {useRef, useState} from 'react';
 import {TextInput, StyleSheet, Alert} from 'react-native';
-import {useLogContext} from '../contexts/LogContext';
 
 function SignUpForm({
   onSubmit,
@@ -19,7 +18,6 @@ function SignUpForm({
   const [code, setCode] = useState('');
   const [enteredCode, setEnteredCode] = useState('');
   const [isVeryfying, setIsVerifying] = useState(false);
-  const {isLoading, setIsLoading} = useLogContext();
 
   const sendEmail = async () => {
     const regex =
@@ -28,7 +26,6 @@ function SignUpForm({
       Alert.alert('실패', '이메일을 확인해 주세요');
       return;
     }
-    setIsLoading(true);
     try {
       const res = await axios.get(
         `http://175.45.204.122:8000/verify?email=${userData.email}`,
@@ -49,7 +46,6 @@ function SignUpForm({
       Alert.alert('성공', '인증되었습니다.');
       setIsVerified(true);
       setIsVerifying(false);
-      setIsLoading(false);
       return;
     } else {
       Alert.alert('실패', '인증번호가 일치하지 않습니다.');
@@ -75,7 +71,6 @@ function SignUpForm({
             color="#6c757d"
             tintColor="white"
             title="인증번호 전송"
-            disabled={isLoading}
             style={[styles.margin, styles.center]}
             onPress={sendEmail}
           />
