@@ -7,6 +7,7 @@ import Button from "../components/UI/Button";
 const adminNavigationMenus = [
   { id: "m1", name: "공지사항 관리", href: "/notice" },
   { id: "m2", name: "회원 관리", href: "/user" },
+  { id: "m3", name: "문의사항 관리", href: "/forum" },
 ];
 
 const advertiseNavigationMenus = [{ id: "m1", name: "광고 관리", href: "/ad" }];

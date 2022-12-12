@@ -24,6 +24,7 @@ export function LogContextProvider({children}) {
           },
         );
         setPatterns(fetchedPattern.data);
+        console.log('패턴 완');
         const fetchedGroup = await axios.get(
           `${API_URL}/api/groups-with-patterns/all`,
           {
@@ -31,6 +32,7 @@ export function LogContextProvider({children}) {
           },
         );
         setPatternGroups(fetchedGroup.data);
+        console.log('그룹 완');
         const fetchedInvitation = await axios.get(
           `${API_URL}/friends/request`,
           {
@@ -38,6 +40,7 @@ export function LogContextProvider({children}) {
           },
         );
         setFriendInvite(fetchedInvitation.data);
+        console.log('친구초대 완');
         const fetchedSchedule = await axios.get(
           `${API_URL}/api/schedule-invitations`,
           {
@@ -45,6 +48,7 @@ export function LogContextProvider({children}) {
           },
         );
         setScheduleInvite(fetchedSchedule.data);
+        console.log('일정초대 완');
       } catch (err) {
         console.error('로그 컨텍스트 에러', err);
       }

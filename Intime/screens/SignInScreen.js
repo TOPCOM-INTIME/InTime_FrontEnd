@@ -28,6 +28,7 @@ function SignInScreen({navigation, route}) {
     confirmPassword: '',
   });
   const [loading, setLoading] = useState(false);
+  const [isVerified, setIsVerified] = useState(isSignUp ? false : true);
 
   const createChangeTextHandler = name => value => {
     setUserData({...userData, [name]: value});
@@ -35,6 +36,10 @@ function SignInScreen({navigation, route}) {
 
   const onSubmit = async () => {
     Keyboard.dismiss();
+    if (!isVerified) {
+      Alert.alert('실패', '이메일을 인증해주세요');
+      return;
+    }
     if (isSignUp && userData.password !== userData.confirmPassword) {
       Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
       return;
@@ -105,6 +110,7 @@ function SignInScreen({navigation, route}) {
       }
     }
   };
+
   return (
     <>
       <KeyboardAvoidingView
@@ -116,7 +122,10 @@ function SignInScreen({navigation, route}) {
             <SignUpForm
               onSubmit={onSubmit}
               isSignUp={isSignUp}
+              isVerified={isVerified}
+              setIsVerified={setIsVerified}
               createChangeTextHandler={createChangeTextHandler}
+              userData={userData}
             />
             <SignButtons
               onSubmit={onSubmit}
